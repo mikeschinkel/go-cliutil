@@ -23,15 +23,18 @@ var _ Command = (*CmdBase)(nil)
 // CmdBase provides common functionality for all commands
 // It implements the cliutil.Cmd interface
 type CmdBase struct {
-	name        string
-	usage       string
-	description string
-	flagsDefs   []FlagDef  // Legacy flag definitions (will be deprecated)
-	flagSets    []*FlagSet // New FlagSet-based approach
-	argDefs     []*ArgDef  // Positional argument definitions
-	delegateTo  Command
-	parentTypes []reflect.Type
-	subCommands []Command
+	name         string
+	usage        string
+	description  string
+	flagsDefs    []FlagDef  // Legacy flag definitions (will be deprecated)
+	flagSets     []*FlagSet // New FlagSet-based approach
+	argDefs      []*ArgDef  // Positional argument definitions
+	delegateTo   Command
+	parentTypes  []reflect.Type
+	subCommands  []Command
+	examples     []Example // Custom examples
+	noExamples   bool      // Do not display any examples
+	autoExamples bool      // Display auto-generated examples even if custom are provided
 }
 
 func (c *CmdBase) FlagSets() []*FlagSet {
@@ -47,27 +50,33 @@ func (c *CmdBase) AddParent(r reflect.Type) {
 }
 
 type CmdArgs struct {
-	Name        string
-	Usage       string
-	Description string
-	DelegateTo  Command
-	FlagDefs    []FlagDef  // Legacy flag definitions (will be deprecated)
-	FlagSets    []*FlagSet // New FlagSet-based approach
-	ArgDefs     []*ArgDef  // Positional argument definitions
+	Name         string
+	Usage        string
+	Description  string
+	DelegateTo   Command
+	FlagDefs     []FlagDef  // Legacy flag definitions (will be deprecated)
+	FlagSets     []*FlagSet // New FlagSet-based approach
+	ArgDefs      []*ArgDef  // Positional argument definitions
+	Examples     []Example  // Custom examples
+	NoExamples   bool       // Do not display any examples
+	AutoExamples bool       // Display auto-generated examples even if custom are provided
 }
 
 // NewCmdBase creates a new command base
 func NewCmdBase(args CmdArgs) *CmdBase {
 	return &CmdBase{
-		name:        args.Name,
-		usage:       args.Usage,
-		description: args.Description,
-		flagsDefs:   args.FlagDefs,
-		flagSets:    args.FlagSets, // Static FlagSets (legacy)
-		argDefs:     args.ArgDefs,  // Positional argument definitions
-		delegateTo:  args.DelegateTo,
-		parentTypes: make([]reflect.Type, 0),
-		subCommands: make([]Command, 0),
+		name:         args.Name,
+		usage:        args.Usage,
+		description:  args.Description,
+		flagsDefs:    args.FlagDefs,
+		flagSets:     args.FlagSets, // Static FlagSets (legacy)
+		argDefs:      args.ArgDefs,  // Positional argument definitions
+		delegateTo:   args.DelegateTo,
+		examples:     args.Examples,
+		noExamples:   args.NoExamples,
+		autoExamples: args.AutoExamples,
+		parentTypes:  make([]reflect.Type, 0),
+		subCommands:  make([]Command, 0),
 	}
 }
 
@@ -235,4 +244,17 @@ func (c *CmdBase) AssignArgs(args []string) (err error) {
 
 end:
 	return err
+}
+
+func (c *CmdBase) Examples() []Example {
+	return c.examples
+}
+func (c *CmdBase) NoExamples() bool {
+	return c.noExamples
+}
+func (c *CmdBase) AutoExamples() bool {
+	return c.autoExamples
+}
+func (c *CmdBase) ArgDefs() []*ArgDef {
+	return c.argDefs
 }

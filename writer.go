@@ -16,14 +16,16 @@ type Writer interface {
 	Loud() Writer
 	V2() Writer
 	V3() Writer
+	Writer() io.Writer
+	ErrWriter() io.Writer
 }
 
 var _ Writer = (*cliWriter)(nil)
 
 // outputWriter writes to stdout/doterr for normal CLI usage
 type cliWriter struct {
-	stdout    io.Writer
-	stderr    io.Writer
+	writer    io.Writer
+	errWriter io.Writer
 	quiet     bool
 	loud      Writer
 	v2        Writer
@@ -32,45 +34,53 @@ type cliWriter struct {
 	verbosity Verbosity
 }
 
-func (c *cliWriter) V2() Writer {
-	if c.v2 != nil {
+func (w *cliWriter) Writer() io.Writer {
+	return w.writer
+}
+
+func (w *cliWriter) ErrWriter() io.Writer {
+	return w.errWriter
+}
+
+func (w *cliWriter) V2() Writer {
+	if w.v2 != nil {
 		goto end
 	}
-	c.v2 = &cliWriter{
-		stdout:    os.Stdout,
-		stderr:    os.Stderr,
-		verbosity: c.verbosity,
+	w.v2 = &cliWriter{
+		writer:    os.Stdout,
+		errWriter: os.Stderr,
+		verbosity: w.verbosity,
 		useLevel:  2,
 	}
 end:
-	return c.v2
+	return w.v2
 }
 
-func (c *cliWriter) V3() Writer {
-	if c.v3 != nil {
+func (w *cliWriter) V3() Writer {
+	if w.v3 != nil {
 		goto end
 	}
-	c.v3 = &cliWriter{
-		stdout:    os.Stdout,
-		stderr:    os.Stderr,
-		verbosity: c.verbosity,
+	w.v3 = &cliWriter{
+		writer:    os.Stdout,
+		errWriter: os.Stderr,
+		verbosity: w.verbosity,
 		useLevel:  3,
 	}
 end:
-	return c.v3
+	return w.v3
 }
 
-func (c *cliWriter) Loud() Writer {
-	if c.loud != nil {
+func (w *cliWriter) Loud() Writer {
+	if w.loud != nil {
 		goto end
 	}
-	c.loud = &cliWriter{
-		stdout: os.Stdout,
-		stderr: os.Stderr,
-		quiet:  false,
+	w.loud = &cliWriter{
+		writer:    os.Stdout,
+		errWriter: os.Stderr,
+		quiet:     false,
 	}
 end:
-	return c.loud
+	return w.loud
 }
 
 type WriterArgs struct {
@@ -91,28 +101,28 @@ func NewWriter(args *WriterArgs) Writer {
 		panic(fmt.Sprintf("Invalid verbosity for cliutil.Writer.SetVerbosity(); must be between 1-3; got %d", args.Verbosity))
 	}
 	return &cliWriter{
-		stdout:    os.Stdout,
-		stderr:    os.Stderr,
+		writer:    os.Stdout,
+		errWriter: os.Stderr,
 		quiet:     args.Quiet,
 		verbosity: args.Verbosity,
 	}
 }
 
 // Printf writes formatted writer to stdout
-func (c *cliWriter) Printf(format string, args ...any) {
-	if c.quiet {
+func (w *cliWriter) Printf(format string, args ...any) {
+	if w.quiet {
 		goto end
 	}
-	if int(c.verbosity) < c.useLevel {
+	if int(w.verbosity) < w.useLevel {
 		goto end
 	}
-	_, _ = fmt.Fprintf(c.stdout, format, args...)
+	_, _ = fmt.Fprintf(w.writer, format, args...)
 end:
 	return
 }
 
 // Errorf writes formatted error writer to doterr
-func (c *cliWriter) Errorf(format string, args ...any) {
+func (w *cliWriter) Errorf(format string, args ...any) {
 	for i, arg := range args {
 		err, ok := arg.(error)
 		if !ok {
@@ -121,7 +131,7 @@ func (c *cliWriter) Errorf(format string, args ...any) {
 		// Replace newlines in errors with semicolons
 		args[i] = strings.Replace(err.Error(), "\n", "; ", -1)
 	}
-	_, _ = fmt.Fprintf(c.stderr, format, args...)
+	_, _ = fmt.Fprintf(w.errWriter, format, args...)
 }
 
 // Package-level output variables and synchronization

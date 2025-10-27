@@ -41,27 +41,39 @@ func (cr CmdRunner) ParseCmd(args []string) (cmd Command, err error) {
 	// Try to find the most specific command match
 	path, args = findBestCmdMatch(args)
 	if path == "" {
-		err = fmt.Errorf("unknown command: %s\nRun 'xmluicli help' for usage", cr.args[0])
+		err = NewErr(
+			ErrUnknownCommand,
+		)
 		goto end
 	}
 
 	cmd, path = GetDefaultCommand(path, args)
 	if cmd == nil {
-		err = fmt.Errorf("command not found: %s", path)
+		err = NewErr(
+			ErrCommandNotFound,
+		)
 		goto end
 	}
 
 	args, err = cmd.ParseFlagSets(args)
 	if err != nil {
+		err = NewErr(ErrFlagsParsingFailed)
 		goto end
 	}
 
 	err = cmd.AssignArgs(args)
 	if err != nil {
+		err = NewErr(ErrAssigningArgsFailed)
 		goto end
 	}
 
 end:
+	if err != nil {
+		err = WithErr(err,
+			ErrShowUsage,
+			"command", strings.Join(cr.args, " "),
+		)
+	}
 	return cmd, err
 }
 
@@ -124,45 +136,8 @@ func findBestCmdMatch(args []string) (path string, remainingArgs []string) {
 }
 
 // ShowMainHelp displays the main help screen
-func ShowMainHelp() (err error) {
-	Printf(`GMover - Move emails between Gmail accounts and labels
-
-USAGE:
-    gmover <command> [subcommand] [options]
-
-COMMANDS:
-`)
-
-	// Show all top-level commands
-	topCmds := GetTopLevelCmds()
-	for _, cmd := range topCmds {
-		subCmds := GetSubCmds(cmd.Name())
-		subCmdText := ""
-		if len(subCmds) > 0 {
-			subCmdText = fmt.Sprintf(" [%s]", subCmds[0].Name()) // Show first subcommand as example
-		}
-		Printf("    %-20s %s\n", cmd.Name()+subCmdText, cmd.Description())
-	}
-
-	Printf(`
-EXAMPLES:
-    # Show help for a specific command
-    gmover help list
-    gmover help move
-
-    # List available labels
-    gmover list --src=user@example.com
-
-    # Move emails  
-    gmover move --src=user@example.com --dst=archive@example.com --src-label="INBOX" --dst-label="archived"
-
-    # Job operations
-    gmover job define daily-archive.json --src=user@example.com --dst=archive@example.com
-    gmover job run daily-archive.json --auto-confirm
-
-For more information, visit: https://github.com/mikeschinkel/gmover
-`)
-	return err
+func ShowMainHelp(args UsageArgs) error {
+	return UsageTemplate.Execute(args.Writer.Writer(), BuildUsage(args))
 }
 
 // ShowCmdHelp displays help for a specific command

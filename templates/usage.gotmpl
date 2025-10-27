@@ -1,0 +1,19 @@
+{{- /*gotype: github.com/mikeschinkel/go-cliutil.Usage */ -}}
+
+{{.AppName}} - {{.AppDescr}}
+
+USAGE:
+    {{.ExeName}} <command> [subcommand] [options]
+
+COMMANDS:
+{{- range .Top }}
+    {{printf "%-20s" .Display}}{{.Desc}}
+{{- end }}
+
+EXAMPLES:
+{{- range .Examples }}
+    # {{.Descr}}
+    {{.Cmd}}
+{{- end }}
+
+For more information, visit: {{.InfoURL}}

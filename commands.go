@@ -26,6 +26,10 @@ type Command interface {
 	FlagSets() []*FlagSet
 	ParseFlagSets([]string) ([]string, error)
 	AssignArgs([]string) error
+	Examples() []Example
+	NoExamples() bool
+	AutoExamples() bool
+	ArgDefs() []*ArgDef
 }
 
 // CommandHandler interface for commands that actually execute logic

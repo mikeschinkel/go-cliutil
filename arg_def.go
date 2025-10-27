@@ -7,4 +7,5 @@ type ArgDef struct {
 	Required bool
 	Default  any
 	String   *string // Where to assign the argument value
+	Example  string  // OPTIONAL: sample value for example generation (e.g., "www")
 }

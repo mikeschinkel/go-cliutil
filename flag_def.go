@@ -21,6 +21,7 @@ type FlagDef struct {
 	Bool           *bool
 	Int64          *int64
 	Int            *int
+	Example        string // OPTIONAL: sample value for example generation (e.g., "www")
 }
 
 func (fd *FlagDef) Type() (ft FlagType) {
