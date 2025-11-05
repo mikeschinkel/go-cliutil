@@ -13,5 +13,4 @@ require (
 	github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251103083857-4c80f1a95372
 )
 
-require	github.com/mikeschinkel/go-dt/de v0.0.0-20251103083857-4c80f1a95372 // indirect
-
+require github.com/mikeschinkel/go-dt/de v0.0.0-20251103083857-4c80f1a95372 // indirect
