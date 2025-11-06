@@ -6,7 +6,7 @@ USAGE:
     {{.ExeName}} <command> [subcommand] [options]
 
 COMMANDS:
-{{- range .Top }}
+{{- range .TopCmdRows }}
     {{printf "%-20s" .Display}}{{.Desc}}
 {{- end }}
 

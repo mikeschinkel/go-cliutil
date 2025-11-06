@@ -27,8 +27,7 @@ func (cr CmdRunner) ParseCmd(args []string) (cmd Command, err error) {
 	var path string
 
 	if len(args) == 0 {
-		err = fmt.Errorf("no command specified")
-		goto end
+		args = []string{"help"}
 	}
 	cr.args = args
 
