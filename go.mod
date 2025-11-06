@@ -9,8 +9,8 @@ replace (
 )
 
 require (
-	github.com/mikeschinkel/go-dt v0.0.0-20251103083857-4c80f1a95372
-	github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251103083857-4c80f1a95372
+	github.com/mikeschinkel/go-dt v0.0.0-20251105233453-a7985f775567
+	github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251105233453-a7985f775567
 )
 
-require github.com/mikeschinkel/go-dt/de v0.0.0-20251103083857-4c80f1a95372 // indirect
+require github.com/mikeschinkel/go-dt/de v0.0.0-20251105233453-a7985f775567 // indirect
