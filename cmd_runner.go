@@ -87,7 +87,7 @@ func (cr CmdRunner) RunCmd(ctx context.Context, cmd Command, config Config) (err
 		goto end
 	}
 
-	err = handler.Handle(ctx, config, cr.args)
+	err = handler.Handle(ctx, config, cr.args[1:])
 
 end:
 	return err

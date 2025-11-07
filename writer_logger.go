@@ -88,6 +88,7 @@ func (wl WriterLogger) concatMsgAndArgs(caller string, msg string, args ...any) 
 	var sb strings.Builder
 	last := len(args) - 1
 	sb.WriteString(msg)
+	sb.WriteByte(';')
 	for i := 0; i < len(args); i += 2 {
 		if i == last && i == len(args)-1 {
 			sb.WriteString(fmt.Sprintf(" %v", args[i]))
