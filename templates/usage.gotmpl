@@ -10,10 +10,12 @@ COMMANDS:
     {{printf "%-20s" .Display}}{{.Desc}}
 {{- end }}
 
+{{- if false }}
 EXAMPLES:
 {{- range .Examples }}
     # {{.Descr}}
     {{.Cmd}}
+{{- end }}
 {{- end }}
 
 For more information, visit: {{.InfoURL}}

@@ -35,18 +35,7 @@ type CmdBase struct {
 	examples     []Example // Custom examples
 	noExamples   bool      // Do not display any examples
 	autoExamples bool      // Display auto-generated examples even if custom are provided
-}
-
-func (c *CmdBase) FlagSets() []*FlagSet {
-	return c.flagSets
-}
-
-func (c *CmdBase) ParentTypes() []reflect.Type {
-	return c.parentTypes
-}
-
-func (c *CmdBase) AddParent(r reflect.Type) {
-	c.parentTypes = append(c.parentTypes, r)
+	CmdRunnerArgs
 }
 
 type CmdArgs struct {
@@ -249,12 +238,38 @@ end:
 func (c *CmdBase) Examples() []Example {
 	return c.examples
 }
+
 func (c *CmdBase) NoExamples() bool {
 	return c.noExamples
 }
+
 func (c *CmdBase) AutoExamples() bool {
 	return c.autoExamples
 }
+
 func (c *CmdBase) ArgDefs() []*ArgDef {
 	return c.argDefs
+}
+
+func (c *CmdBase) FlagSets() []*FlagSet {
+	return c.flagSets
+}
+
+func (c *CmdBase) ParentTypes() []reflect.Type {
+	return c.parentTypes
+}
+
+func (c *CmdBase) AddParent(r reflect.Type) {
+	c.parentTypes = append(c.parentTypes, r)
+}
+
+//	func (c *CmdBase) Logger() *slog.Logger {
+//		return c.logger
+//	}
+//
+//	func (c *CmdBase) Writer() Writer {
+//		return c.writer
+//	}
+func (c *CmdBase) SetCommandRunnerArgs(args CmdRunnerArgs) {
+	c.CmdRunnerArgs = args
 }

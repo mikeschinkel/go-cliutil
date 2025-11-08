@@ -101,10 +101,23 @@ var flagset = &FlagSet{
 // ParseOptions converts raw options from cfgldr.Options into
 // validated common.Options. This method performs validation and type conversion
 // for all XMLUI Test Server options.
-func ParseOptions(args []string) (_ *Options, _ []string, err error) {
+//
+// Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
+func ParseOptions(osArgs []string) (_ *Options, _ []string, err error) {
 	var errs []error
 	var timeout time.Duration
 	var verbosity Verbosity
+	var args []string
+
+	// Strip program name from os.Args
+	if len(osArgs) > 0 {
+		args = osArgs[1:]
+	}
+
+	// Default to help command if no args provided
+	if len(args) == 0 {
+		args = []string{"help"}
+	}
 
 	args, err = flagset.Parse(args)
 

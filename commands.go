@@ -1,7 +1,6 @@
 package cliutil
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"reflect"
@@ -30,12 +29,13 @@ type Command interface {
 	NoExamples() bool
 	AutoExamples() bool
 	ArgDefs() []*ArgDef
+	SetCommandRunnerArgs(CmdRunnerArgs)
 }
 
 // CommandHandler interface for commands that actually execute logic
 type CommandHandler interface {
 	Command
-	Handle(context.Context, Config, []string) error
+	Handle() error
 }
 
 func Initialize(w Writer) (err error) {

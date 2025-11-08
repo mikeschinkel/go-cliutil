@@ -3,7 +3,10 @@ package cliutil
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
+
+	"github.com/mikeschinkel/go-dt/appinfo"
 )
 
 // CLAUDE: I renamed to globalFlags because "Handler"  is GARBAJE.
@@ -14,12 +17,22 @@ import (
 //}
 
 type CmdRunner struct {
-	args []string
+	Args CmdRunnerArgs
 }
 
-func NewCmdRunner(args []string) *CmdRunner {
+type CmdRunnerArgs struct {
+	AppInfo appinfo.AppInfo
+	Logger  *slog.Logger
+	Writer  Writer
+	Context context.Context
+	Config  Config
+	Options Options
+	Args    []string
+}
+
+func NewCmdRunner(args CmdRunnerArgs) *CmdRunner {
 	return &CmdRunner{
-		args: args,
+		Args: args,
 	}
 }
 
@@ -29,7 +42,7 @@ func (cr CmdRunner) ParseCmd(args []string) (cmd Command, err error) {
 	if len(args) == 0 {
 		args = []string{"help"}
 	}
-	cr.args = args
+	osArgs := args
 
 	// Validate commands first
 	err = ValidateCmds()
@@ -70,13 +83,13 @@ end:
 	if err != nil {
 		err = WithErr(err,
 			ErrShowUsage,
-			"command", strings.Join(cr.args, " "),
+			"command", strings.Join(osArgs, " "),
 		)
 	}
 	return cmd, err
 }
 
-func (cr CmdRunner) RunCmd(ctx context.Context, cmd Command, config Config) (err error) {
+func (cr CmdRunner) RunCmd(cmd Command) (err error) {
 	var handler CommandHandler
 	var ok bool
 
@@ -87,7 +100,9 @@ func (cr CmdRunner) RunCmd(ctx context.Context, cmd Command, config Config) (err
 		goto end
 	}
 
-	err = handler.Handle(ctx, config, cr.args[1:])
+	handler.SetCommandRunnerArgs(cr.Args)
+
+	err = handler.Handle()
 
 end:
 	return err
@@ -126,7 +141,7 @@ func findBestCmdMatch(args []string) (path string, remainingArgs []string) {
 		n--
 	}
 
-	// If no match found, return empty path with original args
+	// If no match found, return empty path with original osArgs
 	if path == "" {
 		remainingArgs = args
 	}
