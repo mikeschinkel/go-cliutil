@@ -2,16 +2,19 @@ package cliutil
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/mikeschinkel/go-dt/dtx"
 )
 
 func Stdoutf(format string, args ...any) {
-	_, err := fmt.Fprintf(os.Stdout, format, args...)
-	dtx.LogOnError(err)
+	Stdiof(os.Stdout, format, args...)
 }
 func Stderrf(format string, args ...any) {
-	_, err := fmt.Fprintf(os.Stderr, format, args...)
+	Stdiof(os.Stderr, format, args...)
+}
+func Stdiof(w io.Writer, format string, args ...any) {
+	_, err := fmt.Fprintf(w, format, args...)
 	dtx.LogOnError(err)
 }

@@ -23,7 +23,8 @@ var options = &GlobalOptions{
 	force:     new(bool),
 }
 
-func GetOptions() *GlobalOptions {
+//goland:noinspection GoUnusedExportedFunction
+func GetGlobalOptions() *GlobalOptions {
 	return options
 }
 
@@ -38,7 +39,7 @@ type GlobalOptions struct {
 
 func (o *GlobalOptions) Options() {}
 
-type OptionsArgs struct {
+type GlobalOptionsArgs struct {
 	Quiet     *bool
 	Verbosity *int
 	Timeout   *int
@@ -46,10 +47,10 @@ type OptionsArgs struct {
 	Force     *bool
 }
 
-// NewOptions creates a new GlobalOptions instance from raw values.
+// NewGlobsalOptions creates a new GlobalOptions instance from raw values.
 // This is useful when loading options from configuration files or other sources.
 // Any nil values will use the corresponding defaults.
-func NewOptions(args OptionsArgs) (*GlobalOptions, error) {
+func NewGlobsalOptions(args GlobalOptionsArgs) (*GlobalOptions, error) {
 	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
 	v, err := ParseVerbosity(verbosity)
 	if err != nil {
@@ -81,6 +82,7 @@ func (o *GlobalOptions) Force() bool {
 	return *o.force
 }
 
+//goland:noinspection GoUnusedExportedFunction
 func GetFlagSet() *FlagSet {
 	return flagset
 }

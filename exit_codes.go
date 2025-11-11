@@ -20,6 +20,8 @@ package cliutil
 //
 // Note: Exit codes 128 and above are reserved for signal-related exits.
 // See: https://tldp.org/LDP/abs/html/exitcodes.html
+
+//goland:noinspection GoUnusedConst
 const (
 	ExitSuccess             = 0 // Successful execution
 	ExitOptionsParseError   = 1 // Command-line option parsing failed
