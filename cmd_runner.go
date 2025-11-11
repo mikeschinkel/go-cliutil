@@ -26,7 +26,7 @@ type CmdRunnerArgs struct {
 	Writer  Writer
 	Context context.Context
 	Config  Config
-	Options Options
+	Options GlobalOptions
 	Args    []string
 }
 

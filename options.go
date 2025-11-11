@@ -15,7 +15,7 @@ const (
 	DefaultVerbosity = int(LowVerbosity)
 )
 
-var options = &Options{
+var options = &GlobalOptions{
 	timeout:   new(int),
 	quiet:     new(bool),
 	verbosity: new(int),
@@ -23,11 +23,11 @@ var options = &Options{
 	force:     new(bool),
 }
 
-func GetOptions() *Options {
+func GetOptions() *GlobalOptions {
 	return options
 }
 
-type Options struct {
+type GlobalOptions struct {
 	timeout   *int
 	quiet     *bool
 	verbosity *int
@@ -36,21 +36,48 @@ type Options struct {
 	//Strings   stringSliceFlag
 }
 
-func (o *Options) Options() {}
+func (o *GlobalOptions) Options() {}
 
-func (o *Options) Timeout() time.Duration {
+type OptionsArgs struct {
+	Quiet     *bool
+	Verbosity *int
+	Timeout   *int
+	DryRun    *bool
+	Force     *bool
+}
+
+// NewOptions creates a new GlobalOptions instance from raw values.
+// This is useful when loading options from configuration files or other sources.
+// Any nil values will use the corresponding defaults.
+func NewOptions(args OptionsArgs) (*GlobalOptions, error) {
+	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
+	v, err := ParseVerbosity(verbosity)
+	if err != nil {
+		return nil, err
+	}
+
+	return &GlobalOptions{
+		quiet:     ptr(valueOrDefault(args.Quiet, DefaultQuiet)),
+		verbosity: ptr(int(v)),
+		timeout:   ptr(valueOrDefault(args.Timeout, DefaultTimeout)),
+		dryRun:    ptr(valueOrDefault(args.DryRun, DefaultDryRun)),
+		force:     ptr(valueOrDefault(args.Force, DefaultForce)),
+	}, nil
+}
+
+func (o *GlobalOptions) Timeout() time.Duration {
 	return time.Duration(*o.timeout) * time.Second
 }
-func (o *Options) Quiet() bool {
+func (o *GlobalOptions) Quiet() bool {
 	return *o.quiet
 }
-func (o *Options) Verbosity() Verbosity {
+func (o *GlobalOptions) Verbosity() Verbosity {
 	return Verbosity(*o.verbosity)
 }
-func (o *Options) DryRun() bool {
+func (o *GlobalOptions) DryRun() bool {
 	return *o.dryRun
 }
-func (o *Options) Force() bool {
+func (o *GlobalOptions) Force() bool {
 	return *o.force
 }
 
@@ -99,11 +126,11 @@ var flagset = &FlagSet{
 }
 
 // ParseOptions converts raw options from cfgldr.Options into
-// validated common.Options. This method performs validation and type conversion
+// validated common.GlobalOptions. This method performs validation and type conversion
 // for all XMLUI Test Server options.
 //
 // Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
-func ParseOptions(osArgs []string) (_ *Options, _ []string, err error) {
+func ParseOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
 	var errs []error
 	var timeout time.Duration
 	var verbosity Verbosity
