@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/mikeschinkel/go-dt/dtx"
+	"github.com/mikeschinkel/go-dt"
 )
 
 func Stdoutf(format string, args ...any) {
@@ -16,5 +16,5 @@ func Stderrf(format string, args ...any) {
 }
 func Stdiof(w io.Writer, format string, args ...any) {
 	_, err := fmt.Fprintf(w, format, args...)
-	dtx.LogOnError(err)
+	dt.LogOnError(err)
 }
