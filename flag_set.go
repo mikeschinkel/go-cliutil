@@ -130,6 +130,9 @@ func (fs *FlagSet) Validate() (err error) {
 		case Int64Flag:
 			int64Ptr := fs.Values[flagDef.Name].(*int64)
 			value = *int64Ptr
+		case IntFlag:
+			intPtr := fs.Values[flagDef.Name].(*int)
+			value = *intPtr
 		default:
 			errs = append(errs, fmt.Errorf("unknown flag type for %s", flagDef.Name))
 			continue
@@ -210,6 +213,9 @@ func (fs *FlagSet) Assign() (err error) {
 		case Int64Flag:
 			value := fs.Values[flagDef.Name].(*int64)
 			*flagDef.Int64 = *value
+		case IntFlag:
+			value := fs.Values[flagDef.Name].(*int)
+			*flagDef.Int = *value
 		default:
 			errs = append(errs, fmt.Errorf("unknown flag type for %s", flagDef.Name))
 		}
