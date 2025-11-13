@@ -149,6 +149,9 @@ func ParseOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
 	}
 
 	args, err = flagset.Parse(args)
+	if err != nil {
+		goto end
+	}
 
 	timeout, err = dt.ParseTimeDurationEx(strconv.Itoa(*options.timeout))
 	errs = AppendErr(errs, err)
@@ -162,5 +165,7 @@ func ParseOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
 		*options.verbosity = int(verbosity)
 	}
 
-	return options, args, CombineErrs(errs)
+	err = CombineErrs(errs)
+end:
+	return options, args, err
 }
