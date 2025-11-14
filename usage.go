@@ -50,10 +50,11 @@ func BuildUsage(args UsageArgs) Usage {
 
 	return Usage{
 		AppInfo: appinfo.New(appinfo.Args{
-			AppName:  args.AppName(),
-			AppDescr: args.AppDescr(),
-			ExeName:  args.ExeName(),
-			InfoURL:  args.InfoURL(),
+			Name:        args.Name(),
+			Description: args.Description(),
+			Version:     args.Version(),
+			ExeName:     args.ExeName(),
+			InfoURL:     args.InfoURL(),
 		}),
 		CLIWriter:  args.Writer,
 		TopCmdRows: rows,
