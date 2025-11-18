@@ -1,6 +1,4 @@
-github.com/mikeschinkel/go-dt v0.0.0-20251105233453-a7985f775567 h1:rwECWZcXJ7FDw4aMbGwLL7jYjHFl3fju1LVt8oGu1+Y=
-github.com/mikeschinkel/go-dt v0.0.0-20251105233453-a7985f775567/go.mod h1:zM9ve5h64PyyWMIjbJdTlwBE13OeuwchFGGMVlPwzLo=
-github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251107040413-53a1559d69c5 h1:dJAoIm0kY8QMv7ROaHAhsHT1AYA8kL1QK1nZnZD8PhQ=
-github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251107040413-53a1559d69c5/go.mod h1:FaxWlQIc7nYhBOeSkeWOR7D8Qct81JOq3Ud3yeQzToI=
-github.com/mikeschinkel/go-dt/de v0.0.0-20251107040413-53a1559d69c5 h1:Goszv/594PaFIUZNvde6x87je6EeORaYOxe58DIklVs=
-github.com/mikeschinkel/go-dt/de v0.0.0-20251107040413-53a1559d69c5/go.mod h1:OxjbH2Ftve5mNnLtrcbzlDgyR5apOGA3KmT0yopjQjo=
+github.com/mikeschinkel/go-dt v0.2.0 h1:aOriV+WmqsmU8ZvMysdz3VgFHLpekmFsdZz0YXQCT/Y=
+github.com/mikeschinkel/go-dt v0.2.0/go.mod h1:KJYRXePwYdBr57WhtRgDagOb7Ih/ORxE/kG4Mg6c8iE=
+github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251118022100-99eddebdac2c h1:lfPiKRqkR2hhF2h3rcVQKhnWiB6GWvnIL5554fBUiy8=
+github.com/mikeschinkel/go-dt/appinfo v0.0.0-20251118022100-99eddebdac2c/go.mod h1:FaxWlQIc7nYhBOeSkeWOR7D8Qct81JOq3Ud3yeQzToI=
