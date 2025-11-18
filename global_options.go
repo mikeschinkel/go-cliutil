@@ -7,28 +7,14 @@ import (
 	"github.com/mikeschinkel/go-dt"
 )
 
-const (
-	DefaultTimeout   = 3
-	DefaultQuiet     = false
-	DefaultDryRun    = false
-	DefaultForce     = false
-	DefaultVerbosity = int(LowVerbosity)
-)
-
-var options = &GlobalOptions{
-	timeout:   new(int),
-	quiet:     new(bool),
-	verbosity: new(int),
-	dryRun:    new(bool),
-	force:     new(bool),
-}
-
 //goland:noinspection GoUnusedExportedFunction
-func GetGlobalOptions() *GlobalOptions {
+func GetCLIOptions() *CLIOptions {
 	return options
 }
 
-type GlobalOptions struct {
+var _ Options = (*CLIOptions)(nil)
+
+type CLIOptions struct {
 	timeout   *int
 	quiet     *bool
 	verbosity *int
@@ -37,9 +23,9 @@ type GlobalOptions struct {
 	//Strings   stringSliceFlag
 }
 
-func (o *GlobalOptions) Options() {}
+func (o *CLIOptions) Options() {}
 
-type GlobalOptionsArgs struct {
+type CLIOptionsArgs struct {
 	Quiet     *bool
 	Verbosity *int
 	Timeout   *int
@@ -47,17 +33,17 @@ type GlobalOptionsArgs struct {
 	Force     *bool
 }
 
-// NewGlobsalOptions creates a new GlobalOptions instance from raw values.
+// NewCLIOptions creates a new GlobalOptions instance from raw values.
 // This is useful when loading options from configuration files or other sources.
 // Any nil values will use the corresponding defaults.
-func NewGlobsalOptions(args GlobalOptionsArgs) (*GlobalOptions, error) {
+func NewCLIOptions(args CLIOptionsArgs) (*CLIOptions, error) {
 	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
 	v, err := ParseVerbosity(verbosity)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GlobalOptions{
+	return &CLIOptions{
 		quiet:     ptr(valueOrDefault(args.Quiet, DefaultQuiet)),
 		verbosity: ptr(int(v)),
 		timeout:   ptr(valueOrDefault(args.Timeout, DefaultTimeout)),
@@ -66,19 +52,19 @@ func NewGlobsalOptions(args GlobalOptionsArgs) (*GlobalOptions, error) {
 	}, nil
 }
 
-func (o *GlobalOptions) Timeout() time.Duration {
+func (o *CLIOptions) Timeout() time.Duration {
 	return time.Duration(*o.timeout) * time.Second
 }
-func (o *GlobalOptions) Quiet() bool {
+func (o *CLIOptions) Quiet() bool {
 	return *o.quiet
 }
-func (o *GlobalOptions) Verbosity() Verbosity {
+func (o *CLIOptions) Verbosity() Verbosity {
 	return Verbosity(*o.verbosity)
 }
-func (o *GlobalOptions) DryRun() bool {
+func (o *CLIOptions) DryRun() bool {
 	return *o.dryRun
 }
-func (o *GlobalOptions) Force() bool {
+func (o *CLIOptions) Force() bool {
 	return *o.force
 }
 
@@ -128,11 +114,11 @@ var flagset = &FlagSet{
 }
 
 // ParseOptions converts raw options from cfgldr.Options into
-// validated common.GlobalOptions. This method performs validation and type conversion
+// validated common.CLIOptions. This method performs validation and type conversion
 // for all XMLUI Test Server options.
 //
 // Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
-func ParseOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
+func ParseOptions(osArgs []string) (_ *CLIOptions, _ []string, err error) {
 	var errs []error
 	var timeout time.Duration
 	var verbosity Verbosity

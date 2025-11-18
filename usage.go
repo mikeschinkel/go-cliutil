@@ -12,6 +12,7 @@ import (
 type TopCmdRow struct {
 	Display string // e.g. "serve [sub]" padded in template
 	Desc    string
+	Order   int // Display order (0=last, 1+=ordered)
 }
 
 type Usage struct {
@@ -38,10 +39,25 @@ func BuildUsage(args UsageArgs) Usage {
 		rows = append(rows, TopCmdRow{
 			Display: display,
 			Desc:    cmd.Description(),
+			Order:   cmd.Order(),
 		})
 	}
-	// Keep a stable, nice ordering if your registry isn't already
+	// Sort by Order first (1-N), then by name alphabetically within each order
+	// Commands with Order=0 (unspecified) appear last
 	slices.SortFunc(rows, func(a, b TopCmdRow) int {
+		// If orders are different
+		if a.Order != b.Order {
+			// Order 0 (unspecified) should come last
+			if a.Order == 0 {
+				return 1 // a comes after b
+			}
+			if b.Order == 0 {
+				return -1 // a comes before b
+			}
+			// Both have explicit orders, sort ascending
+			return a.Order - b.Order
+		}
+		// Same order, sort alphabetically by display name
 		return strings.Compare(a.Display, b.Display)
 	})
 

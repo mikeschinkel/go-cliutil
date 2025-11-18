@@ -29,6 +29,7 @@ type Command interface {
 	NoExamples() bool
 	AutoExamples() bool
 	ArgDefs() []*ArgDef
+	Order() int
 	SetCommandRunnerArgs(CmdRunnerArgs)
 }
 

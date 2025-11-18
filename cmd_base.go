@@ -35,6 +35,7 @@ type CmdBase struct {
 	examples     []Example // Custom examples
 	noExamples   bool      // Do not display any examples
 	autoExamples bool      // Display auto-generated examples even if custom are provided
+	order        int       // Display order in help (0=last, 1+=ordered)
 	CmdRunnerArgs
 }
 
@@ -49,6 +50,7 @@ type CmdArgs struct {
 	Examples     []Example  // Custom examples
 	NoExamples   bool       // Do not display any examples
 	AutoExamples bool       // Display auto-generated examples even if custom are provided
+	Order        int        // Display order in help (0=last, 1+=ordered)
 }
 
 // NewCmdBase creates a new command base
@@ -64,6 +66,7 @@ func NewCmdBase(args CmdArgs) *CmdBase {
 		examples:     args.Examples,
 		noExamples:   args.NoExamples,
 		autoExamples: args.AutoExamples,
+		order:        args.Order,
 		parentTypes:  make([]reflect.Type, 0),
 		subCommands:  make([]Command, 0),
 	}
@@ -249,6 +252,10 @@ func (c *CmdBase) AutoExamples() bool {
 
 func (c *CmdBase) ArgDefs() []*ArgDef {
 	return c.argDefs
+}
+
+func (c *CmdBase) Order() int {
+	return c.order
 }
 
 func (c *CmdBase) FlagSets() []*FlagSet {
