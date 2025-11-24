@@ -10,10 +10,11 @@ import (
 
 // FlagSet combines a FlagSet with automatic config binding
 type FlagSet struct {
-	Name     string
-	FlagSet  *flag.FlagSet
-	FlagDefs []FlagDef
-	Values   map[string]any
+	Name         string
+	FlagSet      *flag.FlagSet
+	FlagDefs     []FlagDef
+	Values       map[string]any
+	unknownFlags []string // Tracks flags that don't belong to this FlagSet
 }
 
 // Parse extracts flags and returns remaining args
@@ -173,9 +174,23 @@ func (fs *FlagSet) classifyFlagArgs(args []string, fsFlagNames []string) (fsArgs
 
 		// Check if this flag belongs to this FlagSet
 		if !slices.Contains(fsFlagNames, flagName) {
-			// This flag doesn't belong to us, skip it and its value
-			nonFSArgs = append(nonFSArgs, arg)
-			i++
+			// This flag doesn't belong to us - track it as unknown
+			fs.unknownFlags = append(fs.unknownFlags, arg)
+
+			// If flag=value format, we're done with this argument
+			if strings.Contains(arg, "=") {
+				i++
+				continue
+			}
+
+			// Check if next argument is the flag value (not another flag)
+			// and include it with the unknown flag
+			if i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
+				fs.unknownFlags = append(fs.unknownFlags, args[i+1])
+				i += 2 // Skip both flag and value
+			} else {
+				i++ // Just the flag (boolean flag)
+			}
 			continue
 		}
 
@@ -224,4 +239,14 @@ func (fs *FlagSet) Assign() (err error) {
 		err = errors.Join(errs...)
 	}
 	return err
+}
+
+// GetUnknownFlags returns the list of flags that were not recognized by this FlagSet
+func (fs *FlagSet) GetUnknownFlags() []string {
+	return fs.unknownFlags
+}
+
+// ResetUnknownFlags clears the list of unknown flags
+func (fs *FlagSet) ResetUnknownFlags() {
+	fs.unknownFlags = nil
 }

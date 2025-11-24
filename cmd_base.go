@@ -36,6 +36,8 @@ type CmdBase struct {
 	noExamples   bool      // Do not display any examples
 	autoExamples bool      // Display auto-generated examples even if custom are provided
 	order        int       // Display order in help (0=last, 1+=ordered)
+	flagName     string    // Flag name that triggers this command (e.g., "setup" for --setup)
+	hide         bool      // Hide from help output
 	CmdRunnerArgs
 }
 
@@ -51,6 +53,8 @@ type CmdArgs struct {
 	NoExamples   bool       // Do not display any examples
 	AutoExamples bool       // Display auto-generated examples even if custom are provided
 	Order        int        // Display order in help (0=last, 1+=ordered)
+	FlagName     string     // Flag name that triggers this command (e.g., "setup" for --setup)
+	Hide         bool       // Hide from help output
 }
 
 // NewCmdBase creates a new command base
@@ -67,6 +71,8 @@ func NewCmdBase(args CmdArgs) *CmdBase {
 		noExamples:   args.NoExamples,
 		autoExamples: args.AutoExamples,
 		order:        args.Order,
+		flagName:     args.FlagName,
+		hide:         args.Hide,
 		parentTypes:  make([]reflect.Type, 0),
 		subCommands:  make([]Command, 0),
 	}
@@ -279,4 +285,12 @@ func (c *CmdBase) AddParent(r reflect.Type) {
 //	}
 func (c *CmdBase) SetCommandRunnerArgs(args CmdRunnerArgs) {
 	c.CmdRunnerArgs = args
+}
+
+func (c *CmdBase) FlagName() string {
+	return c.flagName
+}
+
+func (c *CmdBase) IsHidden() bool {
+	return c.hide
 }

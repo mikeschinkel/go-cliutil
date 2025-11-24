@@ -1,8 +1,9 @@
 package cliutil
 
 import (
-	"fmt"
 	"regexp"
+
+	"github.com/mikeschinkel/go-dt"
 )
 
 // ValidationFunc validates a flag value and returns an error if invalid
@@ -46,7 +47,7 @@ func (fd *FlagDef) ValidateValue(value any) error {
 
 	// Check required
 	if fd.Required && (value == nil || value == "") {
-		err = fmt.Errorf("flag --%s is required", fd.Name)
+		err = NewErr(dt.ErrFlagIsRequired)
 		goto end
 	}
 
@@ -59,7 +60,7 @@ func (fd *FlagDef) ValidateValue(value any) error {
 	if fd.Regex != nil {
 		stringValue, ok = value.(string)
 		if ok && !fd.Regex.MatchString(stringValue) {
-			err = fmt.Errorf("flag --%s value '%s' does not match required pattern", fd.Name, stringValue)
+			err = NewErr(dt.ErrInvalidFlagName, "flag_value", stringValue)
 			goto end
 		}
 	}
@@ -68,13 +69,14 @@ func (fd *FlagDef) ValidateValue(value any) error {
 	if fd.ValidationFunc != nil {
 		err = fd.ValidationFunc(value)
 		if err != nil {
-			// Wrap the error with flag context
-			err = fmt.Errorf("flag --%s validation failed: %w", fd.Name, err)
 			goto end
 		}
 	}
 
 end:
+	if err != nil {
+		err = WithErr(err, dt.ErrFlagValidationFailed, "flag_name", fd.Name)
+	}
 	return err
 }
 

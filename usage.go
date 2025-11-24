@@ -17,9 +17,10 @@ type TopCmdRow struct {
 
 type Usage struct {
 	appinfo.AppInfo
-	CLIWriter  Writer
-	TopCmdRows []TopCmdRow
-	Examples   []Example
+	CLIWriter   Writer
+	TopCmdRows  []TopCmdRow
+	GlobalFlags []FlagRow
+	Examples    []Example
 }
 type UsageArgs struct {
 	appinfo.AppInfo
@@ -28,11 +29,24 @@ type UsageArgs struct {
 
 // BuildUsage Build the data for the template (auto + optional custom examples)
 func BuildUsage(args UsageArgs) Usage {
-	// COMMANDS rows
 	var rows []TopCmdRow
-	for _, cmd := range GetTopLevelCmds() {
-		sub := GetSubCmds(cmd.Name())
-		display := cmd.Name()
+	var cmd Command
+	var sub []Command
+	var display string
+	var globalFlags []FlagRow
+	var globalFS *FlagSet
+	var fd FlagDef
+	var shortcut string
+
+	// COMMANDS rows
+	for _, cmd = range GetTopLevelCmds() {
+		// Skip hidden commands
+		if cmd.IsHidden() {
+			continue
+		}
+
+		sub = GetSubCmds(cmd.Name())
+		display = cmd.Name()
 		if len(sub) > 0 {
 			display += " [" + sub[0].Name() + "]"
 		}
@@ -61,6 +75,25 @@ func BuildUsage(args UsageArgs) Usage {
 		return strings.Compare(a.Display, b.Display)
 	})
 
+	// GLOBAL FLAGS rows
+	globalFS = GetFlagSet()
+	if globalFS != nil {
+		for _, fd = range globalFS.FlagDefs {
+			shortcut = ""
+			if fd.Shortcut != 0 {
+				shortcut = string(fd.Shortcut)
+			}
+
+			globalFlags = append(globalFlags, FlagRow{
+				Name:     fd.Name,
+				Shortcut: shortcut,
+				Usage:    fd.Usage,
+				Default:  fmt.Sprintf("%v", fd.Default),
+				Required: fd.Required,
+			})
+		}
+	}
+
 	// EXAMPLES rows
 	examples := collectExamples(args.ExeName())
 
@@ -72,9 +105,10 @@ func BuildUsage(args UsageArgs) Usage {
 			ExeName:     args.ExeName(),
 			InfoURL:     args.InfoURL(),
 		}),
-		CLIWriter:  args.Writer,
-		TopCmdRows: rows,
-		Examples:   examples,
+		CLIWriter:   args.Writer,
+		TopCmdRows:  rows,
+		GlobalFlags: globalFlags,
+		Examples:    examples,
 	}
 }
 
@@ -92,6 +126,10 @@ func collectExamples(exe dt.Filename) []Example {
 	// (and append autos depending on IncludeAutoExamples()).
 	// Otherwise, auto-generate for that command.
 	for _, cmd := range GetTopLevelCmds() {
+		// Skip hidden commands
+		if cmd.IsHidden() {
+			continue
+		}
 		if cmd.NoExamples() {
 			continue
 		}
@@ -224,4 +262,82 @@ func dedupeExamples(in []Example) []Example {
 		out = append(out, e)
 	}
 	return out
+}
+
+// --- Command-specific help ---
+
+type FlagRow struct {
+	Name     string
+	Shortcut string
+	Usage    string
+	Default  string
+	Required bool
+}
+
+type SubCmdRow struct {
+	Name string
+	Desc string
+}
+
+type CmdUsage struct {
+	CmdName     string
+	Usage       string
+	Description string
+	FlagRows    []FlagRow
+	SubCmdRows  []SubCmdRow
+	Examples    []Example
+}
+
+// BuildCmdUsage builds the data structure for command-specific help
+func BuildCmdUsage(cmd Command) CmdUsage {
+	var flagRows []FlagRow
+	var subCmdRows []SubCmdRow
+	var fs *FlagSet
+	var fd FlagDef
+	var subCmd Command
+	var shortcut string
+
+	// Collect flags from command's FlagSets
+	for _, fs = range cmd.FlagSets() {
+		for _, fd = range fs.FlagDefs {
+			shortcut = ""
+			if fd.Shortcut != 0 {
+				shortcut = string(fd.Shortcut)
+			}
+
+			flagRows = append(flagRows, FlagRow{
+				Name:     fd.Name,
+				Shortcut: shortcut,
+				Usage:    fd.Usage,
+				Default:  fmt.Sprintf("%v", fd.Default),
+				Required: fd.Required,
+			})
+		}
+	}
+
+	// Collect subcommands
+	for _, subCmd = range GetSubCmds(cmd.Name()) {
+		if subCmd.IsHidden() {
+			continue
+		}
+		subCmdRows = append(subCmdRows, SubCmdRow{
+			Name: subCmd.Name(),
+			Desc: subCmd.Description(),
+		})
+	}
+
+	// Get examples
+	examples := cmd.Examples()
+	if len(examples) == 0 && cmd.AutoExamples() {
+		// TODO: Generate auto examples for this command
+	}
+
+	return CmdUsage{
+		CmdName:     cmd.Name(),
+		Usage:       cmd.Usage(),
+		Description: cmd.Description(),
+		FlagRows:    flagRows,
+		SubCmdRows:  subCmdRows,
+		Examples:    examples,
+	}
 }

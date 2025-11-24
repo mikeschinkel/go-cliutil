@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/mikeschinkel/go-dt/appinfo"
+	"github.com/mikeschinkel/go-dt/dtx"
 )
 
 // CLAUDE: I renamed to globalFlags because "Handler"  is GARBAJE.
@@ -73,6 +74,12 @@ func (cr CmdRunner) ParseCmd(args []string) (cmd Command, err error) {
 		goto end
 	}
 
+	// Validate original flags against known flags
+	err = cr.validateFlags(cmd)
+	if err != nil {
+		goto end
+	}
+
 	err = cmd.AssignArgs(args)
 	if err != nil {
 		err = NewErr(ErrAssigningArgsFailed)
@@ -92,6 +99,7 @@ end:
 func (cr CmdRunner) RunCmd(cmd Command) (err error) {
 	var handler CommandHandler
 	var ok bool
+	var args []string
 
 	// Command resolution should ensure we only get CommandHandler implementations
 	handler, ok = cmd.(CommandHandler)
@@ -100,9 +108,91 @@ func (cr CmdRunner) RunCmd(cmd Command) (err error) {
 		goto end
 	}
 
+	// If the cmd is the Help command, remove "help" as the first element
+	args = cr.Args.Args
+	if cmd.Name() == "help" && len(args) != 0 && args[0] == "help" {
+		cr.Args.Args = args[1:]
+	}
 	handler.SetCommandRunnerArgs(cr.Args)
 
 	err = handler.Handle()
+
+end:
+	return err
+}
+
+type CLIOptionsGetter interface {
+	CLIOptions() *CLIOptions
+}
+
+// validateFlags checks original flags against all known flags
+func (cr CmdRunner) validateFlags(cmd Command) (err error) {
+	var getter CLIOptionsGetter
+	var originalFlags []string
+	var knownFlags []string
+	var globalFlagSet *FlagSet
+	var cmdFlagSets []*FlagSet
+	var flagSet *FlagSet
+	var unknownFlags []string
+	var flag string
+	var flagName string
+	var equalPos int
+	var isKnown bool
+	var known string
+	var flagList string
+
+	// Get original flags from options
+	getter, err = dtx.AssertType[CLIOptionsGetter](cr.Args.Options)
+	if err != nil {
+		goto end
+	}
+
+	originalFlags = getter.CLIOptions().originalFlags
+	if len(originalFlags) == 0 {
+		goto end
+	}
+
+	// Collect all known flag names
+	globalFlagSet = GetFlagSet()
+	if globalFlagSet != nil {
+		knownFlags = append(knownFlags, globalFlagSet.FlagNames()...)
+	}
+
+	cmdFlagSets = cmd.FlagSets()
+	for _, flagSet = range cmdFlagSets {
+		knownFlags = append(knownFlags, flagSet.FlagNames()...)
+	}
+
+	// Check each original flag against known flags
+	for _, flag = range originalFlags {
+		// Extract flag name (remove - prefix and =value suffix)
+		flagName = strings.TrimPrefix(flag, "-")
+		flagName = strings.TrimPrefix(flagName, "-")
+		equalPos = strings.Index(flagName, "=")
+		if equalPos != -1 {
+			flagName = flagName[:equalPos]
+		}
+
+		// Check if flag is known
+		isKnown = false
+		for _, known = range knownFlags {
+			if known == flagName {
+				isKnown = true
+				break
+			}
+		}
+
+		if !isKnown {
+			unknownFlags = append(unknownFlags, flag)
+		}
+	}
+
+	// Report unknown flags
+	if len(unknownFlags) > 0 {
+		flagList = strings.Join(unknownFlags, ", ")
+		err = fmt.Errorf("unknown flag(s): %s", flagList)
+		goto end
+	}
 
 end:
 	return err
@@ -155,9 +245,8 @@ func ShowMainHelp(args UsageArgs) error {
 }
 
 // ShowCmdHelp displays help for a specific command
-func ShowCmdHelp(cmdName string) (err error) {
+func ShowCmdHelp(cmdName string, args UsageArgs) (err error) {
 	var cmd Command
-	var subCmds []Command
 
 	cmd = GetExactCommand(cmdName)
 	if cmd == nil {
@@ -165,15 +254,13 @@ func ShowCmdHelp(cmdName string) (err error) {
 		goto end
 	}
 
-	Printf("Usage: %s\n\n%s\n", cmd.Usage(), cmd.Description())
-
-	subCmds = GetSubCmds(cmdName)
-	if len(subCmds) > 0 {
-		Printf("\nSubcommands:\n")
-		for _, subCmd := range subCmds {
-			Printf("    %-12s %s\n", subCmd.Name(), subCmd.Description())
-		}
+	// Hidden commands should not show help
+	if cmd.IsHidden() {
+		err = fmt.Errorf("unknown command: %s", cmdName)
+		goto end
 	}
+
+	err = CmdUsageTemplate.Execute(args.Writer.Writer(), BuildCmdUsage(cmd))
 
 end:
 	return err

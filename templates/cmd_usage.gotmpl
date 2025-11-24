@@ -1,19 +1,14 @@
-{{- /*gotype: github.com/mikeschinkel/go-cliutil.Usage */ -}}
-
-{{.Name}} - {{.Description}}
+{{- /*gotype: github.com/mikeschinkel/go-cliutil.CmdUsage */ -}}
 
 USAGE:
-    {{.ExeName}} <command> [subcommand] [options]
+    {{.Usage}}
 
-COMMANDS:
-{{- range .TopCmdRows }}
-    {{printf "%-20s" .Display}}{{.Desc}}
-{{- end }}
+{{.Description}}
 
-{{- if .GlobalFlags }}
+{{- if .FlagRows }}
 
-GLOBAL OPTIONS:
-{{- range .GlobalFlags }}
+OPTIONS:
+{{- range .FlagRows }}
     {{- if .Shortcut }}
     -{{.Shortcut}}, --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
     {{- else }}
@@ -22,7 +17,16 @@ GLOBAL OPTIONS:
 {{- end }}
 {{- end }}
 
-{{- if false }}
+{{- if .SubCmdRows }}
+
+SUBCOMMANDS:
+{{- range .SubCmdRows }}
+    {{printf "%-20s" .Name}}{{.Desc}}
+{{- end }}
+{{- end }}
+
+{{- if .Examples }}
+
 EXAMPLES:
 {{- range .Examples }}
     # {{.Descr}}
@@ -30,4 +34,3 @@ EXAMPLES:
 {{- end }}
 {{- end }}
 
-For more information, visit: {{.InfoURL}}
