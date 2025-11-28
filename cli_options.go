@@ -187,9 +187,7 @@ end:
 
 var ErrFlagTypeNotDiscoverable = errors.New("flag type is not discoverable")
 
-// ParseCLIOptions converts raw options from cfgldr.Options into
-// validated common.CLIOptions. This method performs validation and type conversion
-// for all XMLUI Test Server options.
+// ParseCLIOptions converts raw options into CLIOptions.
 //
 // Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
 func ParseCLIOptions(osArgs []string) (_ *CLIOptions, _ []string, err error) {
