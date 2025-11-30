@@ -56,14 +56,17 @@ func (cr CmdRunner) ParseCmd(args []string) (cmd Command, err error) {
 	if path == "" {
 		err = NewErr(
 			ErrUnknownCommand,
+			"command_args", args,
 		)
 		goto end
 	}
 
-	cmd, path = GetDefaultCommand(path, args)
+	cmd, _ = GetDefaultCommand(path, args)
 	if cmd == nil {
 		err = NewErr(
 			ErrCommandNotFound,
+			"command", path,
+			"command_args", args,
 		)
 		goto end
 	}
@@ -246,9 +249,7 @@ func ShowMainHelp(args UsageArgs) error {
 
 // ShowCmdHelp displays help for a specific command
 func ShowCmdHelp(cmdName string, args UsageArgs) (err error) {
-	var cmd Command
-
-	cmd = GetExactCommand(cmdName)
+	cmd := GetExactCommand(cmdName)
 	if cmd == nil {
 		err = fmt.Errorf("unknown command: %s", cmdName)
 		goto end

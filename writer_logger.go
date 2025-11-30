@@ -48,9 +48,9 @@ func (wl WriterLogger) V3() WriterLogger {
 
 func (wl WriterLogger) ErrorError(msg string, args ...any) (err error) {
 	var ok bool
-	wl.Logger.Error(msg, args...)
+	wl.Error(msg, args...)
 	msg = wl.concatMsgAndArgs("ErrorError", msg, args...)
-	wl.Writer.Errorf(msg + "\n")
+	wl.Errorf(msg + "\n")
 	if len(args) == 0 {
 		err = errors.New(msg)
 		goto end
@@ -70,8 +70,8 @@ end:
 }
 
 func (wl WriterLogger) WarnError(msg string, args ...any) {
-	wl.Logger.Warn(msg, args...)
-	wl.Writer.Errorf(wl.concatMsgAndArgs("WarnError", msg, args...) + "\n")
+	wl.Warn(msg, args...)
+	wl.Errorf(wl.concatMsgAndArgs("WarnError", msg, args...) + "\n")
 }
 
 func (wl WriterLogger) InfoPrint(msg string, args ...any) {

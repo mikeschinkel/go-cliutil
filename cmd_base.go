@@ -170,40 +170,40 @@ func (c *CmdBase) ParseFlagSets(args []string) (remainingArgs []string, err erro
 	return nonFSArgs, err
 }
 
-// validateFlags ensures all required flags are provided
-func (c *CmdBase) validateFlags(values map[string]any) (err error) {
-	var errs []error
-	for _, fd := range c.flagsDefs {
-		if !fd.Required {
-			continue
-		}
-		value := values[fd.Name]
-		switch fd.Type() {
-		case BoolFlag:
-			// Nothing to do
-		case StringFlag:
-			if value.(string) == "" {
-				err = fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name)
-				goto end
-			}
-		case IntFlag:
-			if value.(int) == 0 && fd.Default == nil {
-				err = fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name)
-				goto end
-			}
-		case Int64Flag:
-			if value.(int64) == 0 && fd.Default == nil {
-				err = fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name)
-				goto end
-			}
-		case UnknownFlagType:
-			errs = append(errs, fmt.Errorf("flag type not set for '%s'", fd.Name))
-		}
-	}
-
-end:
-	return errors.Join(errs...)
-}
+//// validateFlags ensures all required flags are provided
+//func (c *CmdBase) validateFlags(values map[string]any) (err error) {
+//	var errs []error
+//	for _, fd := range c.flagsDefs {
+//		if !fd.Required {
+//			continue
+//		}
+//		value := values[fd.Name]
+//		switch fd.Type() {
+//		case BoolFlag:
+//			// Nothing to do
+//		case StringFlag:
+//			if value.(string) == "" {
+//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
+//				goto end
+//			}
+//		case IntFlag:
+//			if value.(int) == 0 && fd.Default == nil {
+//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
+//				goto end
+//			}
+//		case Int64Flag:
+//			if value.(int64) == 0 && fd.Default == nil {
+//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
+//				goto end
+//			}
+//		case UnknownFlagType:
+//			errs = AppendErr(errs, fmt.Errorf("flag type not set for '%s'", fd.Name))
+//		}
+//	}
+//
+//end:
+//	return CombineErrs(errs)
+//}
 
 // AssignArgs assigns positional arguments to their defined config fields
 func (c *CmdBase) AssignArgs(args []string) (err error) {

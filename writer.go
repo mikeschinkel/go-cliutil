@@ -129,7 +129,7 @@ func (w *cliWriter) Errorf(format string, args ...any) {
 			continue
 		}
 		// Replace newlines in errors with semicolons
-		args[i] = strings.Replace(err.Error(), "\n", "; ", -1)
+		args[i] = strings.ReplaceAll(err.Error(), "\n", "; ")
 	}
 	_, _ = fmt.Fprintf(w.errWriter, format, args...)
 }

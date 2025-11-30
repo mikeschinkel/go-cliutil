@@ -328,9 +328,9 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 
 	// Get examples
 	examples := cmd.Examples()
-	if len(examples) == 0 && cmd.AutoExamples() {
-		// TODO: Generate auto examples for this command
-	}
+	//if len(examples) == 0 && cmd.AutoExamples() {
+	//	// TODO: Generate auto examples for this command
+	//}
 
 	return CmdUsage{
 		CmdName:     cmd.Name(),
