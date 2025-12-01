@@ -12,7 +12,7 @@ func main() {
 	// Create CLI options with defaults
 	opts, err := cliutil.NewCLIOptions(cliutil.CLIOptionsArgs{})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		cliutil.Stderrf("Error: %v\n", err)
 		os.Exit(1)
 	}
 
