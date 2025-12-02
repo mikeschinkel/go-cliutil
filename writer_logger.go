@@ -103,3 +103,7 @@ end:
 func (wl WriterLogger) WriteErrorf(format string, args ...any) {
 	wl.Writer.Errorf(format, args...)
 }
+
+func (wl WriterLogger) LogError(msg string, attrs ...any) {
+	wl.Logger.Error(msg, attrs...)
+}
