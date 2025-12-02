@@ -99,3 +99,7 @@ func (wl WriterLogger) concatMsgAndArgs(caller string, msg string, args ...any) 
 end:
 	return sb.String()
 }
+
+func (wl WriterLogger) WriteErrorf(format string, args ...any) {
+	wl.Writer.Errorf(format, args...)
+}
