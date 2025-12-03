@@ -2,7 +2,7 @@ module basic_usage
 
 go 1.25.3
 
-require github.com/mikeschinkel/go-cliutil v0.1.0
+require github.com/mikeschinkel/go-cliutil v0.2.1
 
 require (
 	github.com/mikeschinkel/go-dt v0.3.1 // indirect
