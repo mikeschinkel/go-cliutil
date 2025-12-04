@@ -4,7 +4,5 @@ github.com/mikeschinkel/go-dt/appinfo v0.2.1 h1:5BB8HQtGFyZ0qCG2DoBSeDBc9CblEJef
 github.com/mikeschinkel/go-dt/appinfo v0.2.1/go.mod h1:OW7bt0cwIdM8brbREnLByJJlODESIaHsEY+pvXxDEiQ=
 github.com/mikeschinkel/go-dt/dtx v0.2.1 h1:OsFs0kHuEZuSJwGyTI+LDZVABf5pAvcPXDuEI08j5PY=
 github.com/mikeschinkel/go-dt/dtx v0.2.1/go.mod h1:mFuyP/9gMzCKaLXhFWOXHngR2ou2jun7yE67NZRBhW8=
-github.com/mikeschinkel/go-testutil v0.2.0 h1:TE0HxwQRrw/CkL9RnhMuFf30YdT7Fh0WGQmcUjq2x4Y=
-github.com/mikeschinkel/go-testutil v0.2.0/go.mod h1:mbT3JPjrtlp8KuKTOj5cXX+0gjqgJN/JqfNqPdKi3ak=
 github.com/mikeschinkel/go-testutil v0.2.1 h1:jI232rxSc6dS0XwCDSO5WpC9bb+2xZPYFJk1J6RzWoc=
 github.com/mikeschinkel/go-testutil v0.2.1/go.mod h1:oPFd+C2liN+b8MD0Vn67ExqyT7x1DJp52fsfGb4V4LM=
