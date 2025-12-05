@@ -28,8 +28,8 @@ func FuzzParseVerbosity(f *testing.F) {
 	})
 }
 
-// FuzzNewCLIOptions tests NewCLIOptions with random inputs
-func FuzzNewCLIOptions(f *testing.F) {
+// FuzzNewGlobalOptions tests NewGlobalOptions with random inputs
+func FuzzNewGlobalOptions(f *testing.F) {
 	// Seed corpus with various option combinations
 	type seed struct {
 		quiet     bool
@@ -53,7 +53,7 @@ func FuzzNewCLIOptions(f *testing.F) {
 
 	f.Fuzz(func(t *testing.T, quiet bool, verbosity, timeout int, dryRun, force bool) {
 		// Just ensure it doesn't panic
-		_, _ = cliutil.NewCLIOptions(cliutil.CLIOptionsArgs{
+		_, _ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
 			Quiet:     &quiet,
 			Verbosity: &verbosity,
 			Timeout:   &timeout,

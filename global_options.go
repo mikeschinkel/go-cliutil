@@ -11,13 +11,13 @@ import (
 )
 
 //goland:noinspection GoUnusedExportedFunction
-func GetCLIOptions() *CLIOptions {
+func GetGlobalOptions() *GlobalOptions {
 	return options
 }
 
-var _ Options = (*CLIOptions)(nil)
+var _ Options = (*GlobalOptions)(nil)
 
-type CLIOptions struct {
+type GlobalOptions struct {
 	timeout       *int
 	quiet         *bool
 	verbosity     *int
@@ -27,9 +27,9 @@ type CLIOptions struct {
 	//Strings   stringSliceFlag
 }
 
-func (o *CLIOptions) Options() {}
+func (o *GlobalOptions) Options() {}
 
-type CLIOptionsArgs struct {
+type GlobalOptionsArgs struct {
 	Quiet     *bool
 	Verbosity *int
 	Timeout   *int
@@ -37,17 +37,17 @@ type CLIOptionsArgs struct {
 	Force     *bool
 }
 
-// NewCLIOptions creates a new GlobalOptions instance from raw values.
+// NewGlobalOptions creates a new GlobalOptions instance from raw values.
 // This is useful when loading options from configuration files or other sources.
 // Any nil values will use the corresponding defaults.
-func NewCLIOptions(args CLIOptionsArgs) (*CLIOptions, error) {
+func NewGlobalOptions(args GlobalOptionsArgs) (*GlobalOptions, error) {
 	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
 	v, err := ParseVerbosity(verbosity)
 	if err != nil {
 		return nil, err
 	}
 
-	return &CLIOptions{
+	return &GlobalOptions{
 		quiet:     ptr(valueOrDefault(args.Quiet, DefaultQuiet)),
 		verbosity: ptr(int(v)),
 		timeout:   ptr(valueOrDefault(args.Timeout, DefaultTimeout)),
@@ -56,32 +56,32 @@ func NewCLIOptions(args CLIOptionsArgs) (*CLIOptions, error) {
 	}, nil
 }
 
-func (o *CLIOptions) Timeout() time.Duration {
+func (o *GlobalOptions) Timeout() time.Duration {
 	return time.Duration(*o.timeout) * time.Second
 }
-func (o *CLIOptions) Quiet() bool {
+func (o *GlobalOptions) Quiet() bool {
 	return *o.quiet
 }
-func (o *CLIOptions) Verbosity() Verbosity {
+func (o *GlobalOptions) Verbosity() Verbosity {
 	return Verbosity(*o.verbosity)
 }
-func (o *CLIOptions) DryRun() bool {
+func (o *GlobalOptions) DryRun() bool {
 	return *o.dryRun
 }
-func (o *CLIOptions) Force() bool {
+func (o *GlobalOptions) Force() bool {
 	return *o.force
 }
 
 //goland:noinspection GoUnusedExportedFunction
-func GetFlagSet() *FlagSet {
-	return flagset
+func GetGlobalFlagSet() *FlagSet {
+	return flagSet
 }
 
 var (
 	flagNameRegex = regexp.MustCompile(`^[a-z0-9-]+$`)
 )
 
-var flagset = &FlagSet{
+var flagSet = &FlagSet{
 	Name: "global",
 	FlagDefs: []FlagDef{
 		{
@@ -134,7 +134,7 @@ func AddCLIOption(flagDef FlagDef) (err error) {
 	}
 
 	// Validate no duplicate flag names
-	for _, existing = range flagset.FlagDefs {
+	for _, existing = range flagSet.FlagDefs {
 		if existing.Name == flagDef.Name {
 			errs = append(errs, NewErr(dt.ErrInvalidDuplicateFlag, "where", "global flags"))
 			break
@@ -177,7 +177,7 @@ func AddCLIOption(flagDef FlagDef) (err error) {
 	if err != nil {
 		goto end
 	}
-	flagset.FlagDefs = append(flagset.FlagDefs, flagDef)
+	flagSet.FlagDefs = append(flagSet.FlagDefs, flagDef)
 end:
 	if err != nil {
 		err = WithErr(err, dt.ErrFlagValidationFailed, "flag_name", flagDef.Name)
@@ -187,10 +187,10 @@ end:
 
 var ErrFlagTypeNotDiscoverable = errors.New("flag type is not discoverable")
 
-// ParseCLIOptions converts raw options into CLIOptions.
+// ParseGlobalOptions converts raw options into GlobalOptions.
 //
 // Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
-func ParseCLIOptions(osArgs []string) (_ *CLIOptions, _ []string, err error) {
+func ParseGlobalOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
 	var errs []error
 	var timeout time.Duration
 	var verbosity Verbosity
@@ -219,7 +219,7 @@ func ParseCLIOptions(osArgs []string) (_ *CLIOptions, _ []string, err error) {
 		args = []string{"help"}
 	}
 
-	args, err = flagset.Parse(args)
+	args, err = flagSet.Parse(args)
 	if err != nil {
 		goto end
 	}
@@ -255,7 +255,7 @@ func extractFlags(args []string) (flags []string) {
 }
 
 // transformFlagCommands checks if first arg is a flag command (e.g., --test-hidden)
-// and transforms it to a command name (e.g., test-hidden) BEFORE flagset.Parse() consumes it
+// and transforms it to a command name (e.g., test-hidden) BEFORE flagSet.Parse() consumes it
 func transformFlagCommands(args []string) (transformed []string) {
 	var firstArg string
 	var flagName string
@@ -283,8 +283,8 @@ func transformFlagCommands(args []string) (transformed []string) {
 			continue
 		}
 
-		// Verify this flag exists in global flagset
-		globalFS = GetFlagSet()
+		// Verify this flag exists in global flagSet
+		globalFS = GetGlobalFlagSet()
 		if globalFS == nil {
 			goto end
 		}

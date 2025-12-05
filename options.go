@@ -12,14 +12,10 @@ const (
 	DefaultVerbosity = int(LowVerbosity)
 )
 
-var options = &CLIOptions{
+var options = &GlobalOptions{
 	timeout:   new(int),
 	quiet:     new(bool),
 	verbosity: new(int),
 	dryRun:    new(bool),
 	force:     new(bool),
 }
-
-//goland:noinspection GoUnusedExportedFunction
-
-//goland:noinspection GoUnusedExportedFunction

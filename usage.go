@@ -76,7 +76,7 @@ func BuildUsage(args UsageArgs) Usage {
 	})
 
 	// GLOBAL FLAGS rows
-	globalFS = GetFlagSet()
+	globalFS = GetGlobalFlagSet()
 	if globalFS != nil {
 		for _, fd = range globalFS.FlagDefs {
 			shortcut = ""

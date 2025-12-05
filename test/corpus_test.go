@@ -25,8 +25,8 @@ func TestFuzzCorpus(t *testing.T) {
 		return nil
 	})
 
-	// Test NewCLIOptions corpus
-	testCorpus(t, "FuzzNewCLIOptions", func(input string) error {
+	// Test NewGlobalOptions corpus
+	testCorpus(t, "FuzzNewGlobalOptions", func(input string) error {
 		parts := strings.Split(input, "\n")
 		if len(parts) < 5 {
 			return fmt.Errorf("invalid input format")
@@ -44,7 +44,7 @@ func TestFuzzCorpus(t *testing.T) {
 		dryRun := parts[3] == "true"
 		force := parts[4] == "true"
 
-		_, _ = cliutil.NewCLIOptions(cliutil.CLIOptionsArgs{
+		_, _ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
 			Quiet:     &quiet,
 			Verbosity: &verbosity,
 			Timeout:   &timeout,

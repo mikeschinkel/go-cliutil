@@ -79,14 +79,14 @@ func RegisterCommand(cmd Command, parents ...Command) (err error) {
 	commands = append(commands, cmd)
 	commandsTypeMap[reflect.TypeOf(cmd).Elem()] = cmd
 
-	// Auto-register flag commands as global CLIOptions
+	// Auto-register flag commands as global GlobalOptions
 	flagName = cmd.FlagName()
 	if flagName == "" {
 		goto end
 	}
 
 	// Validate: Check for conflict with existing global flags
-	globalFS = GetFlagSet()
+	globalFS = GetGlobalFlagSet()
 	if globalFS != nil {
 		for _, fd = range globalFS.FlagDefs {
 			if fd.Name == flagName {

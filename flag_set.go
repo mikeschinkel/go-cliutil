@@ -174,8 +174,9 @@ func (fs *FlagSet) classifyFlagArgs(args []string, fsFlagNames []string) (fsArgs
 
 		// Check if this flag belongs to this FlagSet
 		if !slices.Contains(fsFlagNames, flagName) {
-			// This flag doesn't belong to us - track it as unknown
+			// This flag doesn't belong to us - track it as unknown and preserve it in nonFSArgs
 			fs.unknownFlags = append(fs.unknownFlags, arg)
+			nonFSArgs = append(nonFSArgs, arg)
 
 			// If flag=value format, we're done with this argument
 			if strings.Contains(arg, "=") {
@@ -187,6 +188,7 @@ func (fs *FlagSet) classifyFlagArgs(args []string, fsFlagNames []string) (fsArgs
 			// and include it with the unknown flag
 			if i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
 				fs.unknownFlags = append(fs.unknownFlags, args[i+1])
+				nonFSArgs = append(nonFSArgs, args[i+1])
 				i += 2 // Skip both flag and value
 			} else {
 				i++ // Just the flag (boolean flag)

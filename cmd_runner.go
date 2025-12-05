@@ -10,13 +10,6 @@ import (
 	"github.com/mikeschinkel/go-dt/dtx"
 )
 
-// CLAUDE: I renamed to globalFlags because "Handler"  is GARBAJE.
-// CLAUDE: Also, I restructured and renamed interface because gmover-specific flags should not be encoded into generic cliutil
-
-//type GlobalFlagDefGetter interface {
-//	GlobalFlagDefs() []FlagDef
-//}
-
 type CmdRunner struct {
 	Args CmdRunnerArgs
 }
@@ -124,13 +117,13 @@ end:
 	return err
 }
 
-type CLIOptionsGetter interface {
-	CLIOptions() *CLIOptions
+type GlobalOptionsGetter interface {
+	GlobalOptions() *GlobalOptions
 }
 
 // validateFlags checks original flags against all known flags
 func (cr CmdRunner) validateFlags(cmd Command) (err error) {
-	var getter CLIOptionsGetter
+	var getter GlobalOptionsGetter
 	var originalFlags []string
 	var knownFlags []string
 	var globalFlagSet *FlagSet
@@ -145,18 +138,18 @@ func (cr CmdRunner) validateFlags(cmd Command) (err error) {
 	var flagList string
 
 	// Get original flags from options
-	getter, err = dtx.AssertType[CLIOptionsGetter](cr.Args.Options)
+	getter, err = dtx.AssertType[GlobalOptionsGetter](cr.Args.Options)
 	if err != nil {
 		goto end
 	}
 
-	originalFlags = getter.CLIOptions().originalFlags
+	originalFlags = getter.GlobalOptions().originalFlags
 	if len(originalFlags) == 0 {
 		goto end
 	}
 
 	// Collect all known flag names
-	globalFlagSet = GetFlagSet()
+	globalFlagSet = GetGlobalFlagSet()
 	if globalFlagSet != nil {
 		knownFlags = append(knownFlags, globalFlagSet.FlagNames()...)
 	}
