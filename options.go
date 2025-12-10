@@ -1,7 +1,16 @@
 package cliutil
 
+import (
+	"time"
+)
+
 type Options interface {
 	Options()
+	Timeout() time.Duration
+	Quiet() bool
+	Verbosity() Verbosity
+	DryRun() bool
+	Force() bool
 }
 
 const (

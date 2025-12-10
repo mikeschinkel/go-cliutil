@@ -76,6 +76,11 @@ func (fs *FlagSet) Build() (err error) {
 				*flagDef.String = defaultVal
 			}
 			fs.Values[flagDef.Name] = fs.FlagSet.String(flagDef.Name, defaultVal, flagDef.Usage)
+			// Register shortcut as alias if defined
+			if flagDef.Shortcut != 0 {
+				shortcutName := string(flagDef.Shortcut)
+				fs.Values[shortcutName] = fs.FlagSet.String(shortcutName, defaultVal, flagDef.Usage)
+			}
 		case BoolFlag:
 			defaultVal := false
 			if flagDef.Default != nil {
@@ -83,6 +88,11 @@ func (fs *FlagSet) Build() (err error) {
 				*flagDef.Bool = defaultVal
 			}
 			fs.Values[flagDef.Name] = fs.FlagSet.Bool(flagDef.Name, defaultVal, flagDef.Usage)
+			// Register shortcut as alias if defined
+			if flagDef.Shortcut != 0 {
+				shortcutName := string(flagDef.Shortcut)
+				fs.Values[shortcutName] = fs.FlagSet.Bool(shortcutName, defaultVal, flagDef.Usage)
+			}
 		case Int64Flag:
 			defaultVal := int64(0)
 			if flagDef.Default != nil {
@@ -90,6 +100,11 @@ func (fs *FlagSet) Build() (err error) {
 				*flagDef.Int64 = defaultVal
 			}
 			fs.Values[flagDef.Name] = fs.FlagSet.Int64(flagDef.Name, defaultVal, flagDef.Usage)
+			// Register shortcut as alias if defined
+			if flagDef.Shortcut != 0 {
+				shortcutName := string(flagDef.Shortcut)
+				fs.Values[shortcutName] = fs.FlagSet.Int64(shortcutName, defaultVal, flagDef.Usage)
+			}
 		case IntFlag:
 			defaultVal := 0
 			if flagDef.Default != nil {
@@ -97,6 +112,11 @@ func (fs *FlagSet) Build() (err error) {
 				*flagDef.Int = defaultVal
 			}
 			fs.Values[flagDef.Name] = fs.FlagSet.Int(flagDef.Name, defaultVal, flagDef.Usage)
+			// Register shortcut as alias if defined
+			if flagDef.Shortcut != 0 {
+				shortcutName := string(flagDef.Shortcut)
+				fs.Values[shortcutName] = fs.FlagSet.Int(shortcutName, defaultVal, flagDef.Usage)
+			}
 		default:
 			errs = append(errs, fmt.Errorf("unknown flag type for %s", flagDef.Name))
 		}
@@ -108,9 +128,12 @@ func (fs *FlagSet) Build() (err error) {
 }
 
 func (fs *FlagSet) FlagNames() (names []string) {
-	names = make([]string, len(fs.FlagDefs))
-	for i, fd := range fs.FlagDefs {
-		names[i] = fd.Name
+	for _, fd := range fs.FlagDefs {
+		names = append(names, fd.Name)
+		// Include shortcut if defined
+		if fd.Shortcut != 0 {
+			names = append(names, string(fd.Shortcut))
+		}
 	}
 	return names
 }
@@ -121,6 +144,12 @@ func (fs *FlagSet) Validate() (err error) {
 	var value any
 
 	for _, flagDef := range fs.FlagDefs {
+		// Sync shortcut values before validation
+		if flagDef.Shortcut != 0 {
+			shortcutName := string(flagDef.Shortcut)
+			fs.syncFlagValues(flagDef.Name, shortcutName)
+		}
+
 		switch flagDef.Type() {
 		case StringFlag:
 			stringPtr := fs.Values[flagDef.Name].(*string)
@@ -220,6 +249,12 @@ func (fs *FlagSet) classifyFlagArgs(args []string, fsFlagNames []string) (fsArgs
 func (fs *FlagSet) Assign() (err error) {
 	var errs []error
 	for _, flagDef := range fs.FlagDefs {
+		// Check if shortcut was used and sync values
+		if flagDef.Shortcut != 0 {
+			shortcutName := string(flagDef.Shortcut)
+			fs.syncFlagValues(flagDef.Name, shortcutName)
+		}
+
 		switch flagDef.Type() {
 		case StringFlag:
 			value := fs.Values[flagDef.Name].(*string)
@@ -241,6 +276,28 @@ func (fs *FlagSet) Assign() (err error) {
 		err = errors.Join(errs...)
 	}
 	return err
+}
+
+// syncFlagValues syncs the value between a flag's long name and shortcut
+// If the shortcut was set (non-default), copy it to the long name
+func (fs *FlagSet) syncFlagValues(longName, shortName string) {
+	longVal := fs.Values[longName]
+	shortVal := fs.Values[shortName]
+
+	// Determine which one was explicitly set by comparing with the flag's state
+	if fs.FlagSet.Lookup(shortName).Value.String() != fs.FlagSet.Lookup(shortName).DefValue {
+		// Shortcut was set, copy to long name
+		switch v := longVal.(type) {
+		case *string:
+			*v = *shortVal.(*string)
+		case *bool:
+			*v = *shortVal.(*bool)
+		case *int64:
+			*v = *shortVal.(*int64)
+		case *int:
+			*v = *shortVal.(*int)
+		}
+	}
 }
 
 // GetUnknownFlags returns the list of flags that were not recognized by this FlagSet

@@ -241,8 +241,21 @@ func ShowMainHelp(args UsageArgs) error {
 }
 
 // ShowCmdHelp displays help for a specific command
-func ShowCmdHelp(cmdName string, args UsageArgs) (err error) {
-	cmd := GetExactCommand(cmdName)
+// cmdNameParts is a slice of command name parts that will be joined with "."
+// For example: ["demo", "list"] becomes "demo.list"
+func ShowCmdHelp(cmdNameParts []string, args UsageArgs) (err error) {
+	var cmdName string
+	var cmd Command
+
+	if len(cmdNameParts) == 0 {
+		err = fmt.Errorf("no command specified for help")
+		goto end
+	}
+
+	// Build dot-notation path from parts
+	cmdName = strings.Join(cmdNameParts, ".")
+
+	cmd = GetExactCommand(cmdName)
 	if cmd == nil {
 		err = fmt.Errorf("unknown command: %s", cmdName)
 		goto end
