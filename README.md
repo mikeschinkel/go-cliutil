@@ -627,27 +627,531 @@ cliutil.ExitLoggerSetupError      // 6
 
 ## Advanced Usage
 
-### Subcommands
+### Subcommands (Parent-Child Commands)
 
-Register commands with parent relationships:
+Commands can be organized in hierarchies (e.g., `myapp db migrate` where `db` is the parent and `migrate` is the child). This section provides comprehensive guidance on implementing parent-child command structures.
+
+#### Overview
+
+Parent-child commands create command trees:
+- `myapp db` - Parent command
+- `myapp db migrate` - Child command
+- `myapp db migrate up` - Grandchild command (three levels)
+
+The help output automatically shows the hierarchy:
+```
+COMMANDS:
+    db [migrate, backup]    Database management commands
+```
+
+#### Why Package-Level Initialization Matters
+
+Go's initialization order guarantees:
+1. **Package-level variables** are initialized first (in declaration order within a file)
+2. **init() functions** run after all package variables are initialized
+3. This happens **regardless of file order** in the package
+
+By initializing parent commands as package variables (not inside init()), you ensure they're available when child commands' init() functions run. This is dependency-based initialization, not file-name-based.
 
 ```go
-type ParentCmd struct {
+// Go guarantees this order:
+var parentCmd = &ParentCmd{...}  // 1. Variable initialized
+var childCmd = &ChildCmd{...}    // 2. Variable initialized
+
+func init() {                     // 3. All init() run after variables
+    cliutil.RegisterCommand(parentCmd)
+    cliutil.RegisterCommand(childCmd, parentCmd)  // Safe - parentCmd exists
+}
+```
+
+**Why not init()**: If you initialize in init(), the order depends on file compilation order, which is undefined and fragile. The compiler cannot warn you about this.
+
+#### Key Concepts
+
+**Command Names**:
+- Parent: Full command name (e.g., `"db"`)
+- Child: **Just the node name** (e.g., `"migrate"`, NOT `"db migrate"`)
+- This is critical - using the full path will break registration
+
+**Command Usage**:
+- Parent: `"db <subcommand>"` or `"db [options]"`
+- Child: `"migrate [options]"` (just the child name, framework builds full path)
+
+**Registration Order**:
+- Parent must be registered before children
+- Ensure initialization through package-level variable initialization
+- Package variables are initialized before any init() functions run
+
+**File Organization**:
+- **One command per file** (recommended practice)
+- File naming: `parent_cmd.go`, `parent_child_cmd.go`
+- Clear naming aids code organization and navigation
+
+#### Implementation Pattern
+
+Each command gets its own file. Parent commands are initialized as package variables (not inside init()), ensuring they're available when child commands' init() functions run:
+
+```go
+// db_cmd.go
+package myappcmds
+
+import "github.com/mikeschinkel/go-cliutil"
+
+var _ cliutil.CommandHandler = (*DbCmd)(nil)
+
+// DbCmd is the parent command for database operations
+type DbCmd struct {
     *cliutil.CmdBase
 }
 
-type ChildCmd struct {
-    *cliutil.CmdBase
+// dbCmd is initialized at package initialization time (before init() runs).
+// This guarantees child commands can safely reference it in their init() functions.
+var dbCmd = &DbCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "db",
+        Usage:       "db <subcommand>",
+        Description: "Database management commands",
+        Order:       10,
+    }),
 }
 
 func init() {
-    parent := &ParentCmd{...}
-    child := &ChildCmd{...}
+    // Only register the already-initialized command
+    if err := cliutil.RegisterCommand(dbCmd); err != nil {
+        panic(err)
+    }
+}
 
-    cliutil.RegisterCommand(parent)
-    cliutil.RegisterCommand(child, parent)
+func (c *DbCmd) Handle() error {
+    c.Writer.Printf("Database commands:\n")
+    c.Writer.Printf("  migrate  - Run database migrations\n")
+    c.Writer.Printf("  backup   - Backup database\n")
+    c.Writer.Printf("  restore  - Restore database\n")
+    return nil
 }
 ```
+
+```go
+// db_migrate_cmd.go
+package myappcmds
+
+import "github.com/mikeschinkel/go-cliutil"
+
+var _ cliutil.CommandHandler = (*MigrateCmd)(nil)
+
+// MigrateCmd handles database migrations
+type MigrateCmd struct {
+    *cliutil.CmdBase
+    up   bool
+    down bool
+}
+
+func init() {
+    cmd := &MigrateCmd{}
+
+    cmd.CmdBase = cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "migrate",  // Just the node name
+        Usage:       "migrate [--up|--down]",
+        Description: "Run database migrations",
+        Order:       1,
+        FlagSets: []*cliutil.FlagSet{
+            {
+                Name: "migrate",
+                FlagDefs: []cliutil.FlagDef{
+                    {
+                        Name:    "up",
+                        Usage:   "Run up migrations",
+                        Bool:    &cmd.up,
+                        Default: true,
+                    },
+                    {
+                        Name:    "down",
+                        Usage:   "Run down migrations",
+                        Bool:    &cmd.down,
+                        Default: false,
+                    },
+                },
+            },
+        },
+    })
+
+    // Register with parent using package variable
+    if err := cliutil.RegisterCommand(cmd, dbCmd); err != nil {
+        panic(err)
+    }
+}
+
+func (c *MigrateCmd) Handle() error {
+    if c.down {
+        c.Writer.Printf("Rolling back migrations...\n")
+        return c.runDownMigrations()
+    }
+    c.Writer.Printf("Running up migrations...\n")
+    return c.runUpMigrations()
+}
+
+func (c *MigrateCmd) runUpMigrations() error {
+    // Implementation
+    return nil
+}
+
+func (c *MigrateCmd) runDownMigrations() error {
+    // Implementation
+    return nil
+}
+```
+
+**File Naming Convention**:
+- Parent: `parent_cmd.go` (e.g., `db_cmd.go`)
+- Children: `parent_child_cmd.go` (e.g., `db_migrate_cmd.go`, `db_backup_cmd.go`)
+- Consistent naming aids code navigation and maintainability
+
+#### Multi-Level Nesting
+
+Commands can be nested multiple levels deep. Each level initializes its package variable at declaration time:
+
+```go
+// db_cmd.go - Level 1
+var dbCmd = &DbCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "db",
+        Usage:       "db <subcommand>",
+        Description: "Database commands",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(dbCmd)
+}
+
+// db_migrate_cmd.go - Level 2
+// Initialized at package level so grandchildren can reference it
+var migrateCmd = &MigrateCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "migrate",
+        Usage:       "migrate <subcommand>",
+        Description: "Migration commands",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(migrateCmd, dbCmd)  // Child of db
+}
+
+// db_migrate_up_cmd.go - Level 3
+var upCmd = &UpCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "up",
+        Usage:       "up [options]",
+        Description: "Run up migrations",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(upCmd, migrateCmd)  // Child of migrate
+}
+```
+
+**Usage**: `myapp db migrate up`
+
+**File naming for deep nesting**:
+- Level 1: `db_cmd.go`
+- Level 2: `db_migrate_cmd.go`
+- Level 3: `db_migrate_up_cmd.go`
+
+#### Multiple Children
+
+A parent can have multiple children. Each child references the same parent package variable:
+
+```go
+// db_cmd.go
+var dbCmd = &DbCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "db",
+        Usage:       "db <subcommand>",
+        Description: "Database commands",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(dbCmd)
+}
+
+// db_migrate_cmd.go
+var migrateCmd = &MigrateCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "migrate",
+        Description: "Run migrations",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(migrateCmd, dbCmd)
+}
+
+// db_backup_cmd.go
+var backupCmd = &BackupCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "backup",
+        Description: "Backup database",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(backupCmd, dbCmd)
+}
+
+// db_restore_cmd.go
+var restoreCmd = &RestoreCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name:        "restore",
+        Description: "Restore database",
+    }),
+}
+
+func init() {
+    cliutil.RegisterCommand(restoreCmd, dbCmd)
+}
+```
+
+**Help output**:
+```
+COMMANDS:
+    db [migrate, backup, restore]    Database management commands
+```
+
+#### Best Practices
+
+**1. Parent Command Behavior**
+
+Parents should either:
+- **Show help/list subcommands** (recommended):
+  ```go
+  func (c *DbCmd) Handle() error {
+      c.Writer.Printf("Available subcommands:\n")
+      c.Writer.Printf("  migrate - Run migrations\n")
+      c.Writer.Printf("  backup  - Backup database\n")
+      return nil
+  }
+  ```
+
+- **Delegate to a default child** (see Command Delegation section):
+  ```go
+  cmd.CmdBase = cliutil.NewCmdBase(cliutil.CmdArgs{
+      Name:       "db",
+      DelegateTo: &MigrateCmd{},  // Default to migrate
+  })
+  ```
+
+- **Provide standalone functionality** (less common):
+  ```go
+  func (c *DbCmd) Handle() error {
+      // Show database status if no subcommand
+      return c.showStatus()
+  }
+  ```
+
+**2. Consistent Naming**
+
+- Command type names: `ParentChildCmd` (e.g., `DbMigrateCmd`, `DbBackupCmd`)
+- Package variables: `parentChildCmd` (e.g., `dbMigrateCmd`)
+- File names: `parent_child_cmd.go` (e.g., `db_migrate_cmd.go`)
+
+**3. Initialization Order**
+
+Ensure proper initialization through dependency-based initialization:
+- **Initialize parent commands as package variables** (at declaration, not in init())
+- Package variables are initialized before any init() functions run
+- This guarantees child commands can safely reference parents in their init()
+- **Do not rely on file naming** - this is fragile and the compiler cannot warn you
+
+```go
+// CORRECT: Parent initialized at package level
+var dbCmd = &DbCmd{...}  // Initialized before init() runs
+
+func init() {
+    cliutil.RegisterCommand(dbCmd)  // Just register, don't initialize
+}
+```
+
+**4. Package Variables**
+
+Use package-level variables for parent commands, initialized at declaration:
+```go
+// Initialize at declaration (NOT inside init())
+var dbCmd = &DbCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name: "db",
+        ...
+    }),
+}
+
+// Grandparent commands may need exporting
+var migrateCmd = &MigrateCmd{...}  // Exported if grandchildren need it
+```
+
+**5. Error Handling**
+
+Always check registration errors:
+```go
+if err := cliutil.RegisterCommand(cmd); err != nil {
+    panic(err)  // Registration errors are programming errors, panic is appropriate
+}
+```
+
+#### Common Pitfalls
+
+**❌ Wrong: Using full path in child Name**
+```go
+// WRONG - This will break!
+child := &MigrateCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name: "db migrate",  // ❌ Don't include parent name
+    }),
+}
+```
+
+**✅ Correct: Using just the node name**
+```go
+// CORRECT
+child := &MigrateCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name: "migrate",  // ✅ Just the child name
+    }),
+}
+```
+
+**❌ Wrong: Child registered before parent**
+```go
+// WRONG - Order matters!
+cliutil.RegisterCommand(child, parent)   // ❌ parent not registered yet
+cliutil.RegisterCommand(parent)
+```
+
+**✅ Correct: Parent registered first**
+```go
+// CORRECT
+cliutil.RegisterCommand(parent)          // ✅ Register parent first
+cliutil.RegisterCommand(child, parent)
+```
+
+**❌ Wrong: Initializing parent in init() function**
+```go
+// db_cmd.go
+var dbCmd *DbCmd  // ❌ Declared but not initialized
+
+func init() {
+    // ❌ Initialized in init() - child commands might run first!
+    dbCmd = &DbCmd{
+        CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+            Name: "db",
+            ...
+        }),
+    }
+    cliutil.RegisterCommand(dbCmd)
+}
+```
+
+**✅ Correct: Initialize parent at package level**
+```go
+// db_cmd.go
+// ✅ Initialized at declaration time (before any init() runs)
+var dbCmd = &DbCmd{
+    CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+        Name: "db",
+        ...
+    }),
+}
+
+func init() {
+    // ✅ Just register the already-initialized command
+    cliutil.RegisterCommand(dbCmd)
+}
+
+// db_migrate_cmd.go
+func init() {
+    // ✅ Safe - dbCmd was initialized at package level before this runs
+    cliutil.RegisterCommand(migrateCmd, dbCmd)
+}
+```
+
+#### Help System Integration
+
+The help system automatically understands parent-child relationships:
+
+```bash
+# Show all commands
+$ myapp help
+COMMANDS:
+    db [migrate, backup]    Database management commands
+
+# Show parent help
+$ myapp db --help
+USAGE:
+    db <subcommand>
+
+Database management commands
+
+SUBCOMMANDS:
+    migrate    Run database migrations
+    backup     Backup database
+
+# Show child help
+$ myapp db migrate --help
+USAGE:
+    migrate [--up|--down]
+
+Run database migrations
+
+OPTIONS:
+    --up      Run up migrations (default: true)
+    --down    Run down migrations (default: false)
+```
+
+#### Testing Parent-Child Commands
+
+```go
+func TestDbMigrateCmd(t *testing.T) {
+    // Setup
+    writer := cliutil.NewWriter(&cliutil.WriterArgs{
+        Quiet:     false,
+        Verbosity: cliutil.LowVerbosity,
+    })
+
+    // Create parent
+    dbCmd := &DbCmd{
+        CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+            Name: "db",
+        }),
+    }
+
+    // Create and register child
+    migrateCmd := &MigrateCmd{
+        CmdBase: cliutil.NewCmdBase(cliutil.CmdArgs{
+            Name: "migrate",
+        }),
+    }
+
+    // Set up command context
+    migrateCmd.SetCommandRunnerArgs(cliutil.CmdRunnerArgs{
+        Writer: writer,
+    })
+
+    // Test
+    err := migrateCmd.Handle()
+    if err != nil {
+        t.Fatalf("Command failed: %v", err)
+    }
+}
+```
+
+#### Complete Working Example
+
+See the [squire](https://github.com/mikeschinkel/squire) project for a real-world example:
+- Parent: `requires_cmd.go` - Parent command for dependency analysis
+- Child: `requires_tree_cmd.go` - Tree visualization subcommand
+- Demonstrates multi-file registration with package variables
+- Usage: `squire requires tree`
 
 ### Command Delegation
 

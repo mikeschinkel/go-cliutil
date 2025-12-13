@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"strings"
 )
 
 // FlagType represents the type of a command flag
@@ -98,46 +97,16 @@ func (c *CmdBase) FullNames() (names []string) {
 	return names
 }
 
-// Usage returns the command usage string with flags
+// Usage returns the command usage string
+// Flags are now rendered by templates via FlagSets, not in the usage string
 func (c *CmdBase) Usage() string {
-	if len(c.flagsDefs) == 0 {
-		return c.usage
-	}
-
-	var flagUsage []string
-	for _, flagDef := range c.flagsDefs {
-		var flagStr string
-		if flagDef.Required {
-			flagStr = fmt.Sprintf("--%s=VALUE", flagDef.Name)
-		} else {
-			flagStr = fmt.Sprintf("[--%s=VALUE]", flagDef.Name)
-		}
-		flagUsage = append(flagUsage, flagStr)
-	}
-
-	return fmt.Sprintf("%s %s", c.usage, strings.Join(flagUsage, " "))
+	return c.usage
 }
 
-// Description returns the command description with flag details
+// Description returns the command description
+// Flags are now rendered by templates via FlagSets, not in the description
 func (c *CmdBase) Description() string {
-	var desc strings.Builder
-
-	if len(c.flagsDefs) == 0 {
-		return c.description
-	}
-
-	desc.WriteString(c.description)
-	desc.WriteString("\n\nFlags:")
-
-	for _, flagDef := range c.flagsDefs {
-		required := ""
-		if flagDef.Required {
-			required = " (required)"
-		}
-		desc.WriteString(fmt.Sprintf("\n    --%s: %s%s", flagDef.Name, flagDef.Usage, required))
-	}
-
-	return desc.String()
+	return c.description
 }
 
 // AddSubCommand returns the subcommands map
