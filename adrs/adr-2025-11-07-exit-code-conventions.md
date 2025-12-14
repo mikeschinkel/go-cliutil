@@ -1,8 +1,8 @@
-# ADR 0001: Exit Code Conventions for CLI Applications
+# Exit Code Conventions for CLI Applications
 
-## Status
-
-Accepted
+**Date:** 2025-11-07
+**Status:** Accepted
+**Authors:** Mike Schinkel
 
 ## Context
 

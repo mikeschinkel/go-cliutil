@@ -1,19 +1,24 @@
 {{- /*gotype: github.com/mikeschinkel/go-cliutil.CmdUsage */ -}}
 
 USAGE:
-    {{.Usage}}
+
+   {{.CLIName}} {{.Usage}}
 
 {{.Description}}
+
+{{- if .ArgRows }}
+
+ARGS:
+{{- range .ArgRows }}
+   {{ printf "%-*s" $.Width .Arg }} {{.Descr}}
+{{- end }}
+{{- end }}
 
 {{- if .FlagRows }}
 
 OPTIONS:
 {{- range .FlagRows }}
-    {{- if .Shortcut }}
-    -{{.Shortcut}}, --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
-    {{- else }}
-        --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
-    {{- end }}
+   {{ printf "%-*s" $.Width .Flag}} {{.Descr}}
 {{- end }}
 {{- end }}
 
@@ -21,7 +26,7 @@ OPTIONS:
 
 SUBCOMMANDS:
 {{- range .SubCmdRows }}
-    {{printf "%-20s" .Name}}{{.Desc}}
+   {{ printf "%-*s" $.Width .Name}} {{.Descr}}
 {{- end }}
 {{- end }}
 
@@ -29,8 +34,8 @@ SUBCOMMANDS:
 
 EXAMPLES:
 {{- range .Examples }}
-    # {{.Descr}}
-    {{.Cmd}}
+  # {{.Descr}}
+   {{.Cmd}}
 {{- end }}
 {{- end }}
 

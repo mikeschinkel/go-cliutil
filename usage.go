@@ -87,6 +87,7 @@ func BuildUsage(args UsageArgs) Usage {
 			globalFlags = append(globalFlags, FlagRow{
 				Name:     fd.Name,
 				Shortcut: shortcut,
+				Descr:    fd.Usage,
 				Usage:    fd.Usage,
 				Default:  fmt.Sprintf("%v", fd.Default),
 				Required: fd.Required,
@@ -267,6 +268,8 @@ func dedupeExamples(in []Example) []Example {
 // --- Command-specific help ---
 
 type FlagRow struct {
+	Flag     string
+	Descr    string
 	Name     string
 	Shortcut string
 	Usage    string
@@ -275,14 +278,28 @@ type FlagRow struct {
 }
 
 type SubCmdRow struct {
-	Name string
-	Desc string
+	Name  string
+	Descr string
+	Cmd   CmdUsage
+}
+
+type ArgRow struct {
+	Arg      string
+	Descr    string
+	Name     string
+	Usage    string
+	Required bool
+	Default  string
+	Example  string
 }
 
 type CmdUsage struct {
+	CLIName     string
 	CmdName     string
 	Usage       string
 	Description string
+	Width       int
+	ArgRows     []ArgRow
 	FlagRows    []FlagRow
 	SubCmdRows  []SubCmdRow
 	Examples    []Example
@@ -290,28 +307,77 @@ type CmdUsage struct {
 
 // BuildCmdUsage builds the data structure for command-specific help
 func BuildCmdUsage(cmd Command) CmdUsage {
+	var args, usage strings.Builder
+	var argRows []ArgRow
 	var flagRows []FlagRow
 	var subCmdRows []SubCmdRow
-	var fs *FlagSet
-	var fd FlagDef
 	var subCmd Command
-	var shortcut string
+	var maxSize int
+	var hasOptArgs, hasFlags bool
+
+	argDefs := cmd.ArgDefs()
+	// Collect arguments
+	for i, ad := range argDefs {
+		arg := fmt.Sprintf("<%s>", ad.Name)
+		if !ad.Required {
+			hasOptArgs = true
+			args.WriteString("[")
+		}
+		args.WriteString(arg)
+		if i < len(argDefs)-1 {
+			args.WriteString(" ")
+		}
+
+		descr := ad.Usage
+		def := fmt.Sprintf("%v", ad.Default)
+		if def != "" {
+			descr = fmt.Sprintf("%s (default=%s)", descr, def)
+		}
+		if ad.Required {
+			descr = fmt.Sprintf("%s [required]", descr)
+		}
+		argRow := ArgRow{
+			Arg:      arg,
+			Descr:    appendCompulsion(descr, ad.Required),
+			Name:     ad.Name,
+			Usage:    ad.Usage,
+			Required: ad.Required,
+			Default:  fmt.Sprintf("%v", ad.Default),
+			Example:  ad.Example,
+		}
+		argRows = append(argRows, argRow)
+		maxSize = max(len(argRow.Arg), maxSize)
+	}
+	if hasOptArgs {
+		args.WriteString("]")
+	}
 
 	// Collect flags from command's FlagSets
-	for _, fs = range cmd.FlagSets() {
-		for _, fd = range fs.FlagDefs {
-			shortcut = ""
+	for _, fs := range cmd.FlagSets() {
+		for _, fd := range fs.FlagDefs {
+			hasFlags = true
+			flag := "--" + fd.Name
 			if fd.Shortcut != 0 {
-				shortcut = string(fd.Shortcut)
+				flag = fmt.Sprintf("-%c, %s", fd.Shortcut, flag)
 			}
-
+			descr := fd.Usage
+			def := fmt.Sprintf("%v", fd.Default)
+			if def != "" {
+				descr = fmt.Sprintf("%s [default=%s]", descr, def)
+			}
+			if fd.Required {
+				hasOptArgs = true
+			}
 			flagRows = append(flagRows, FlagRow{
+				Flag:     flag,
+				Descr:    appendCompulsion(descr, fd.Required),
 				Name:     fd.Name,
-				Shortcut: shortcut,
+				Shortcut: string(fd.Shortcut),
 				Usage:    fd.Usage,
 				Default:  fmt.Sprintf("%v", fd.Default),
 				Required: fd.Required,
 			})
+			maxSize = max(len(flag)+2, maxSize)
 		}
 	}
 
@@ -321,10 +387,17 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 			continue
 		}
 		subCmdRows = append(subCmdRows, SubCmdRow{
-			Name: subCmd.Name(),
-			Desc: subCmd.Description(),
+			Name:  subCmd.Name(),
+			Descr: subCmd.Description(),
+			Cmd: CmdUsage{
+				CmdName:     subCmd.Name(),
+				Usage:       subCmd.Usage(),
+				Description: subCmd.Description(),
+			},
 		})
+		maxSize = max(len(subCmd.Name()), maxSize)
 	}
+	maxSize++
 
 	// Get examples
 	examples := cmd.Examples()
@@ -332,12 +405,42 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 	//	// TODO: Generate auto examples for this command
 	//}
 
+	switch {
+	case cmd.Usage() != "":
+		usage.WriteString(cmd.Usage())
+	default:
+		names := cmd.FullNames()
+		// TODOL Test this for subcommands
+		usage.WriteString(names[0])
+		if hasOptArgs {
+			usage.WriteString(" ")
+			usage.WriteString(args.String())
+		}
+		if hasFlags {
+			usage.WriteString(" [flags]")
+		}
+	}
+
 	return CmdUsage{
+		CLIName:     cmd.CLIName(),
 		CmdName:     cmd.Name(),
-		Usage:       cmd.Usage(),
+		Usage:       usage.String(),
 		Description: cmd.Description(),
+		ArgRows:     argRows,
 		FlagRows:    flagRows,
 		SubCmdRows:  subCmdRows,
 		Examples:    examples,
+		Width:       maxSize,
 	}
+}
+
+func appendCompulsion(s string, required bool) string {
+	var c string
+	switch required {
+	case true:
+		c = "required"
+	case false:
+		c = "optional"
+	}
+	return fmt.Sprintf("%s [%s]", s, c)
 }

@@ -3,6 +3,8 @@ package cliutil
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"reflect"
 )
 
@@ -22,6 +24,7 @@ var _ Command = (*CmdBase)(nil)
 // CmdBase provides common functionality for all commands
 // It implements the cliutil.Cmd interface
 type CmdBase struct {
+	cliName      string
 	name         string
 	usage        string
 	description  string
@@ -59,6 +62,7 @@ type CmdArgs struct {
 // NewCmdBase creates a new command base
 func NewCmdBase(args CmdArgs) *CmdBase {
 	return &CmdBase{
+		cliName:      filepath.Base(os.Args[0]),
 		name:         args.Name,
 		usage:        args.Usage,
 		description:  args.Description,
@@ -80,6 +84,11 @@ func NewCmdBase(args CmdArgs) *CmdBase {
 // Name returns the command name
 func (c *CmdBase) Name() string {
 	return c.name
+}
+
+// CLIName returns the name of the CLI app
+func (c *CmdBase) CLIName() string {
+	return c.cliName
 }
 
 // FullNames returns the command names prefixed with any parent names

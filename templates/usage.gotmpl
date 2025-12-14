@@ -17,7 +17,7 @@ GLOBAL OPTIONS:
     {{- if .Shortcut }}
     -{{.Shortcut}}, --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
     {{- else }}
-        --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
+    --{{printf "%-15s" .Name}} {{.Usage}}{{if .Default}} (default: {{.Default}}){{end}}{{if .Required}} [required]{{end}}
     {{- end }}
 {{- end }}
 {{- end }}

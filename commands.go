@@ -15,6 +15,7 @@ var flagCommandMap = make(map[string]Command)
 
 // Command interface for basic command metadata and delegation
 type Command interface {
+	CLIName() string
 	Name() string
 	FullNames() []string
 	Usage() string
