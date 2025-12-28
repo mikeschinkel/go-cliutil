@@ -329,8 +329,8 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 		}
 
 		descr := ad.Usage
-		def := fmt.Sprintf("%v", ad.Default)
-		if def != "" {
+		if ad.Default != nil {
+			def := fmt.Sprintf("%v", ad.Default)
 			descr = fmt.Sprintf("%s (default=%s)", descr, def)
 		}
 		if ad.Required {
@@ -361,8 +361,8 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 				flag = fmt.Sprintf("-%c, %s", fd.Shortcut, flag)
 			}
 			descr := fd.Usage
-			def := fmt.Sprintf("%v", fd.Default)
-			if def != "" {
+			if fd.Default != nil {
+				def := fmt.Sprintf("%v", fd.Default)
 				descr = fmt.Sprintf("%s [default=%s]", descr, def)
 			}
 			if fd.Required {

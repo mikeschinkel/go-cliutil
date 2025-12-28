@@ -259,7 +259,7 @@ func (c *CmdBase) AddParent(r reflect.Type) {
 //	}
 //
 //	func (c *CmdBase) Writer() Writer {
-//		return c.writer
+//		return c.Writer
 //	}
 func (c *CmdBase) SetCommandRunnerArgs(args CmdRunnerArgs) {
 	c.CmdRunnerArgs = args

@@ -18,3 +18,14 @@ func Stdiof(w io.Writer, format string, args ...any) {
 	_, err := fmt.Fprintf(w, format, args...)
 	dt.LogOnError(err)
 }
+
+func Stdout(args ...any) {
+	Stdio(os.Stdout, args...)
+}
+func Stderr(args ...any) {
+	Stdio(os.Stderr, args...)
+}
+func Stdio(w io.Writer, args ...any) {
+	_, err := fmt.Fprint(w, args...)
+	dt.LogOnError(err)
+}

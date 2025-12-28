@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package cliutil provides a tiny, stdlib-only way to attach structured metadata
+// doterr.go provides a tiny, stdlib-only way to attach structured metadata
 // and sentinels to errors while staying fully composable with the Go standard
 // library. The model is:
 //
 //   - Each function builds an entry with New(...) passing an optional trailing cause:
-//     return doterr.New(ErrRepo, "key", val, cause) // cause last
+//     return NewErr(ErrRepo, "key", val, cause) // cause last
 //
 //   - With(...) is a flexible convenience for same-function enrichment. It can:
 //
@@ -37,20 +37,62 @@
 //
 //   - Combine([]error) bundles independent failures into a single error that unwraps
 //     to its members, preserving order.
+
 package cliutil
 
 import (
+	"crypto/rand"
+	"encoding/binary"
 	"errors"
 	"fmt"
-	"math/rand"
 	"strings"
+	"sync"
 )
 
-// KV represents a key/value metadata pair. Keys are preserved in
+// ErrKV represents a key/value metadata pair. Keys are preserved in
 // insertion order, and values may be of any type.
-type KV interface {
+type ErrKV interface {
 	Key() string
 	Value() any
+}
+
+// Typed ErrKV constructors (inspired by log/slog.Attr constructors)
+
+// StringKV creates a KV with a string value.
+func StringKV(key, value string) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// IntKV creates a KV with an int value.
+func IntKV(key string, value int) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// Int64KV creates a KV with an int64 value.
+func Int64KV(key string, value int64) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// BoolKV creates a KV with a bool value.
+func BoolKV(key string, value bool) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// Float64KV creates a KV with a float64 value.
+func Float64KV(key string, value float64) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// AnyKV creates a KV with any value type.
+// Use this for custom types or when the specific type constructor doesn't exist.
+func AnyKV(key string, value any) ErrKV {
+	return kv{k: key, v: value}
+}
+
+// ErrorKV creates a KV with an error value.
+// Use this when you want to include an error as metadata (not as a cause).
+func ErrorKV(key string, value error) ErrKV {
+	return kv{k: key, v: value}
 }
 
 // Sentinel errors for validation failures
@@ -61,7 +103,6 @@ var (
 	ErrInvalidArgumentType = errors.New("invalid argument type")
 	ErrOddKeyValueCount    = errors.New("odd number of key-value arguments")
 	ErrCrossPackageError   = errors.New("error from different doterr package")
-	ErrFailedTypeAssertion = errors.New("failed type assertion")
 )
 
 // NewErr builds a standalone structured entry (no primary cause inside).
@@ -76,8 +117,11 @@ var (
 // remaining args must form valid pairs, except for an optional final error.
 // Returns nil if no meaningful parts are provided after validation.
 // Returns a validation error joined with the partial entry if validation fails.
+//
+//goland:noinspection DuplicatedCode
 func NewErr(parts ...any) error {
 	// Separate optional trailing cause from the parts
+	//goland:noinspection DuplicatedCode
 	coreParts, cause := extractTrailingCause(parts)
 
 	if validationErr := validateNewParts(coreParts); validationErr != nil {
@@ -105,13 +149,40 @@ func NewErr(parts ...any) error {
 	return e
 }
 
+// MsgErr creates an ad-hoc error message without requiring a sentinel error.
+// This is a convenience for rapid development - use sentinels for production code.
+//
+// Accepts two forms:
+//   - MsgErr("message") - creates error with the given message
+//   - MsgErr(err) - wraps existing error, preserving error chain for errors.Is()
+//
+// Use this when you don't want to define a sentinel immediately. Future tooling
+// can detect MsgErr usage and suggest/generate appropriate sentinel errors.
+//
+// For errors with metadata, use NewErr with a sentinel, or wrap with WithErr:
+//
+//	err := MsgErr("config invalid")
+//	err = WithErr(err, "path", configPath)
+func MsgErr(msg any) error {
+	switch v := msg.(type) {
+	case string:
+		return msgErr{msg: v}
+	case error:
+		// Wrap the error, preserving error chain
+		return msgErr{wrapped: v}
+	default:
+		// Invalid input - panic in development
+		panic(fmt.Sprintf("MsgErr: invalid type %T, expected string or error", v))
+	}
+}
+
 // WithErr is a flexible enrichment helper. Typical uses:
 //
 //	// Enrich an existing composite error (err may be an errors.Join tree):
-//	err = doterr.With(err, "Foo", 10)
+//	err = WithErr(err, "Foo", 10)
 //
 //	// Build an entry and join a trailing cause in one shot:
-//	err = doterr.With("endpoint", ep, ErrTemplate, cause) // 'cause' is last
+//	err = WithErr("endpoint", ep, ErrTemplate, cause) // 'cause' is last
 //
 // Behavior:
 //
@@ -131,7 +202,9 @@ func NewErr(parts ...any) error {
 //
 // Note: For inter-function composition, prefer New() with trailing cause:
 //
-//	return doterr.New(ErrRepo, "key", val, cause) // cause last
+//	return NewErr(ErrRepo, "key", val, cause) // cause last
+//
+//goland:noinspection DuplicatedCode
 func WithErr(parts ...any) error {
 	if len(parts) == 0 {
 		return nil
@@ -152,8 +225,18 @@ func WithErr(parts ...any) error {
 	if j >= i {
 		lastErr, ok := parts[j].(error)
 		if ok {
-			cause = checkCrossPackage(lastErr)
-			j--
+			// Special case: if we only have ONE part left (a single error),
+			// treat it as a sentinel for new context, NOT as a cause.
+			// This enables: WithErr(err, ErrNewContext) to add context layers.
+			// To add a cause without context, use: NewErr(..., cause) or errors.Join
+			if i == j {
+				// Single error - it's a context sentinel, not a cause
+				// Don't extract it as cause; let it go into middle
+			} else {
+				// Multiple parts - last error is a cause
+				cause = checkCrossPackage(lastErr)
+				j--
+			}
 		}
 	}
 
@@ -193,13 +276,15 @@ func CombineErrs(errs []error) error {
 	}
 }
 
-// ErrMeta returns the key/value pairs stored on a doterr entry.
+// ErrMeta returns the key/value pairs stored on all doterr entries in the error tree.
 // If err is a doterr entry, returns its metadata.
-// If err is a joined error (has Unwrap() []error), scans immediate children
-// left-to-right and returns metadata from the first doterr entry found.
+// If err is a joined error (has Unwrap() []error), scans all children recursively
+// and collects metadata from all doterr entries found, preserving order.
 // Otherwise returns nil.
-// The returned slice preserves insertion order and is a copy.
-func ErrMeta(err error) []KV {
+// The returned slice preserves insertion order across all entries.
+//
+//goland:noinspection DuplicatedCode
+func ErrMeta(err error) []ErrKV {
 	var ok bool
 	var e, ce entry
 	var cePtr *entry
@@ -208,21 +293,25 @@ func ErrMeta(err error) []KV {
 	//goland:noinspection GoTypeAssertionOnErrors,DuplicatedCode
 	e, ok = err.(entry)
 	if ok {
-		out := make([]KV, len(e.kvs))
+		out := make([]ErrKV, len(e.kvs))
 		for i, pair := range e.kvs {
 			out[i] = pair
 		}
 		return out
 	}
 
-	// Case (b): err is a join (multi-unwrap) → scan immediate children left-to-right
+	// Case (b): err is a join (multi-unwrap) → scan all children and collect metadata
 	type unwrapper interface{ Unwrap() []error }
 	u, ok := err.(unwrapper)
 	if !ok {
 		return nil
 	}
+
+	// Collect metadata from all doterr entries in the tree
+	var allKVs []ErrKV
 	children := u.Unwrap()
 	for _, child := range children {
+		// Check if child is an entry
 		//goland:noinspection GoTypeAssertionOnErrors
 		ce, ok = child.(entry)
 		if !ok {
@@ -233,14 +322,22 @@ func ErrMeta(err error) []KV {
 			}
 		}
 		if ok {
-			out := make([]KV, len(ce.kvs))
-			for i, pair := range ce.kvs {
-				out[i] = pair
+			// Add this entry's metadata
+			for _, pair := range ce.kvs {
+				allKVs = append(allKVs, pair)
 			}
-			return out
+		} else {
+			// Recursively check if child is itself a join
+			childMeta := ErrMeta(child)
+			if childMeta != nil {
+				allKVs = append(allKVs, childMeta...)
+			}
 		}
 	}
 
+	if len(allKVs) > 0 {
+		return allKVs
+	}
 	return nil
 }
 
@@ -250,12 +347,12 @@ func ErrMeta(err error) []KV {
 //
 // Example:
 //
-//	status, ok := doterr.ErrValue[int](err, "http_status")
+//	status, ok := ErrValue[int](err, "http_status")
 //	if ok {
 //	    fmt.Printf("Status: %d\n", status)
 //	}
 //
-//	name, ok := doterr.ErrValue[string](err, "parameter_name")
+//	name, ok := ErrValue[string](err, "parameter_name")
 func ErrValue[T any](err error, key string) (T, bool) {
 	var zero T
 	kvs := ErrMeta(err)
@@ -283,6 +380,8 @@ func ErrValue[T any](err error, key string) (T, bool) {
 //
 // Note: These errors may be sentinel errors (e.g., ErrRepo), custom error types
 // (e.g., *rfc9457.Error), or any other error type stored in the entry.
+//
+//goland:noinspection DuplicatedCode
 func Errors(err error) []error {
 	// Case (a): err is an entry → return its errors
 	//goland:noinspection GoTypeAssertionOnErrors
@@ -329,6 +428,49 @@ func AppendErr(errs []error, err error) []error {
 	return append(errs, err)
 }
 
+// AppendKV appends key-value pairs to a slice of KV values.
+// It accepts variadic arguments in three forms:
+//  1. Individual KV values: AppendKV(kvs, StringKV("foo", "bar"))
+//  2. String key-value pairs: AppendKV(kvs, "foo", "bar")
+//  3. Lazy ErrKV functions: AppendKV(kvs, func()ErrKV{ return StringKV("expensive", compute()) })
+//
+// This function is useful for accumulating metadata throughout a function
+// before creating an error:
+//
+//	var kvs []ErrKV
+//	kvs = AppendKV(kvs, "user_id", userID)
+//	if complexCondition {
+//	    kvs = AppendKV(kvs, "reason", "complex")
+//	}
+//	return NewErr(ErrFailed, kvs, cause)
+//
+// String key-value pairs must come in even counts (odd counts panic in debug mode).
+// Lazy functions (func()ErrKV) are wrapped and not evaluated until error creation.
+func AppendKV(kvs []ErrKV, parts ...any) []ErrKV {
+	for i := 0; i < len(parts); {
+		switch v := parts[i].(type) {
+		case ErrKV:
+			kvs = append(kvs, v)
+			i++
+		case func() ErrKV:
+			// Wrap in lazyKV - evaluation deferred until error creation
+			kvs = append(kvs, &lazyKV{fn: v})
+			i++
+		case string:
+			// String key must have a value
+			if i+1 >= len(parts) {
+				panic("AppendKV: trailing key without value: " + v)
+			}
+			kvs = append(kvs, kv{k: v, v: parts[i+1]})
+			i += 2
+		default:
+			// Skip invalid types with panic in debug mode
+			panic(fmt.Sprintf("AppendKV: invalid type %T at position %d", v, i))
+		}
+	}
+	return kvs
+}
+
 //--------------------------------
 // Unexported implementation types
 //--------------------------------
@@ -342,7 +484,55 @@ type kv struct {
 func (p kv) Key() string { return p.k }
 func (p kv) Value() any  { return p.v }
 
-var uniqueId = rand.Int()
+// lazyKV defers evaluation of a KV until accessed.
+// Evaluation happens at error creation time (when Key() or Value() is called),
+// not at AppendKV time, to avoid expensive operations in the happy path.
+type lazyKV struct {
+	fn     func() ErrKV
+	once   sync.Once
+	result kv
+}
+
+func (l *lazyKV) Key() string {
+	l.once.Do(l.evaluate)
+	return l.result.k
+}
+
+func (l *lazyKV) Value() any {
+	l.once.Do(l.evaluate)
+	return l.result.v
+}
+
+func (l *lazyKV) evaluate() {
+	kvResult := l.fn()
+	l.result = kv{k: kvResult.Key(), v: kvResult.Value()}
+}
+
+// msgErr represents an ad-hoc error message created with MsgErr.
+// It serves as a placeholder until sentinels are defined, and can be
+// detected by tooling to suggest/generate sentinel errors.
+type msgErr struct {
+	msg     string // The error message (if created from string)
+	wrapped error  // The wrapped error (if created from error)
+}
+
+func (m msgErr) Error() string {
+	if m.wrapped != nil {
+		return m.wrapped.Error()
+	}
+	return m.msg
+}
+
+func (m msgErr) Unwrap() error {
+	return m.wrapped
+}
+
+var uniqueId = func() int {
+	var b [8]byte
+	// crypto/rand.Read never fails on supported platforms
+	_, _ = rand.Read(b[:])
+	return int(binary.LittleEndian.Uint64(b[:]))
+}()
 
 // entry represents one function's contribution to an error chain.
 // Each function creates one entry with errors (sentinels, custom typed errors) and metadata.
@@ -361,6 +551,9 @@ func newEntry(errors []error, kvs []kv) *entry {
 	}
 }
 
+// Error implements the std lib error interface and returns the strings value
+//
+//goland:noinspection DuplicatedCode
 func (e entry) Error() string {
 	if len(e.errors) == 0 && len(e.kvs) == 0 {
 		return "doterr{}"
@@ -396,12 +589,25 @@ func (e entry) Unwrap() []error {
 
 func (e entry) empty() bool { return len(e.errors) == 0 && len(e.kvs) == 0 }
 
+//goland:noinspection DuplicatedCode
 func appendEntry(e *entry, parts ...any) {
 	for i := 0; i < len(parts); {
 		switch v := parts[i].(type) {
-		case KV:
-			// Convert interface to internal kv
+		case ErrKV:
+			// Handles both regular kv and lazyKV (both implement ErrKV interface)
+			// Calling Key()/Value() triggers lazy evaluation if needed
 			e.kvs = append(e.kvs, kv{k: v.Key(), v: v.Value()})
+			i++
+		case []ErrKV:
+			// Handle slice of ErrKV (from AppendKV)
+			for _, kvItem := range v {
+				e.kvs = append(e.kvs, kv{k: kvItem.Key(), v: kvItem.Value()})
+			}
+			i++
+		case func() ErrKV:
+			// Handle direct func()ErrKV (not wrapped in slice)
+			lazyKV := v()
+			e.kvs = append(e.kvs, kv{k: lazyKV.Key(), v: lazyKV.Value()})
 			i++
 		case string:
 			if i+1 < len(parts) {
@@ -417,7 +623,7 @@ func appendEntry(e *entry, parts ...any) {
 			}
 			i++
 		default:
-			// Non-string, non-error, non-KV: skip it (validation should have caught this)
+			// Non-string, non-error, non-ErrKV: skip it (validation should have caught this)
 			i++
 		}
 	}
@@ -452,6 +658,8 @@ func (c combined) Unwrap() []error {
 //   - It's the last element, AND
 //   - It comes after at least one sentinel, AND
 //   - It's not part of an incomplete key-value pair (would leave odd count)
+//
+//goland:noinspection DuplicatedCode
 func extractTrailingCause(parts []any) (_ []any, err error) {
 	var lastIdx, sentinelCount, nonSentinelCount int
 	var ok bool
@@ -466,14 +674,14 @@ func extractTrailingCause(parts []any) (_ []any, err error) {
 		goto end
 	}
 
-	// Count sentinels at the beginning (but don't count doterr.entry as sentinel)
+	// Count sentinels at the beginning (but don't count entry as sentinel)
 	sentinelCount = 0
 	for i := 0; i < len(parts); i++ {
 		err, ok := parts[i].(error)
 		if !ok {
 			break
 		}
-		// doterr.entry should not count as a sentinel - it's a wrapped error
+		// entry should not count as a sentinel - it's a wrapped error
 		//goland:noinspection GoTypeAssertionOnErrors
 		_, ok = err.(entry)
 		if ok {
@@ -489,9 +697,25 @@ func extractTrailingCause(parts []any) (_ []any, err error) {
 
 	// Check if removing the last error would leave an odd number of non-sentinel args
 	// (which would mean the error is actually a value for a key)
-	nonSentinelCount = len(parts) - sentinelCount
-	if (nonSentinelCount-1)%2 != 0 {
-		// Removing last error leaves odd count - it's a value, not a cause
+	// Count non-sentinel args, treating ErrKV/[]ErrKV/func()ErrKV as single items
+	nonSentinelCount = 0
+	for i := sentinelCount; i < len(parts)-1; i++ {
+		switch parts[i].(type) {
+		case ErrKV, []ErrKV, func() ErrKV:
+			// These are "atomic" - count as single items
+			nonSentinelCount++
+		case string:
+			// String key + value = 2 items
+			nonSentinelCount++
+			if i+1 < len(parts)-1 {
+				i++ // Skip value
+				nonSentinelCount++
+			}
+		}
+	}
+
+	if nonSentinelCount%2 != 0 {
+		// Odd count - last error is a value, not a cause
 		goto end
 	}
 
@@ -505,12 +729,15 @@ end:
 //   - At least one sentinel error (required)
 //   - Then zero or more KV or string key-value pairs
 //   - After the first string key, remaining args must form valid pairs (even count)
-//   - No non-string/non-error/non-KV values allowed
+//   - No non-string/non-error/non-ErrKV values allowed
+//
+//goland:noinspection DuplicatedCode
 func validateNewParts(parts []any) error {
 	if len(parts) == 0 {
 		// Build entry manually to avoid recursion
+		// TODO: We need to review the validity of this after introductin of MsgErr()
 		e := newEntry([]error{ErrMissingSentinel}, []kv{
-			{k: "message", v: "doterr.New requires at least one sentinel error"},
+			{k: "message", v: "NewErr requires at least one sentinel error"},
 		})
 		return e
 	}
@@ -530,8 +757,9 @@ func validateNewParts(parts []any) error {
 	// Must have at least one sentinel
 	if sentinelCount == 0 {
 		// Build entry manually to avoid recursion
+		// TODO: We need to review the validity of this after introductin of MsgErr()
 		e := newEntry([]error{ErrMissingSentinel}, []kv{
-			{k: "message", v: "doterr.New requires at least one sentinel error as the first argument"},
+			{k: "message", v: "NewErr requires at least one sentinel error as the first argument"},
 		})
 		return e
 	}
@@ -540,8 +768,14 @@ func validateNewParts(parts []any) error {
 	firstKeyIdx := -1
 	for j := i; j < len(parts); j++ {
 		switch v := parts[j].(type) {
-		case KV:
-			// Explicit KV is always valid
+		case ErrKV:
+			// Explicit ErrKV is always valid
+			continue
+		case []ErrKV:
+			// Slice of ErrKV is always valid (doesn't affect parity)
+			continue
+		case func() ErrKV:
+			// Lazy ErrKV function is always valid (doesn't affect parity)
 			continue
 		case string:
 			// Mark first key position if not yet found
@@ -567,12 +801,12 @@ func validateNewParts(parts []any) error {
 			})
 			return e
 		default:
-			// Non-string, non-error, non-KV values are not allowed
+			// Non-string, non-error, non-ErrKV values are not allowed
 			// Build entry manually to avoid recursion
 			e := newEntry([]error{ErrInvalidArgumentType}, []kv{
 				{k: "type", v: fmt.Sprintf("%T", v)},
 				{k: "position", v: j},
-				{k: "message", v: "only error, KV, or string keys allowed"},
+				{k: "message", v: "only error, ErrKV, []ErrKV, func()ErrKV, or string keys allowed"},
 			})
 			return e
 		}
@@ -636,19 +870,48 @@ func checkCrossPackage(err error) error {
 	return err
 }
 
+// containsSentinels checks if parts contains any error types (sentinels).
+// Returns true if any errors are found, false if only metadata (KV, string pairs, etc.).
+func containsSentinels(parts []any) bool {
+	for _, part := range parts {
+		if _, isError := part.(error); isError {
+			return true
+		}
+	}
+	return false
+}
+
 // buildErr tries to enrich the rightmost doterr entry inside baseErr.
 // If none found, it joins a fresh entry (from middle) with baseErr,
 // preserving baseErr's internals (including any existing cause).
+//
+// Key behavior: If middle contains any sentinels (errors), we create a NEW entry
+// and join it FIRST to preserve context layering. Metadata-only additions can enrich.
 func buildErr(baseErr error, middle []any) error {
+	// Check if middle contains any sentinel errors
+	hasSentinels := containsSentinels(middle)
+
+	// If we have new sentinels, create a new entry (don't enrich)
+	// This preserves separate context levels with their own metadata
+	if hasSentinels {
+		e := buildEntry(middle...)
+		if e != nil {
+			// New context goes FIRST, base error follows
+			return errors.Join(e, baseErr)
+		}
+		return baseErr
+	}
+
+	// No sentinels - just metadata enrichment, so try to enrich existing entry
 	enriched, ok := enrichRightmost(baseErr, middle...)
 	if ok {
-		// Successfully merged into an existing doterr entry.
+		// Successfully merged metadata into an existing doterr entry
 		return enriched
 	}
-	// No doterr entry found inside base; create a fresh entry and join it with base.
+
+	// No doterr entry found to enrich; create a fresh entry and join it
 	e := buildEntry(middle...)
 	if e != nil {
-		// cause remains inside baseErr
 		return errors.Join(e, baseErr)
 	}
 	return baseErr
@@ -660,6 +923,8 @@ func buildErr(baseErr error, middle []any) error {
 //	(b) one of the immediate children of a multi-unwrap (errors.Join) tree.
 //
 // It does NOT recurse deeper than one join level.
+//
+//goland:noinspection DuplicatedCode
 func enrichRightmost(err error, parts ...any) (error, bool) {
 	// Case (a): err is an entry → merge directly.
 	//goland:noinspection GoTypeAssertionOnErrors

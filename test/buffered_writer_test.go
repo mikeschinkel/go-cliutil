@@ -127,7 +127,7 @@ func TestBufferedWriter_HelperMethods(t *testing.T) {
 	}
 
 	if writer.CountStdoutLines() != 3 {
-		t.Errorf("Expected CountStdoutLines() to return 3, got %d", writer.CountStdoutLines())
+		t.Errorf("Expected CountPrintLines() to return 3, got %d", writer.CountStdoutLines())
 	}
 
 	// Test reset
