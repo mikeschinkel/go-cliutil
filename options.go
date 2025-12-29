@@ -11,6 +11,7 @@ type Options interface {
 	Verbosity() Verbosity
 	DryRun() bool
 	Force() bool
+	Parse(Flags) error
 }
 
 const (

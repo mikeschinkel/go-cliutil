@@ -27,6 +27,11 @@ type GlobalOptions struct {
 	//Strings   stringSliceFlag
 }
 
+func (o *GlobalOptions) Parse(flags Flags) error {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (o *GlobalOptions) Options() {}
 
 type GlobalOptionsArgs struct {
