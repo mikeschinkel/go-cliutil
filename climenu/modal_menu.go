@@ -1,14 +1,16 @@
-package cliutil
+package climenu
 
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mikeschinkel/go-cliutil"
 )
 
 // MultiModeMenuArgs contains arguments for displaying a modal menu
 type MultiModeMenuArgs struct {
 	Manager *ModeManager
-	Writer  Writer
+	Writer  cliutil.Writer
 }
 
 // ShowMultiModeMenu displays a modal menu with mode switching support
@@ -52,7 +54,7 @@ func ShowMultiModeMenu(args MultiModeMenuArgs) (err error) {
 		acceptableKeys = buildAcceptableKeys(args.Manager)
 
 		// Read keypress - loops internally until valid key, handles echo
-		key, err = ReadKeyPress(acceptableKeys, args.Writer)
+		key, err = cliutil.ReadKeyPress(acceptableKeys, args.Writer)
 		if err != nil {
 			goto end
 		}
@@ -95,7 +97,7 @@ end:
 }
 
 // displayModalMenu shows the mode toggle bar and current mode's options
-func displayModalMenu(mgr *ModeManager, writer Writer) {
+func displayModalMenu(mgr *ModeManager, writer cliutil.Writer) {
 	mode := mgr.CurrentMode()
 	if mode == nil {
 		return
@@ -192,7 +194,7 @@ func buildAcceptableKeys(mgr *ModeManager) []string {
 
 // handleMenuKey handles digit keys (0-9) for menu options
 // Returns error only for fatal errors; silently ignores invalid selections
-func handleMenuKey(key string, mode MenuMode, mgr *ModeManager, writer Writer) (err error) {
+func handleMenuKey(key string, mode MenuMode, mgr *ModeManager, writer cliutil.Writer) (err error) {
 	var index int
 	var options []MenuOption
 	var handlerArgs *OptionHandlerArgs

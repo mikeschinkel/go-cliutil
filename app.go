@@ -19,6 +19,7 @@ type AppArgs struct {
 	Logger  *slog.Logger
 	Info    appinfo.AppInfo
 	Options Options
+	RunFunc func([]string) error
 }
 
 func NewApp(args AppArgs) App {
@@ -27,6 +28,7 @@ func NewApp(args AppArgs) App {
 		Logger:  args.Logger,
 		Info:    args.Info,
 		Options: args.Options,
+		RunFunc: args.RunFunc,
 	}
 }
 

@@ -1,13 +1,15 @@
-package cliutil
+package climenu
 
 import (
 	"fmt"
 	"log/slog"
+
+	"github.com/mikeschinkel/go-cliutil"
 )
 
 // ModeState is an interface for user-defined shared state across modes
 // Applications implement this to hold their specific state
-// Example: SquireModeState in squiresvc
+// Example: GomionModeState in gomionsvc
 type ModeState interface {
 	ModeState() // Marker method
 }
@@ -18,14 +20,14 @@ type ModeManager struct {
 	currentMode int              // Currently active mode ID
 	state       ModeState        // User-defined shared state
 	exitLoop    bool             // Exit signal
-	Writer      Writer
+	Writer      cliutil.Writer
 	Logger      *slog.Logger
 }
 
 // NewModeManager creates a new ModeManager with the given shared state
-func NewModeManager(state ModeState, w Writer, lgr *slog.Logger) *ModeManager {
+func NewModeManager(state ModeState, w cliutil.Writer, lgr *slog.Logger) *ModeManager {
 	if w == nil {
-		w = NewWriter(nil)
+		w = cliutil.NewWriter(nil)
 	}
 	if lgr == nil {
 		lgr = slog.Default()
@@ -56,7 +58,7 @@ func (m *ModeManager) RegisterMode(id int, mode MenuMode) (err error) {
 	}
 
 	if m.Writer == nil {
-		m.Writer = NewWriter(nil)
+		m.Writer = cliutil.NewWriter(nil)
 	}
 	mode.SetWriter(m.Writer)
 

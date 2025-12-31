@@ -6,7 +6,7 @@ A comprehensive CLI framework for Go applications that provides command registra
 
 `cliutil` is **opinionated and architectural** - it enforces a specific project structure that scales from simple tools to complex multi-command applications:
 
-- **Enforced architecture** - `cmd/main.go` → `<apppkg>.RunCLI()` → `<apppkg>.Run()` pattern separates concerns
+- **Enforced architecture** - `cmd/gomion/main.go` → `<apppkg>.RunCLI()` → `<apppkg>.Run()` pattern separates concerns
 - **Auto-registration via `init()`** - Commands register themselves; blank import `_ "myapp/myappcmds"` loads all commands
 - **Type-safe options** - Two-tier pattern: parse raw CLI args, then convert to validated domain types
 - **Integrated logging** - `WriterLogger` combines `*slog.Logger` with verbosity-aware console output
@@ -129,7 +129,7 @@ myproject/
 └── go.mod
 ```
 
-#### 1. Entry Point: `cmd/main.go`
+#### 1. Entry Point: `cmd/gomion/main.go`
 
 ```go
 package main
@@ -1147,11 +1147,11 @@ func TestDbMigrateCmd(t *testing.T) {
 
 #### Complete Working Example
 
-See the [squire](https://github.com/mikeschinkel/squire) project for a real-world example:
+See the [gomion](https://github.com/mikeschinkel/gomion) project for a real-world example:
 - Parent: `requires_cmd.go` - Parent command for dependency analysis
 - Child: `requires_tree_cmd.go` - Tree visualization subcommand
 - Demonstrates multi-file registration with package variables
-- Usage: `squire requires tree`
+- Usage: `gomion requires tree`
 
 ### Command Delegation
 
@@ -1329,7 +1329,7 @@ The [xmlui-localsvr](https://github.com/xmlui-org/xmlui-localsvr) project shows:
 
 ### Example 4: Repository Manager
 
-The [squire](https://github.com/mikeschinkel/squire) project demonstrates:
+The [gomion](https://github.com/mikeschinkel/gomion) project demonstrates:
 - Production-quality command structure
 - Type-safe configuration
 - Structured error handling with doterr pattern

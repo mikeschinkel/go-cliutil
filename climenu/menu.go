@@ -1,13 +1,15 @@
-package cliutil
+package climenu
 
 import (
 	"fmt"
 	"log/slog"
+
+	"github.com/mikeschinkel/go-cliutil"
 )
 
 // OptionHandlerArgs provides arguments to menu option handlers
 type OptionHandlerArgs struct {
-	Writer Writer
+	Writer cliutil.Writer
 	Mode   MenuMode
 	Index  int // The index of the selected option (0-8)
 }
@@ -28,7 +30,7 @@ type MenuMode interface {
 	Handle(args *OptionHandlerArgs) error // Handle selection
 	ShouldExit() bool                     // Returns true if mode wants to exit the menu loop
 	RequestExit()                         // Signal that the menu loop should exit
-	SetWriter(Writer)                     // Sets the CLI writer to use
+	SetWriter(cliutil.Writer)             // Sets the CLI writer to use
 	SetLogger(*slog.Logger)               // Sets the Logger to use
 
 	// Modal menu methods (for multi-mode support)
@@ -42,7 +44,7 @@ type MenuMode interface {
 // MenuArgs contains arguments for displaying a menu
 type MenuArgs struct {
 	Mode   MenuMode
-	Writer Writer
+	Writer cliutil.Writer
 }
 
 // ShowMenu displays the mode's options inline with [0] help and [9] quit
@@ -72,7 +74,7 @@ func ShowMenu(args MenuArgs) (err error) {
 		args.Writer.Printf("\n%s\n", optStr)
 		args.Writer.Printf("Choice: ")
 
-		choice, err = ReadSingleKey()
+		choice, err = cliutil.ReadSingleKey()
 		if err != nil {
 			goto end
 		}
@@ -125,7 +127,7 @@ end:
 }
 
 // showHelp displays all menu options vertically with descriptions
-func showHelp(options []MenuOption, writer Writer) {
+func showHelp(options []MenuOption, writer cliutil.Writer) {
 	writer.Printf("\nMenu Options:\n\n")
 
 	// Show options 1-8
@@ -151,7 +153,7 @@ type BaseMenuMode struct {
 	exitRequested bool
 	modeID        int    // -1 for non-modal, 0-9 for modal
 	modeName      string // Display name for modal menus
-	Writer        Writer
+	Writer        cliutil.Writer
 	Logger        *slog.Logger
 }
 
@@ -191,7 +193,7 @@ func NewBaseMenuMode(args BaseMenuModeArgs) *BaseMenuMode {
 	return mode
 }
 
-func (b *BaseMenuMode) SetWriter(w Writer) {
+func (b *BaseMenuMode) SetWriter(w cliutil.Writer) {
 	b.Writer = w
 }
 
@@ -246,13 +248,13 @@ func (b *BaseMenuMode) ModeName() string {
 
 // OnEnter is called when switching to this mode
 // Default implementation does nothing
-func (b *BaseMenuMode) OnEnter(state ModeState) error {
+func (b *BaseMenuMode) OnEnter(_ ModeState) error {
 	return nil
 }
 
 // OnExit is called when switching from this mode
 // Default implementation does nothing
-func (b *BaseMenuMode) OnExit(state ModeState) error {
+func (b *BaseMenuMode) OnExit(_ ModeState) error {
 	return nil
 }
 
@@ -260,5 +262,5 @@ type BaseMenuModeArgs struct {
 	MenuOptions []MenuOption // User's options (without help)
 	ModeID      int          // Optional: 0-9 for modal menus, -1 for non-modal (default)
 	ModeName    string       // Optional: Display name for modal menus
-	Writer      Writer
+	Writer      cliutil.Writer
 }

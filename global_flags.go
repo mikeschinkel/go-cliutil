@@ -195,16 +195,24 @@ end:
 // ParseGlobalFlags converts raw flags into GlobalFlags.
 //
 // Uses os.Args for as input. Not designed to be testable
-func ParseGlobalFlags() (_ *GlobalFlags, _ []string, err error) {
-	return ParseGlobalFlagsFromArgs(os.Args)
+func ParseGlobalFlags(mode CLIUtilMode) (_ *GlobalFlags, _ []string, err error) {
+	return ParseGlobalFlagsFromArgs(os.Args, mode)
 }
 
 //var ErrFlagTypeNotDiscoverable = errors.New("flag type is not discoverable")
 
+type CLIUtilMode int
+
+const (
+	UnspecifiedCLIUtilMode CLIUtilMode = iota
+	CommandMode
+	FlagsOnlyMode
+)
+
 // ParseGlobalFlagsFromArgs converts raw flags into GlobalFlags.
 //
 // Expects os.Args or equivalent as input. Designed to be testable
-func ParseGlobalFlagsFromArgs(osArgs []string) (_ *GlobalFlags, _ []string, err error) {
+func ParseGlobalFlagsFromArgs(osArgs []string, mode CLIUtilMode) (_ *GlobalFlags, _ []string, err error) {
 	var errs []error
 	var timeout time.Duration
 	var verbosity Verbosity
@@ -219,21 +227,24 @@ func ParseGlobalFlagsFromArgs(osArgs []string) (_ *GlobalFlags, _ []string, err 
 	// Transform flag commands (e.g., --test-hidden -> test-hidden) BEFORE flag parsing
 	args = transformFlagCommands(args)
 
-	// Check for --help and handle it first
-	helpRequested, args = containsHelpFlag(args)
-	if helpRequested {
-		args = append([]string{"help"}, args...)
+	if mode == CommandMode {
+		// Check for --help and handle it first
+		helpRequested, args = containsHelpFlag(args)
+		if helpRequested {
+			args = append([]string{"help"}, args...)
+		}
 	}
-
 	// Extract and save original flags for later validation (after --help is removed)
 	gFlags.originalFlags = extractFlags(args)
 
 	// Default to help command if no args provided
-	if len(args) == 0 {
-		args = []string{"help"}
+	if mode == CommandMode {
+		if len(args) == 0 {
+			args = []string{"help"}
+		}
 	}
 
-	args, err = flagSet.Parse(args)
+	args, err = gFlagSets.Parse(args)
 	if err != nil {
 		goto end
 	}

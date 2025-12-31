@@ -2,7 +2,7 @@
 
 **READ THIS FIRST before any work on projects using cliutil and go-cliutil.**
 
-This document defines the non-negotiable architectural principles for CLI applications built with `go-cliutil`. These principles apply to ANY project using this framework (xmlui, squire, etc.), not just one specific project.
+This document defines the non-negotiable architectural principles for CLI applications built with `go-cliutil`. These principles apply to ANY project using this framework (xmlui, gomion, etc.), not just one specific project.
 
 ---
 

@@ -5,12 +5,17 @@ import (
 	"os"
 
 	"github.com/mikeschinkel/go-cliutil"
+	"github.com/mikeschinkel/go-cliutil/climenu"
 )
+
+var _ climenu.ModeState = (*DemoState)(nil)
 
 // DemoState implements ModeState for this example
 type DemoState struct {
 	Counter int
 }
+
+func (d DemoState) ModeState() {}
 
 func main() {
 	w := cliutil.NewWriter(nil)
@@ -18,7 +23,7 @@ func main() {
 	state := &DemoState{Counter: 0}
 
 	// Create mode manager
-	mgr := cliutil.NewModeManager(state, w, nil)
+	mgr := climenu.NewModeManager(state, w, nil)
 
 	// Create and register modes
 	mainMode := createMainMode()
@@ -49,7 +54,7 @@ func main() {
 	fmt.Println("Press F1 for help, or use number keys for actions")
 	fmt.Println()
 
-	err = cliutil.ShowMultiModeMenu(cliutil.MultiModeMenuArgs{
+	err = climenu.ShowMultiModeMenu(climenu.MultiModeMenuArgs{
 		Manager: mgr,
 		Writer:  cliutil.NewWriter(nil),
 	})
@@ -63,15 +68,15 @@ func main() {
 }
 
 // createMainMode creates the Main mode (F2)
-func createMainMode() cliutil.MenuMode {
-	return cliutil.NewBaseMenuMode(cliutil.BaseMenuModeArgs{
+func createMainMode() climenu.MenuMode {
+	return climenu.NewBaseMenuMode(climenu.BaseMenuModeArgs{
 		ModeID:   0,
 		ModeName: "Main",
-		MenuOptions: []cliutil.MenuOption{
+		MenuOptions: []climenu.MenuOption{
 			{
 				Name:        "Info",
 				Description: "Show info about this demo",
-				Handler: func(args *cliutil.OptionHandlerArgs) error {
+				Handler: func(args *climenu.OptionHandlerArgs) error {
 					args.Writer.Printf("This is a demo of the modal menu system.\n")
 					args.Writer.Printf("Try switching modes with F3 (Counter) or F4 (Actions)!\n")
 					return nil
@@ -82,15 +87,15 @@ func createMainMode() cliutil.MenuMode {
 }
 
 // createMode1 creates Mode 1 (F3)
-func createMode1() cliutil.MenuMode {
-	mode := cliutil.NewBaseMenuMode(cliutil.BaseMenuModeArgs{
+func createMode1() climenu.MenuMode {
+	mode := climenu.NewBaseMenuMode(climenu.BaseMenuModeArgs{
 		ModeID:   1,
 		ModeName: "Counter",
-		MenuOptions: []cliutil.MenuOption{
+		MenuOptions: []climenu.MenuOption{
 			{
 				Name:        "Increment",
 				Description: "Increment the counter",
-				Handler: func(args *cliutil.OptionHandlerArgs) error {
+				Handler: func(args *climenu.OptionHandlerArgs) error {
 					state := args.Mode.(*customMode).state
 					state.Counter++
 					args.Writer.Printf("Counter: %d\n", state.Counter)
@@ -100,7 +105,7 @@ func createMode1() cliutil.MenuMode {
 			{
 				Name:        "Show",
 				Description: "Show current counter value",
-				Handler: func(args *cliutil.OptionHandlerArgs) error {
+				Handler: func(args *climenu.OptionHandlerArgs) error {
 					state := args.Mode.(*customMode).state
 					args.Writer.Printf("Counter: %d\n", state.Counter)
 					return nil
@@ -117,15 +122,15 @@ func createMode1() cliutil.MenuMode {
 }
 
 // createMode2 creates Mode 2 (F4)
-func createMode2() cliutil.MenuMode {
-	mode := cliutil.NewBaseMenuMode(cliutil.BaseMenuModeArgs{
+func createMode2() climenu.MenuMode {
+	mode := climenu.NewBaseMenuMode(climenu.BaseMenuModeArgs{
 		ModeID:   2,
 		ModeName: "Actions",
-		MenuOptions: []cliutil.MenuOption{
+		MenuOptions: []climenu.MenuOption{
 			{
 				Name:        "Reset",
 				Description: "Reset the counter to zero",
-				Handler: func(args *cliutil.OptionHandlerArgs) error {
+				Handler: func(args *climenu.OptionHandlerArgs) error {
 					state := args.Mode.(*customMode).state
 					state.Counter = 0
 					args.Writer.Printf("Counter reset to 0\n")
@@ -135,7 +140,7 @@ func createMode2() cliutil.MenuMode {
 			{
 				Name:        "Double",
 				Description: "Double the counter",
-				Handler: func(args *cliutil.OptionHandlerArgs) error {
+				Handler: func(args *climenu.OptionHandlerArgs) error {
 					state := args.Mode.(*customMode).state
 					state.Counter *= 2
 					args.Writer.Printf("Counter doubled to %d\n", state.Counter)
@@ -154,17 +159,17 @@ func createMode2() cliutil.MenuMode {
 
 // customMode wraps BaseMenuMode to access shared state
 type customMode struct {
-	*cliutil.BaseMenuMode
+	*climenu.BaseMenuMode
 	state *DemoState
 }
 
-func (m *customMode) OnEnter(state cliutil.ModeState) error {
+func (m *customMode) OnEnter(state climenu.ModeState) error {
 	m.state = state.(*DemoState)
 	fmt.Printf("Entered %s mode (Counter: %d)\n", m.ModeName(), m.state.Counter)
 	return nil
 }
 
-func (m *customMode) OnExit(_ cliutil.ModeState) error {
+func (m *customMode) OnExit(_ climenu.ModeState) error {
 	fmt.Printf("Exiting %s mode\n", m.ModeName())
 	return nil
 }

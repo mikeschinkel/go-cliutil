@@ -10,13 +10,13 @@ type ArgsParser = interface {
 	SetGlobalFlags(*GlobalFlags)
 }
 
-func ParseOptions(flags ArgsParser, opts Options) (_ Options, args []string, err error) {
+func ParseOptions(flags ArgsParser, opts Options, mode CLIUtilMode) (_ Options, args []string, err error) {
 	var gFlags *GlobalFlags
 	var errs []error
 
 	// Start by getting the global flags which could return an error
 	// ParseGlobalFlags() will return args from os.Args with global flags removed
-	gFlags, args, err = ParseGlobalFlags()
+	gFlags, args, err = ParseGlobalFlags(mode)
 	errs = AppendErr(errs, err)
 
 	// Next get the application-specific flags with global flags merged in
