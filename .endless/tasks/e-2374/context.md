@@ -1,0 +1,1 @@
+This repo is a dependency of Endless. Mike's goal (2026-10-17, during go-cliutil E-2289) is a clean set of Endless dependencies. Endless builds against this repo's working tree through a local replace, so check whether parking the changes breaks the Endless build first; if it does, the resulting tasks block whatever they would break.
