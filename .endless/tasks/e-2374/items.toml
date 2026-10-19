@@ -26,7 +26,7 @@ statement = "Each kept group is its own commit on this task's branch, its messag
 [[item]]
 id = "P10"
 kind = "deliverable"
-statement = "The repo builds and its tests pass on this task's branch"
+statement = "Every module in the repo builds and its tests pass on this task's branch"
 
 [[item]]
 id = "P5"
