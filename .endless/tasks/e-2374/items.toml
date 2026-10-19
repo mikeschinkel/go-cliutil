@@ -11,28 +11,33 @@ verify = "a diff of the branch's tree against main's working tree, staged, unsta
 [[item]]
 id = "P2"
 kind = "deliverable"
-statement = "The grouping of the snapshot's changes, what each group is for, and anything unexplained are shown to the user, and adjusted with them, before any task is filed"
+statement = "The grouping of the snapshot's changes, what each group is for, and anything unexplained are shown to the user, and adjusted with them, before anything is committed to this task's branch"
 
 [[item]]
 id = "P3"
 kind = "deliverable"
-statement = "Every change in the snapshot belongs to a task filed in this project, or is listed as drop with the user's agreement"
+statement = "Every change in the snapshot is committed on this task's branch, moved to a task the user agreed to split out, or listed as drop with the user's agreement"
 
 [[item]]
 id = "P4"
 kind = "deliverable"
-statement = "Each filed task's plan names the files and hunks it takes from wip/<task-id>"
+statement = "Each kept group is its own commit on this task's branch, its message saying what the group is for"
+
+[[item]]
+id = "P9"
+kind = "deliverable"
+statement = "The repo builds and its tests pass on this task's branch"
 
 [[item]]
 id = "P5"
 kind = "deliverable"
-statement = "Every sibling repo whose go.mod replaces this checkout is built against this repo's main HEAD without the WIP, and each group whose removal breaks a build is recorded as blocking the tasks that need it"
-verify = "a build of each dependent through a scratch GOWORK pointing this module at a clean checkout"
+statement = "Every sibling repo whose go.mod replaces this checkout builds against this task's branch"
+verify = "a build of each dependent through a scratch GOWORK pointing this module at the worktree"
 
 [[item]]
 id = "P6"
 kind = "deliverable"
-statement = "The user is handed one command that clears main's working tree, to run after confirming wip/<task-id> holds everything"
+statement = "The user is handed one command that clears main's working tree, to run after this task lands"
 
 [[item]]
 id = "P7"
