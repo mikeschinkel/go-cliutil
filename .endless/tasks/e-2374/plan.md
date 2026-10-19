@@ -7,6 +7,10 @@ The changes at filing time (2026-10-17), excluding `.endless/`:
 - Modified: app.go, doterr.go (the go-doterr lint fix, synced; go-doterr has its own task for it), global_options.go, stdio.go, terminal.go, go.mod, go.sum, examples/basic_usage/*, examples/modal_demo/{go.mod,main.go}, test/{buffered_writer_test.go,corpus_test.go,fuzz_test.go,go.mod,go.sum}.
 - `commands.go` is not touched; a separate task changes it.
 
+## Modules
+
+Every directory with its own `go.mod` is a separate Go module, versioned independently: a module below the root is tagged with its directory as a prefix (`dtx/v0.2.1`), and one module's require of another, even within this repo, names a version or a `replace`. go-cliutil's modules at filing time are the root, climenu/ (staged for deletion), examples/basic_usage/, examples/modal_demo/ and test/. Analyze and report the changes per module, and list every module whose contents change, so the release that follows can decide each one's version bump on its own.
+
 ## Steps
 
 1. **Snapshot without touching main.** From this task's worktree, read the main checkout's full diff against HEAD, staged and unstaged together, including deletions, binaries and untracked non-`.endless/` files. Recreate it on a branch named `wip/<task-id>` cut from main's HEAD, and commit it there as one commit with message "WIP snapshot of main working tree". Then confirm the branch's tree matches main's working tree file for file. Don't use `git stash`; the stash stack is shared across sessions.
