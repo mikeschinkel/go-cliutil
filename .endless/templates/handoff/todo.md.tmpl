@@ -1,0 +1,21 @@
+You're a worktree-bound Claude Code session spawned to take this task end to end:
+
+- {{.label_prefix}}: {{.title}}.
+{{template "handoff_worktree" .}}
+
+1. Run `endless guide` to learn the Endless workflow.
+2. Run `endless task show E-{{.spawned_id}} --all-fields --db main` to read the plan.
+3. You're already claimed and in the worktree — just do the work.
+4. {{template "handoff_focus" .}}
+5. If anything is ambiguous, the plan is insufficient, or you hit a design choice the plan
+   doesn't cover — STOP and ask me. Don't guess.
+6. {{template "handoff_terminal" .}}
+7. {{template "handoff_land_drop" .}}
+{{- if .child_count}}
+
+This task has {{.child_count}} children — the `--all-fields` read includes them.
+{{- end}}
+
+Final message — {{template "handoff_verify" .}} {{template "handoff_close" .}}
+
+Goal: drive this task to a state I can confirm and land cleanly. Don't leave loose ends.
