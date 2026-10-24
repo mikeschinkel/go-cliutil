@@ -1,0 +1,1 @@
+Folded into E-2374 per ED-1550: landing main's uncommitted changes includes releasing go-cliutil's dependency chain (re-tagging leaves, dropping cross-project replaces, tagging go-cliutil), because without it the landed work can't be versioned and published. E-2429's plan and items move to E-2374 as grown plan items.
