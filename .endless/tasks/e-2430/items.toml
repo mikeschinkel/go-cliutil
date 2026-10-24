@@ -6,3 +6,8 @@
 id = "P1"
 kind = "deliverable"
 statement = "test/go.mod requires published go-testutil and go-cliutil tags and has no replace for another repo's module"
+
+[[item]]
+id = "P2"
+kind = "deliverable"
+statement = "test/go.mod keeps its in-repo replace of go-cliutil with .."
