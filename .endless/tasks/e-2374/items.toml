@@ -83,3 +83,8 @@ statement = "go-cliutil's .gitignore ignores Endless's per-checkout state (.endl
 id = "P17"
 kind = "deliverable"
 statement = "terminal_test.go lives in the test/ module, so go-cliutil's root module requires no go-testutil"
+
+[[item]]
+id = "P18"
+kind = "deliverable"
+statement = "go-cliutil's root and examples/basic_usage modules have no replace directive for another repo's module, require only tags that exist on GitHub, and build and pass their tests with GOWORK=off"
