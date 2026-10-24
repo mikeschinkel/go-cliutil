@@ -16,3 +16,8 @@ statement = "test/go.mod keeps its in-repo replace of go-cliutil with .."
 id = "P3"
 kind = "deliverable"
 statement = "The test module builds and passes its tests with GOWORK=off"
+
+[[item]]
+id = "P4"
+kind = "exclusion"
+statement = "Does not push a tag Mike has not seen and agreed to"
