@@ -21,3 +21,8 @@ statement = "The test module builds and passes its tests with GOWORK=off"
 id = "P4"
 kind = "exclusion"
 statement = "Does not push a tag Mike has not seen and agreed to"
+
+[[item]]
+id = "P5"
+kind = "deliverable"
+statement = "go-cliutil's Test and Release workflows run the test/ module again"
