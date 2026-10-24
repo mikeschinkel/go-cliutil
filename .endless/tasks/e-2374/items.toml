@@ -97,4 +97,4 @@ statement = "Mike is told go-cliutil's root module is ready to tag v0.3.0: repla
 [[item]]
 id = "P20"
 kind = "exclusion"
-statement = "Does not push a tag Mike has not seen and agreed to"
+statement = "Does not create or push a tag; Mike does the tagging"
