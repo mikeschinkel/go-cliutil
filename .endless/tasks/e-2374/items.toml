@@ -58,3 +58,8 @@ statement = "The report to the user groups the changes by module, each directory
 id = "P12"
 kind = "deliverable"
 statement = "go-cliutil requires go-dt v0.6.0, the first tag that ships LogOnErr/LogOnErrFunc, in the root, test and basic_usage modules"
+
+[[item]]
+id = "P13"
+kind = "deliverable"
+statement = "test/buffered_writer_test.go's concurrent-access stderr check uses CountErrorLines(), not CountPrintLines()"
