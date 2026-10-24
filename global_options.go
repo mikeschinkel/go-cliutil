@@ -42,23 +42,22 @@ type GlobalOptionsArgs struct {
 	Force     *bool
 }
 
-// NewGlobalOptions creates a new GlobalOptions instance from raw values.
-// This is useful when loading options from configuration files or other sources.
-// Any nil values will use the corresponding defaults.
-func NewGlobalOptions(args GlobalOptionsArgs) (*GlobalOptions, error) {
+// NewGlobalOptions creates a new GlobalOptions instance from raw values. This is
+// useful when loading options from configuration files or other sources. Any nil
+// values will use the corresponding defaults.
+//
+// TODO: Global options in their raw form are being used inside app options
+//
+//	INSTEAD OF being converted to their parsed forms. NEED TO FIX THIS
+func NewGlobalOptions(args GlobalOptionsArgs) *GlobalOptions {
 	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
-	v, err := ParseVerbosity(verbosity)
-	if err != nil {
-		return nil, err
-	}
-
 	return &GlobalOptions{
 		quiet:     ptr(valueOrDefault(args.Quiet, DefaultQuiet)),
-		verbosity: ptr(int(v)),
+		verbosity: ptr(verbosity),
 		timeout:   ptr(valueOrDefault(args.Timeout, DefaultTimeout)),
 		dryRun:    ptr(valueOrDefault(args.DryRun, DefaultDryRun)),
 		force:     ptr(valueOrDefault(args.Force, DefaultForce)),
-	}, nil
+	}
 }
 
 func (o *GlobalOptions) Timeout() time.Duration {

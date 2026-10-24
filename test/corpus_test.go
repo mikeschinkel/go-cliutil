@@ -44,7 +44,7 @@ func TestFuzzCorpus(t *testing.T) {
 		dryRun := parts[3] == "true"
 		force := parts[4] == "true"
 
-		_, _ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
+		_ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
 			Quiet:     &quiet,
 			Verbosity: &verbosity,
 			Timeout:   &timeout,

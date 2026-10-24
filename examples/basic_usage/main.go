@@ -10,11 +10,7 @@ import (
 // Example CLI application demonstrating go-cliutil basic usage
 func main() {
 	// Create CLI options with defaults
-	opts, err := cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{})
-	if err != nil {
-		cliutil.Stderrf("Error: %v\n", err)
-		os.Exit(1)
-	}
+	opts := cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{})
 
 	// Parse command line arguments
 	args := os.Args[1:]

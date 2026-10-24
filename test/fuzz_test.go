@@ -53,7 +53,7 @@ func FuzzNewGlobalOptions(f *testing.F) {
 
 	f.Fuzz(func(t *testing.T, quiet bool, verbosity, timeout int, dryRun, force bool) {
 		// Just ensure it doesn't panic
-		_, _ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
+		_ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
 			Quiet:     &quiet,
 			Verbosity: &verbosity,
 			Timeout:   &timeout,
