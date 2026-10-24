@@ -93,3 +93,8 @@ statement = "go-cliutil's root and examples/basic_usage modules have no replace 
 id = "P19"
 kind = "deliverable"
 statement = "go-cliutil's root module is tagged v0.3.0 and pushed, after Mike agrees to the tag"
+
+[[item]]
+id = "P20"
+kind = "exclusion"
+statement = "Does not push a tag Mike has not seen and agreed to"
