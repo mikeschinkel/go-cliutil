@@ -73,3 +73,8 @@ statement = "test/go.mod replaces go-cliutil with .., so the test module builds 
 id = "P15"
 kind = "deliverable"
 statement = "examples/modal_demo/ is removed entirely along with climenu, instead of kept as an all-comments module"
+
+[[item]]
+id = "P16"
+kind = "deliverable"
+statement = "go-cliutil's .gitignore ignores Endless's per-checkout state (.endless/worktrees/, tmp/, logs/, worktree.json, worktree.lock)"
