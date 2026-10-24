@@ -98,3 +98,8 @@ statement = "Mike is told go-cliutil's root module is ready to tag v0.3.0: repla
 id = "P20"
 kind = "exclusion"
 statement = "Does not create or push a tag; Mike does the tagging"
+
+[[item]]
+id = "P21"
+kind = "deliverable"
+statement = "go-cliutil's Test and Release workflows skip the test/ module until go-testutil v0.3.0 is published, so a Release run for root v0.3.0 can pass"
