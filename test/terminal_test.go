@@ -1,4 +1,4 @@
-package cliutil_test
+package test
 
 import (
 	"fmt"
