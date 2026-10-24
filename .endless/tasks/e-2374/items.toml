@@ -63,3 +63,8 @@ statement = "go-cliutil requires go-dt v0.6.0, the first tag that ships LogOnErr
 id = "P13"
 kind = "deliverable"
 statement = "test/buffered_writer_test.go's concurrent-access stderr check uses CountErrorLines(), not CountPrintLines()"
+
+[[item]]
+id = "P14"
+kind = "deliverable"
+statement = "test/go.mod replaces go-cliutil with .., so the test module builds the checkout it sits in, worktrees included"
