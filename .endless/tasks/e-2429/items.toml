@@ -11,3 +11,8 @@ statement = "go-cliutil's root, test/ and examples/basic_usage modules have no r
 id = "P2"
 kind = "deliverable"
 statement = "Every require of a mikeschinkel module in those go.mod files names a tag that exists on its GitHub remote"
+
+[[item]]
+id = "P3"
+kind = "deliverable"
+statement = "Each go-cliutil module whose contents changed since its last tag is tagged and pushed, with the version Mike agreed"
