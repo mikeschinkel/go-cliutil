@@ -53,3 +53,8 @@ statement = "Does not use git stash"
 id = "P11"
 kind = "deliverable"
 statement = "The report to the user groups the changes by module, each directory with its own go.mod being a separate, independently versioned module, and lists every module whose contents change"
+
+[[item]]
+id = "P12"
+kind = "deliverable"
+statement = "go-cliutil requires go-dt v0.6.0, the first tag that ships LogOnErr/LogOnErrFunc, in the root, test and basic_usage modules"
