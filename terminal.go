@@ -106,9 +106,7 @@ end:
 // MatchesAny checks if this KeyPress matches any acceptable key
 // Returns the matched key string and true if found, empty string and false otherwise
 func (kp KeyPress) MatchesAny(acceptable []string) (matched string, ok bool) {
-	var keyStr string
-
-	keyStr = kp.String()
+	keyStr := kp.String()
 	if keyStr == "" {
 		goto end
 	}

@@ -589,7 +589,7 @@ func (e entry) Error() (s string) {
 		if i != 0 {
 			meta.WriteString(", ")
 		}
-		meta.WriteString(fmt.Sprintf(" %s=%v", pair.k, pair.v))
+		_, _ = fmt.Fprintf(&meta, " %s=%v", pair.k, pair.v)
 	}
 	s = sb.String()
 	if meta.Len() > 0 {

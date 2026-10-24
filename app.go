@@ -7,11 +7,12 @@ import (
 )
 
 type App struct {
-	Writer  Writer
-	Logger  *slog.Logger
-	Info    appinfo.AppInfo
-	Options Options
-	RunFunc func([]string) error
+	Writer      Writer
+	Logger      *slog.Logger
+	Info        appinfo.AppInfo
+	Options     Options
+	RunFunc     func([]string) error
+	initialized bool // Only here to bypass staticheck S1016 related to AppArgs
 }
 
 type AppArgs struct {
@@ -24,11 +25,12 @@ type AppArgs struct {
 
 func NewApp(args AppArgs) App {
 	return App{
-		Writer:  args.Writer,
-		Logger:  args.Logger,
-		Info:    args.Info,
-		Options: args.Options,
-		RunFunc: args.RunFunc,
+		Writer:      args.Writer,
+		Logger:      args.Logger,
+		Info:        args.Info,
+		Options:     args.Options,
+		RunFunc:     args.RunFunc,
+		initialized: true,
 	}
 }
 
