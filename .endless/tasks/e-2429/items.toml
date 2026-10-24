@@ -16,3 +16,8 @@ statement = "Every require of a mikeschinkel module in those go.mod files names 
 id = "P3"
 kind = "deliverable"
 statement = "Each go-cliutil module whose contents changed since its last tag is tagged and pushed, with the version Mike agreed"
+
+[[item]]
+id = "P4"
+kind = "deliverable"
+statement = "test/go.mod keeps its in-repo replace of go-cliutil with .."
