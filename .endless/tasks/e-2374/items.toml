@@ -68,3 +68,8 @@ statement = "test/buffered_writer_test.go's concurrent-access stderr check uses 
 id = "P14"
 kind = "deliverable"
 statement = "test/go.mod replaces go-cliutil with .., so the test module builds the checkout it sits in, worktrees included"
+
+[[item]]
+id = "P15"
+kind = "deliverable"
+statement = "examples/modal_demo/ is removed entirely along with climenu, instead of kept as an all-comments module"
