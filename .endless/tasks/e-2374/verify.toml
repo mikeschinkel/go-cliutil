@@ -1,0 +1,15 @@
+# Verification suite for E-2374 — landing main's uncommitted changes.
+#
+# One TAP check rather than gotest checks: go-cliutil's go.mod files replace
+# go-dt and go-testutil with sibling checkouts (../go-dt, ../../go-dt, ...),
+# and from a worktree under .endless/worktrees/ those relative paths resolve to
+# nothing, so `go test` cannot even set up. suite.sh builds a throwaway go.work
+# that points those replaces at the real sibling checkouts, then runs the
+# modules' tests and builds the dependents against this branch.
+schema = 1
+task   = "E-2374"
+
+[[check]]
+runner  = "sh"
+command = "bash \"$ENDLESS_VERIFY_DIR\"/suite.sh"
+format  = "tap"
