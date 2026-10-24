@@ -15,13 +15,13 @@ func TestBufferedWriter_Basic(t *testing.T) {
 	// Test basic Printf
 	writer.Printf("Hello %s", "World")
 	if !writer.ContainsStdout("Hello World") {
-		t.Errorf("Expected stdout to contain 'Hello World', got: %q", writer.GetStdout())
+		t.Errorf("Expected stdout to contain 'Hello World', got: %q", writer.GetPrintOutput())
 	}
 
 	// Test basic Errorf
 	writer.Errorf("Error: %s", "something failed")
 	if !writer.ContainsStderr("Error: something failed") {
-		t.Errorf("Expected doterr to contain 'Error: something failed', got: %q", writer.GetStderr())
+		t.Errorf("Expected doterr to contain 'Error: something failed', got: %q", writer.GetErrorOutput())
 	}
 }
 
@@ -106,7 +106,7 @@ func TestBufferedWriter_ErrorFormatting(t *testing.T) {
 	err := errors.New("line 1\nline 2\nline 3")
 	writer.Errorf("Error occurred: %v", err)
 
-	stderr := writer.GetStderr()
+	stderr := writer.GetErrorOutput()
 	if !strings.Contains(stderr, "line 1; line 2; line 3") {
 		t.Errorf("Expected error newlines to be replaced with semicolons, got: %q", stderr)
 	}
@@ -121,21 +121,21 @@ func TestBufferedWriter_HelperMethods(t *testing.T) {
 	writer.Printf("\n") // Empty line should be ignored
 	writer.Printf("Line 3\n")
 
-	lines := writer.GetStdoutLines()
+	lines := writer.GetPrintLines()
 	if len(lines) != 3 {
 		t.Errorf("Expected 3 non-empty lines, got %d: %v", len(lines), lines)
 	}
 
-	if writer.CountStdoutLines() != 3 {
-		t.Errorf("Expected CountPrintLines() to return 3, got %d", writer.CountStdoutLines())
+	if writer.CountPrintLines() != 3 {
+		t.Errorf("Expected CountPrintLines() to return 3, got %d", writer.CountPrintLines())
 	}
 
 	// Test reset
 	writer.Reset()
-	if writer.GetStdout() != "" {
+	if writer.GetPrintOutput() != "" {
 		t.Error("Expected stdout to be empty after Reset()")
 	}
-	if writer.GetStderr() != "" {
+	if writer.GetErrorOutput() != "" {
 		t.Error("Expected doterr to be empty after Reset()")
 	}
 }
@@ -148,7 +148,7 @@ func TestBufferedWriter_SharedBuffers(t *testing.T) {
 	writer.V2().Printf("V2 message\n")
 	writer.V3().Printf("V3 message\n")
 
-	stdout := writer.GetStdout()
+	stdout := writer.GetPrintOutput()
 	if !strings.Contains(stdout, "Main message") {
 		t.Error("Main message should be in stdout")
 	}
@@ -185,10 +185,10 @@ func TestBufferedWriter_ConcurrentAccess(t *testing.T) {
 	<-done
 
 	// Just verify we don't crash and have some content
-	if writer.CountStdoutLines() == 0 {
+	if writer.CountPrintLines() == 0 {
 		t.Error("Expected some stdout lines from concurrent writes")
 	}
-	if writer.CountStderrLines() == 0 {
+	if writer.CountErrorLines() == 0 {
 		t.Error("Expected some doterr lines from concurrent writes")
 	}
 }

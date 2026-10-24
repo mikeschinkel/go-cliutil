@@ -16,7 +16,7 @@ func Stderrf(format string, args ...any) {
 }
 func Stdiof(w io.Writer, format string, args ...any) {
 	_, err := fmt.Fprintf(w, format, args...)
-	dt.LogOnError(err)
+	dt.LogOnErr(err)
 }
 
 func Stdout(args ...any) {
@@ -27,5 +27,5 @@ func Stderr(args ...any) {
 }
 func Stdio(w io.Writer, args ...any) {
 	_, err := fmt.Fprint(w, args...)
-	dt.LogOnError(err)
+	dt.LogOnErr(err)
 }

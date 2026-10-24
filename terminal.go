@@ -57,7 +57,9 @@ func EnterRawMode(fd uintptr) (restore func(), err error) {
 	}
 
 	restore = func() {
-		dt.LogOnError(term.Restore(int(fd), oldState))
+		dt.LogOnErrFunc(func() error {
+			return term.Restore(int(fd), oldState)
+		})
 	}
 
 end:
