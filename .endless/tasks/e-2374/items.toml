@@ -92,7 +92,7 @@ statement = "go-cliutil's root and examples/basic_usage modules have no replace 
 [[item]]
 id = "P19"
 kind = "deliverable"
-statement = "go-cliutil's root module is tagged v0.3.0 and pushed, after Mike agrees to the tag"
+statement = "Mike is told go-cliutil's root module is ready to tag v0.3.0: replaces dropped, requires published, tests green with GOWORK=off. Mike runs the tagging himself."
 
 [[item]]
 id = "P20"
