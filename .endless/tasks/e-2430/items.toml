@@ -11,3 +11,8 @@ statement = "test/go.mod requires published go-testutil and go-cliutil tags and 
 id = "P2"
 kind = "deliverable"
 statement = "test/go.mod keeps its in-repo replace of go-cliutil with .."
+
+[[item]]
+id = "P3"
+kind = "deliverable"
+statement = "The test module builds and passes its tests with GOWORK=off"
