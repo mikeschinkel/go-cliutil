@@ -3,8 +3,9 @@
 # E-2374's suite, run by `endless task verify E-2374` through verify.toml.
 # Emits TAP on stdout; diagnostics go to stderr.
 #
-# It proves the tree this suite sits in: the four landed groups build and pass
-# in every module, the folded fixes hold, the dependents build against it, and
+# It proves the tree this suite sits in: every module builds and passes, the
+# root and examples build from published go-dt tags, the folded fixes hold,
+# Endless and the modules in its dependency repos build against it, and
 # wip/E-2374 still holds main's uncommitted work until main is cleared.
 
 set -u
@@ -19,7 +20,6 @@ SCRATCH="$(mktemp -d)"
 trap 'rm -rf "${SCRATCH}"' EXIT
 
 export GOEXPERIMENT=jsonv2
-export GOFLAGS=-mod=readonly
 
 N=0
 FAILED=0
@@ -42,20 +42,26 @@ refute() {
     if out="$("$@" 2>&1)"; then not_ok "${desc}" "${out}"; else ok "${desc}"; fi
 }
 
-# The worktree's own modules, with go-cliutil's sibling replaces pointed at
-# the real checkouts beside the main checkout.
-cat > "${SCRATCH}/cliutil.work" <<EOF
+# The root and examples/basic_usage modules build from published tags alone.
+# test/ still reaches go-testutil through a sibling-checkout replace until
+# go-testutil v0.3.0 is published (E-2430), and from a worktree that relative
+# path resolves to nothing, so test/ runs through a go.work that points it at
+# the real checkout.
+cat > "${SCRATCH}/test.work" <<EOF
 go 1.25.3
-use ${WT}
 use ${WT}/test
-use ${WT}/examples/basic_usage
-replace github.com/mikeschinkel/go-dt => ${PKGS}/go-dt
-replace github.com/mikeschinkel/go-dt/dtx => ${PKGS}/go-dt/dtx
-replace github.com/mikeschinkel/go-dt/appinfo => ${PKGS}/go-dt/appinfo
 replace github.com/mikeschinkel/go-testutil => ${PKGS}/go-testutil
 EOF
 
-in_module() { (cd "${WT}/$1" && shift && GOWORK="${SCRATCH}/cliutil.work" "$@"); }
+in_module() {
+    local m="$1"
+    shift
+    if [[ "${m}" == test ]]; then
+        (cd "${WT}/test" && GOWORK="${SCRATCH}/test.work" "$@")
+    else
+        (cd "${WT}/${m}" && GOWORK=off "$@")
+    fi
+}
 
 # --- Fail fast: the modules' own tests -------------------------------------
 for m in . test examples/basic_usage; do
@@ -69,14 +75,41 @@ fi
 for m in . test examples/basic_usage; do
     check "go vet is clean in module ${m}" in_module "${m}" go vet ./...
 done
+check "golangci-lint v2.6.2 reports no issues in the root module" \
+    in_module . go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.6.2 run ./...
 check "gofmt reports no unformatted files" test -z "$(gofmt -l "${WT}" 2>/dev/null | grep -v '/\.endless/')"
 
-# --- G1: go-dt v0.6.0 and the go-testutil renames, with folded fixes --------
-refute "no code calls the removed dt.LogOnError" grep -rn --include='*.go' 'dt\.LogOnError' "${WT}" --exclude-dir=.endless
+# --- Built from published tags ---------------------------------------------
+refute "the root module has no replace directive" grep -q '^replace' "${WT}/go.mod"
+check "examples/basic_usage replaces only go-cliutil, with ../.." \
+    test "$(grep '^replace' "${WT}/examples/basic_usage/go.mod")" = 'replace github.com/mikeschinkel/go-cliutil => ../..'
+refute "test/go.mod no longer replaces go-dt or go-dt/dtx" \
+    grep -Eq '^replace github.com/mikeschinkel/go-dt' "${WT}/test/go.mod"
 for m in . test examples/basic_usage; do
-    check "module ${m} requires go-dt v0.6.0, the first tag with LogOnErr" \
-        grep -Eq 'github.com/mikeschinkel/go-dt v0\.6\.0' "${WT}/${m}/go.mod"
+    check "module ${m} requires go-dt v0.6.1" \
+        grep -Eq 'github.com/mikeschinkel/go-dt v0\.6\.1' "${WT}/${m}/go.mod"
+    check "module ${m} requires dtx v0.2.2" \
+        grep -Eq 'github.com/mikeschinkel/go-dt/dtx v0\.2\.2' "${WT}/${m}/go.mod"
+    check "module ${m} requires appinfo v0.3.0" \
+        grep -Eq 'github.com/mikeschinkel/go-dt/appinfo v0\.3\.0' "${WT}/${m}/go.mod"
 done
+
+# --- go-testutil: only test/ uses it ----------------------------------------
+refute "the root module does not require go-testutil" grep -q 'go-testutil' "${WT}/go.mod"
+check "terminal_test.go lives in the test module" test -f "${WT}/test/terminal_test.go"
+refute "no terminal_test.go remains in the root module" test -e "${WT}/terminal_test.go"
+# corpus_step_skipped <workflow file>: the corpus step's next line disables it.
+corpus_step_skipped() {
+    grep -A1 'name: Run fuzz corpus regression tests' "$1" | grep -Fq 'if: ${{ false }}'
+}
+for wf in test release; do
+    check "${wf}.yml skips the test/ corpus step until go-testutil v0.3.0 exists" \
+        corpus_step_skipped "${WT}/.github/workflows/${wf}.yml"
+done
+
+# --- G1: LogOnErr and the go-testutil renames, with folded fixes -----------
+refute "no code calls the removed dt.LogOnError" \
+    grep -rn --include='*.go' --exclude-dir=.endless 'dt\.LogOnError' "${WT}"
 check "test/go.mod replaces go-cliutil with .." \
     grep -Eq '^replace github.com/mikeschinkel/go-cliutil => \.\.$' "${WT}/test/go.mod"
 check "the concurrent-access stderr check counts error lines" \
