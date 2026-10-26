@@ -1,9 +1,9 @@
-github.com/mikeschinkel/go-dt v0.6.0 h1:Zfy0UQ3lR8qLpPHD4vlb2TT+l1ZAqDst9swHC7hg3rE=
-github.com/mikeschinkel/go-dt v0.6.0/go.mod h1:KJYRXePwYdBr57WhtRgDagOb7Ih/ORxE/kG4Mg6c8iE=
-github.com/mikeschinkel/go-dt/appinfo v0.2.1 h1:5BB8HQtGFyZ0qCG2DoBSeDBc9CblEJefUoR/4WxZXiw=
-github.com/mikeschinkel/go-dt/appinfo v0.2.1/go.mod h1:OW7bt0cwIdM8brbREnLByJJlODESIaHsEY+pvXxDEiQ=
-github.com/mikeschinkel/go-dt/dtx v0.2.1 h1:OsFs0kHuEZuSJwGyTI+LDZVABf5pAvcPXDuEI08j5PY=
-github.com/mikeschinkel/go-dt/dtx v0.2.1/go.mod h1:mFuyP/9gMzCKaLXhFWOXHngR2ou2jun7yE67NZRBhW8=
+github.com/mikeschinkel/go-dt v0.6.1 h1:2akDhK0Y31HWn/1+rf/0252eNaW6VyZ2rN+bvsE9eJY=
+github.com/mikeschinkel/go-dt v0.6.1/go.mod h1:KJYRXePwYdBr57WhtRgDagOb7Ih/ORxE/kG4Mg6c8iE=
+github.com/mikeschinkel/go-dt/appinfo v0.3.0 h1:5o1ZdfyXXw1yYbErwnYsoU8Y8t/OzSTGdHiLZVbEsHM=
+github.com/mikeschinkel/go-dt/appinfo v0.3.0/go.mod h1:MZ+j6CI5nLxsX7noZADpBkcZWUzKvqnKIn/fPB/TLh0=
+github.com/mikeschinkel/go-dt/dtx v0.2.2 h1:S21WJLpaXo11kkKLyCNt2kg5InCw5tfrb0Yauct6n60=
+github.com/mikeschinkel/go-dt/dtx v0.2.2/go.mod h1:XXzvgWxQFf9OgzDV+WdzZyTEnlJLrRCh0FBGKDuww3k=
 golang.org/x/sys v0.41.0 h1:Ivj+2Cp/ylzLiEU89QhWblYnOE9zerudt9Ftecq2C6k=
 golang.org/x/sys v0.41.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
 golang.org/x/term v0.40.0 h1:36e4zGLqU4yhjlmxEaagx2KuYbJq3EwY8K943ZsHcvg=
