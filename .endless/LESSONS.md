@@ -28,3 +28,7 @@ I saved two corrections as Claude Code memory files in Claude Code's per-project
 ### [2026-10-27] Explain what findings mean before listing details
 During E-2374 (go-cliutil), I reported main's working tree drifting from the wip snapshot and staged .endless gitlinks as raw facts: diffs, file modes, index entries. My options were phrased in terms Mike hadn't seen. He said it 'gave me a lot of minute details but did not explain to me what it actually all meant, and your options all presented details I do not understand.' When surfacing a finding, first say in plain words what it means for him and whether anything is at risk, then give options in those same plain terms; keep low-level evidence out unless he asks for it.
 - **Project**: go-cliutil
+
+### [2026-10-27] Fetch remote tags before claiming a version is unreleased
+During E-2374 (go-cliutil), I said go-cliutil's latest tag was v0.2.1 and that v0.3.0 did not exist, from `git tag` in a local clone that hadn't fetched tags. v0.3.0 had been released on GitHub on 2025-12-05. That wrong fact shaped the release analysis and the 'ready to tag v0.3.0' handoff; Mike caught it from the GitHub releases page. Before stating which versions exist or proposing a next version, read the remote's tags (`git ls-remote --tags origin`, or fetch tags first).
+- **Project**: go-cliutil
