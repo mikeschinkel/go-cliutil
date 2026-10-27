@@ -6,3 +6,8 @@
 id = "P1"
 kind = "deliverable"
 statement = "go-cliutil has a justfile with a recipe for every target the Makefile had, each doing what the target did"
+
+[[item]]
+id = "P2"
+kind = "deliverable"
+statement = "go-cliutil has no Makefile, and nothing in the repo tells anyone to run make"
