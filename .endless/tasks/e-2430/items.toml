@@ -20,7 +20,7 @@ statement = "The test module builds and passes its tests with GOWORK=off"
 [[item]]
 id = "P4"
 kind = "exclusion"
-statement = "Does not push a tag Mike has not seen and agreed to"
+statement = "Does not create or push a tag; Mike does the tagging"
 
 [[item]]
 id = "P5"
