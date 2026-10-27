@@ -1,0 +1,1 @@
+Main's Test workflow fails Lint: golangci-lint 2.15.0 (CI's 'latest') flags QF1012 at writer_logger.go:94,97, which the Makefile's pinned v2.6.2 did not. User chose to fix it in E-2374.
