@@ -108,3 +108,8 @@ statement = "go-cliutil's Test and Release workflows skip the test/ module until
 id = "P22"
 kind = "deliverable"
 statement = "writer_logger.go writes with fmt.Fprintf, so golangci-lint 2.15.0, the version GitHub's Test workflow ran, reports no issues in the root module"
+
+[[item]]
+id = "P23"
+kind = "deliverable"
+statement = "The Makefile and test.yml pin the same golangci-lint version, v2.15.0"
