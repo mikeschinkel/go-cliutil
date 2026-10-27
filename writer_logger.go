@@ -91,10 +91,10 @@ func (wl WriterLogger) concatMsgAndArgs(caller string, msg string, args ...any) 
 	sb.WriteByte(';')
 	for i := 0; i < len(args); i += 2 {
 		if i == last && i == len(args)-1 {
-			sb.WriteString(fmt.Sprintf(" %v", args[i]))
+			_, _ = fmt.Fprintf(&sb, " %v", args[i])
 			goto end
 		}
-		sb.WriteString(fmt.Sprintf(" %s=%v", args[i], args[i+1]))
+		_, _ = fmt.Fprintf(&sb, " %s=%v", args[i], args[i+1])
 	}
 end:
 	return sb.String()
