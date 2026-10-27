@@ -11,3 +11,8 @@ statement = "go-cliutil has a justfile with a recipe for every target the Makefi
 id = "P2"
 kind = "deliverable"
 statement = "go-cliutil has no Makefile, and nothing in the repo tells anyone to run make"
+
+[[item]]
+id = "P3"
+kind = "deliverable"
+statement = "The justfile pins the same golangci-lint version as .github/workflows/test.yml"
