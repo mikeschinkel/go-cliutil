@@ -103,3 +103,8 @@ statement = "Does not create or push a tag; Mike does the tagging"
 id = "P21"
 kind = "deliverable"
 statement = "go-cliutil's Test and Release workflows skip the test/ module until go-testutil v0.3.0 is published, so a Release run for root v0.3.0 can pass"
+
+[[item]]
+id = "P22"
+kind = "deliverable"
+statement = "writer_logger.go writes with fmt.Fprintf, so golangci-lint 2.15.0, the version GitHub's Test workflow ran, reports no issues in the root module"
