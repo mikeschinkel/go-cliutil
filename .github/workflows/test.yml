@@ -105,5 +105,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: latest
+          # Pinned so a new linter release can't fail CI without a code change; keep in
+          # step with LINTER in the Makefile.
+          version: v2.15.0
           args: --timeout=5m

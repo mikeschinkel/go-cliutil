@@ -75,8 +75,11 @@ fi
 for m in . test examples/basic_usage; do
     check "go vet is clean in module ${m}" in_module "${m}" go vet ./...
 done
-check "golangci-lint v2.6.2 reports no issues in the root module" \
-    in_module . go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.6.2 run ./...
+check "golangci-lint v2.15.0 reports no issues in the root module" \
+    in_module . go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./...
+check "the Makefile and test.yml pin the same golangci-lint, v2.15.0" bash -c "
+    grep -q 'golangci-lint@v2.15.0\"' '${WT}/Makefile' &&
+    grep -q 'version: v2.15.0' '${WT}/.github/workflows/test.yml'"
 check "gofmt reports no unformatted files" test -z "$(gofmt -l "${WT}" 2>/dev/null | grep -v '/\.endless/')"
 
 # --- Built from published tags ---------------------------------------------

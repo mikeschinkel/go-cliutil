@@ -1,6 +1,6 @@
 .PHONY: help test test-unit test-corpus test-all lint build clean fmt vet tidy examples
 
-LINTER = "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.6.2"
+LINTER = "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0"
 
 # Default target
 help:
