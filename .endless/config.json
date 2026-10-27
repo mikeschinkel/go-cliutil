@@ -1,0 +1,16 @@
+{
+  "name": "go-cliutil",
+  "label": "CLIUtil Package for Go",
+  "description": "CLI Package for Go optimized for implementing CLIs for agentic use",
+  "language": "go",
+  "status": "active",
+  "dependencies": [],
+  "minimizer": {
+    "enabled": false,
+    "optimizer": false
+  },
+  "documents": {
+    "rules": []
+  },
+  "identity": "987f8569a98cd58ab1d9e5c624ace8c5797f982c"
+}

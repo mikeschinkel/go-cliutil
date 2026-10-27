@@ -34,3 +34,10 @@ go.work.sum
 # .idea/
 # .vscode/
 .DS_Store
+
+# endless (managed by `endless project init`)
+.endless/worktrees/
+.endless/tmp/
+.endless/logs/
+.endless/worktree.json
+.endless/worktree.lock
