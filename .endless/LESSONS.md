@@ -24,3 +24,7 @@ While filing follow-up tasks across repos for E-2289, I wrote contexts such as '
 ### [2026-10-17] Record corrections with endless lesson write, never in Claude Code memory files
 I saved two corrections as Claude Code memory files in Claude Code's per-project memory directory, following the global CLAUDE.md. Mike wants no memory writes: memory makes Endless behave better for him than for a product user on first install, and it hides the pain he needs to feel to fix the product. Corrections go to endless lesson write; facts about work go into Endless tasks or decisions.
 - **Project**: go-cliutil
+
+### [2026-10-27] Explain what findings mean before listing details
+During E-2374 (go-cliutil), I reported main's working tree drifting from the wip snapshot and staged .endless gitlinks as raw facts: diffs, file modes, index entries. My options were phrased in terms Mike hadn't seen. He said it 'gave me a lot of minute details but did not explain to me what it actually all meant, and your options all presented details I do not understand.' When surfacing a finding, first say in plain words what it means for him and whether anything is at risk, then give options in those same plain terms; keep low-level evidence out unless he asks for it.
+- **Project**: go-cliutil
