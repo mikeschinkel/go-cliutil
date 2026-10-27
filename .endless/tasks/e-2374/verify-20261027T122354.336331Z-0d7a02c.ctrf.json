@@ -1,0 +1,209 @@
+{
+  "results": {
+    "tool": {
+      "name": "endless"
+    },
+    "summary": {
+      "tests": 38,
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0,
+      "start": 0,
+      "stop": 0
+    },
+    "tests": [
+      {
+        "name": "go test -race passes in module .",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go test -race passes in module test",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go test -race passes in module examples/basic_usage",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module .",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module test",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module examples/basic_usage",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "golangci-lint v2.15.0 reports no issues in the root module",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the Makefile and test.yml pin the same golangci-lint, v2.15.0",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "gofmt reports no unformatted files",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the root module has no replace directive",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "examples/basic_usage replaces only go-cliutil, with ../..",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "test/go.mod no longer replaces go-dt or go-dt/dtx",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module . requires go-dt v0.6.1",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module . requires dtx v0.2.2",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module . requires appinfo v0.3.0",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module test requires go-dt v0.6.1",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module test requires dtx v0.2.2",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module test requires appinfo v0.3.0",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module examples/basic_usage requires go-dt v0.6.1",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module examples/basic_usage requires dtx v0.2.2",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "module examples/basic_usage requires appinfo v0.3.0",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the root module does not require go-testutil",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "terminal_test.go lives in the test module",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "no terminal_test.go remains in the root module",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "test.yml skips the test/ corpus step until go-testutil v0.3.0 exists",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "release.yml skips the test/ corpus step until go-testutil v0.3.0 exists",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "no code calls the removed dt.LogOnError",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "test/go.mod replaces go-cliutil with ..",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the concurrent-access stderr check counts error lines",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "NewGlobalOptions returns *GlobalOptions only",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "climenu/ is removed",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "examples/modal_demo/ is removed",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "nothing in the repo still names climenu or modal_demo",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "endless builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-testutil builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-testutil/test builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-doterr/cmd/sync-doterr builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "wip/E-2374 exists and holds the WIP snapshot commit",
+        "status": "passed",
+        "duration": 0
+      }
+    ]
+  }
+}
