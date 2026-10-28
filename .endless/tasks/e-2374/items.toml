@@ -113,3 +113,8 @@ statement = "writer_logger.go writes with fmt.Fprintf, so golangci-lint 2.15.0, 
 id = "P23"
 kind = "deliverable"
 statement = "The Makefile and test.yml pin the same golangci-lint version, v2.15.0"
+
+[[item]]
+id = "P24"
+kind = "deliverable"
+statement = "The initialization exit code is spelled ExitInitializationError"
