@@ -28,9 +28,9 @@ const (
 	ExitOptionsParseError = 1 // Command-line options parsing failed
 	ExitFlagsParseError   = 1 // Command-line flags parsing failed
 
-	ExitInitializeationError = 2 // Initialization error
-	ExitConfigLoadError      = 2 // Configuration file loading failed
-	ExitConfigParseError     = 3 // Configuration parsing/validation failed
+	ExitInitializationError = 2 // Initialization error
+	ExitConfigLoadError     = 2 // Configuration file loading failed
+	ExitConfigParseError    = 3 // Configuration parsing/validation failed
 
 	ExitExecutionError    = 4 // Runtime error during execution
 	ExitKnownRuntimeError = 4 // Expected/known runtime error during execution
