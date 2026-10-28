@@ -118,6 +118,12 @@ check "test/go.mod replaces go-cliutil with .." \
 check "the concurrent-access stderr check counts error lines" \
     grep -q 'CountErrorLines() == 0' "${WT}/test/buffered_writer_test.go"
 
+# --- Exit code spelling, fixed before v0.4.0 ------------------------------
+refute "no code uses the misspelled ExitInitializeationError" \
+    grep -rn --include='*.go' --exclude-dir=.endless 'ExitInitializeationError' "${WT}"
+check "exit_codes.go defines ExitInitializationError" \
+    grep -Eq '^\s*ExitInitializationError\s*=' "${WT}/exit_codes.go"
+
 # --- G3: NewGlobalOptions returns no error ---------------------------------
 check "NewGlobalOptions returns *GlobalOptions only" \
     grep -q '^func NewGlobalOptions(args GlobalOptionsArgs) \*GlobalOptions {' "${WT}/global_options.go"
