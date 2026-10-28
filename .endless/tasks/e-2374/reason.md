@@ -1,1 +1,1 @@
-Main's Test workflow fails Lint: golangci-lint 2.15.0 (CI's 'latest') flags QF1012 at writer_logger.go:94,97, which the Makefile's pinned v2.6.2 did not. User chose to fix it in E-2374.
+ExitInitializeationError is misspelled and new since v0.3.0; Mike asked to rename it to ExitInitializationError in E-2374 before tagging v0.4.0.
