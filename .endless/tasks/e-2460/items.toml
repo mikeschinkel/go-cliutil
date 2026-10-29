@@ -16,3 +16,8 @@ statement = "go-cliutil has no Makefile, and nothing in the repo tells anyone to
 id = "P3"
 kind = "deliverable"
 statement = "The justfile pins the same golangci-lint version as .github/workflows/test.yml"
+
+[[item]]
+id = "P4"
+kind = "deliverable"
+statement = "release.yml's generated release notes leave out commits that change only files under .endless/, using the git log pathspec ':(exclude).endless' as go-dt's release.yml does"
