@@ -32,3 +32,7 @@ During E-2374 (go-cliutil), I reported main's working tree drifting from the wip
 ### [2026-10-27] Fetch remote tags before claiming a version is unreleased
 During E-2374 (go-cliutil), I said go-cliutil's latest tag was v0.2.1 and that v0.3.0 did not exist, from `git tag` in a local clone that hadn't fetched tags. v0.3.0 had been released on GitHub on 2025-12-05. That wrong fact shaped the release analysis and the 'ready to tag v0.3.0' handoff; Mike caught it from the GitHub releases page. Before stating which versions exist or proposing a next version, read the remote's tags (`git ls-remote --tags origin`, or fetch tags first).
 - **Project**: go-cliutil
+
+### [2026-10-29] Search accepted decisions across all projects before raising a conflict as open
+While planning go-doterr's E-2383, Mike said his Q1-Q3 answers apply to all of go-pkgs. I raised as an open conflict that dropping replace directives contradicts go-pkgs/CLAUDE.md, and asked him to settle it. He had already settled it in at least three sessions, and it was recorded as accepted decision ED-1639 in the gomion project. I also proposed putting the rules in go-pkgs/CLAUDE.md as if it were my idea, when that was what he had asked for. Rule: before presenting a conflict or open question, run endless decision list --all and search for it; a decision filed in a sibling project (gomion for Go module policy) still governs. When the user asks whether to add something somewhere, the answer is to do it, not to recommend it back.
+- **Project**: go-cliutil
