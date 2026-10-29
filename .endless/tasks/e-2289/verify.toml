@@ -1,0 +1,14 @@
+# Verification suite for E-2289 — RegisterCommand returns nothing, and
+# FlagName conflicts are reported once, by Initialize.
+#
+# One TAP check rather than gotest checks: test/go.mod reaches go-testutil
+# through a sibling-checkout replace that resolves to nothing from a worktree,
+# so suite.sh builds a throwaway go.work for it, then runs every module's
+# tests and builds the dependents against this branch.
+schema = 1
+task   = "E-2289"
+
+[[check]]
+runner  = "sh"
+command = "bash \"$ENDLESS_VERIFY_DIR\"/suite.sh"
+format  = "tap"
