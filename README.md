@@ -327,9 +327,7 @@ func init() {
         },
     })
 
-    if err := cliutil.RegisterCommand(cmd); err != nil {
-        panic(err)
-    }
+    cliutil.RegisterCommand(cmd)
 }
 
 func (c *GreetCmd) Handle() error {
@@ -717,9 +715,7 @@ var dbCmd = &DbCmd{
 
 func init() {
     // Only register the already-initialized command
-    if err := cliutil.RegisterCommand(dbCmd); err != nil {
-        panic(err)
-    }
+    cliutil.RegisterCommand(dbCmd)
 }
 
 func (c *DbCmd) Handle() error {
@@ -776,9 +772,7 @@ func init() {
     })
 
     // Register with parent using package variable
-    if err := cliutil.RegisterCommand(cmd, dbCmd); err != nil {
-        panic(err)
-    }
+    cliutil.RegisterCommand(cmd, dbCmd)
 }
 
 func (c *MigrateCmd) Handle() error {
@@ -992,12 +986,10 @@ var migrateCmd = &MigrateCmd{...}  // Exported if grandchildren need it
 
 **5. Error Handling**
 
-Always check registration errors:
-```go
-if err := cliutil.RegisterCommand(cmd); err != nil {
-    panic(err)  // Registration errors are programming errors, panic is appropriate
-}
-```
+`RegisterCommand` only records the command, so it cannot fail and returns
+nothing. Definition errors, such as a `FlagName` that conflicts with a global
+flag, are reported by `cliutil.Initialize`, after every `init()` has run.
+Treat them as programming errors.
 
 #### Common Pitfalls
 
@@ -1176,6 +1168,11 @@ cmd.CmdBase = cliutil.NewCmdBase(cliutil.CmdArgs{
     ...
 })
 ```
+
+`cliutil.Initialize` adds each `FlagName` as a global bool flag. If that name is
+already a global flag (built-in, app-defined via `AddCLIOption`, or another
+command's `FlagName`), `Initialize` returns one error carrying the
+`command_name` and `flag_name`, whichever order things were registered in.
 
 ### Custom Validation
 
@@ -1409,9 +1406,7 @@ func init() {
     cmd := &MyCmd{}
     cmd.CmdBase = cliutil.NewCmdBase(...)
 
-    if err := cliutil.RegisterCommand(cmd); err != nil {
-        panic(err)
-    }
+    cliutil.RegisterCommand(cmd)
 }
 ```
 

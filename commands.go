@@ -46,6 +46,11 @@ type CommandHandler interface {
 func Initialize(w Writer) (err error) {
 	SetWriter(w)
 
+	err = RegisterFlagCommands()
+	if err != nil {
+		goto end
+	}
+
 	err = ValidateCommands()
 	if err != nil {
 		goto end
@@ -67,62 +72,56 @@ func RegisteredCommands() (cmds []Command) {
 // RegisterCommand registers a command with optional parent type declarations
 // First argument is the actual command, remaining arguments are parent type prototypes
 // Example: RegisterCommand(&JobRunCmd{...}, &JobCmd{})
-func RegisterCommand(cmd Command, parents ...Command) (err error) {
-	var errs []error
+//
+// RegisterCommand only records the command, so it is safe to call from init().
+// Validation happens later, in Initialize.
+func RegisterCommand(cmd Command, parents ...Command) {
 	var parent Command
-	var flagName string
-	var globalFS *FlagSet
-	var fd FlagDef
 
 	for _, parent = range parents {
 		cmd.AddParent(reflect.TypeOf(parent).Elem())
 	}
 	commands = append(commands, cmd)
 	commandsTypeMap[reflect.TypeOf(cmd).Elem()] = cmd
+}
 
-	// Auto-register flag commands as global GlobalOptions
-	flagName = cmd.FlagName()
-	if flagName == "" {
-		goto end
-	}
+// RegisterFlagCommands adds a global bool option for each registered command
+// that has a FlagName, so the flag appears in help and routes to the command.
+// It returns one error per FlagName that conflicts with an existing global flag.
+// Initialize calls it after every init() has run, so the result does not depend
+// on registration order.
+//
+// TODO: We plan to unexport RegisterFlagCommands, ValidateCommands and
+// BuildCommandTree; Initialize is the only intended caller.
+func RegisterFlagCommands() (err error) {
+	var errs []error
+	var cmd Command
+	var flagName string
 
-	// Validate: Check for conflict with existing global flags
-	globalFS = GetGlobalFlagSet()
-	if globalFS != nil {
-		for _, fd = range globalFS.FlagDefs {
-			if fd.Name == flagName {
-				errs = append(errs, fmt.Errorf("FlagName '%s' conflicts with existing global flag '%s'",
-					flagName, fd.Name))
-			}
+	for _, cmd = range commands {
+		flagName = cmd.FlagName()
+		if flagName == "" {
+			continue
+		}
+		err = AddCLIOption(FlagDef{
+			Name:  flagName,
+			Usage: fmt.Sprintf("Run %s command", cmd.Name()),
+			Bool:  new(bool),
+		})
+		if err != nil {
+			errs = append(errs, WithErr(err, ErrCommandRegistrationFailed, "command_name", cmd.Name()))
 		}
 	}
 
-	// TODO: Add more validations here in Part 8
-
-	// Auto-register as global CLIOption so it appears in help
-	err = AddCLIOption(FlagDef{
-		Name:  flagName,
-		Usage: fmt.Sprintf("Run %s command", cmd.Name()),
-		Bool:  new(bool),
-	})
-	if err != nil {
-		errs = append(errs, err)
-	}
-
-	err = CombineErrs(errs)
-	if err != nil {
-		err = WithErr(err, ErrCommandRegistrationFailed, "command_name", cmd.Name())
-		goto end
-	}
-
-end:
-	return err
+	return CombineErrs(errs)
 }
 
 var ErrCommandRegistrationFailed = errors.New("command registration failed")
 
 // BuildCommandTree builds the command hierarchy from registrations
-// This should be called by gmover.Initialize() after all init() functions complete
+// This should be called by Initialize() after all init() functions complete
+//
+// TODO: We plan to unexport this; see RegisterFlagCommands.
 func BuildCommandTree() (err error) {
 	//var topLevelCmds []Command
 	var parentCmd Command
@@ -172,6 +171,9 @@ end:
 
 type NULL = struct{}
 
+// ValidateCommands checks the registered commands for definition errors.
+//
+// TODO: We plan to unexport this; see RegisterFlagCommands.
 func ValidateCommands() (err error) {
 	var errs []error
 	var ok bool
