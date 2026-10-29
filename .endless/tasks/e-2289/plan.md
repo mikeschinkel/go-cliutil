@@ -17,8 +17,9 @@
    - A command FlagName plus an app `AddCLIOption` of the same name, added in either order before `Initialize`, gives one error from `Initialize` that names the command.
    - A FlagName command shows up in global help and routes as before.
 5. Fix the in-package callers (examples/, test/) so go-cliutil builds and its tests pass.
-6. Verify that downstream repos which don't call `RegisterCommand` still build against the worktree, using a scratch GOWORK.
-7. Downstream caller tasks are already filed and linked as blocked by this task.
+6. `README.md`: update every `RegisterCommand` example to the new signature. Drop the `if err := cliutil.RegisterCommand(...); err != nil` checks, and say that FlagName conflicts are now reported by `Initialize`.
+7. Verify that downstream repos which don't call `RegisterCommand` still build against the worktree, using a scratch GOWORK.
+8. Downstream caller tasks are already filed and linked as blocked by this task.
 
 ## Out of scope
 - A generic error-reconciliation hook. File it separately if needed.
