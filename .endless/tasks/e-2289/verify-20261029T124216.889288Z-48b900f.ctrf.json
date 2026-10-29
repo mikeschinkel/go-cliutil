@@ -1,0 +1,149 @@
+{
+  "results": {
+    "tool": {
+      "name": "endless"
+    },
+    "summary": {
+      "tests": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0,
+      "start": 0,
+      "stop": 0
+    },
+    "tests": [
+      {
+        "name": "go test -race passes in module .",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go test -race passes in module test",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go test -race passes in module examples/basic_usage",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "TestFlagCommands/builtin-conflict runs and passes",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "TestFlagCommands/two-commands runs and passes",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "TestFlagCommands/option-then-command runs and passes",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "TestFlagCommands/command-then-option runs and passes",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "TestFlagCommands/help-and-routing runs and passes",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module .",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module test",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go vet is clean in module examples/basic_usage",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "golangci-lint v2.15.0 reports no issues in the root module",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "gofmt reports no unformatted files",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "RegisterCommand returns nothing",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "RegisterFlagCommands is exported and returns an error",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "Initialize calls RegisterFlagCommands before ValidateCommands",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "RegisterFlagCommands, ValidateCommands and BuildCommandTree carry the unexport TODO",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "no in-repo Go code checks RegisterCommand's result",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the README no longer checks RegisterCommand's result",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "the README says Initialize reports FlagName conflicts",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "endless builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-cfgstore builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-logutil builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-logutil/test builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-testutil builds against this branch",
+        "status": "passed",
+        "duration": 0
+      },
+      {
+        "name": "go-pkgs/go-testutil/test builds against this branch",
+        "status": "passed",
+        "duration": 0
+      }
+    ]
+  }
+}
