@@ -44,3 +44,7 @@ Planning go-doterr's E-2383, Mike asked 'Can we not duplicate the effort and hav
 ### [2026-10-31] Link a Go package's tasks with blockers so their changes ship in one tagged release
 When filing or reviewing tasks for a Go package project, add blockers whenever leaving them out would make the user publish and tag the package more than once in a short span. Several versions in quick succession tell users the project is disorganized, so changes meant for one version should wait on each other and ship together. Changes that never reach a tagged module, such as edits confined to an unversioned examples/ or test/ module, need no such grouping.
 - **Project**: go-cliutil
+
+### [2026-10-31] Propose a task and wait for approval before filing it
+File a task only when the user asked for that task or approved it. When something seems worth a task, describe the proposed task and ask; the user may want a different fix (for an init/register help gap they wanted the duplicate command dropped, not documented).
+- **Project**: go-cliutil
