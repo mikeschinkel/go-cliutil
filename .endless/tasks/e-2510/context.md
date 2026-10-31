@@ -1,0 +1,1 @@
+gomion cannot drop its local replace directive for go-cliutil until its work is committed, pushed and tagged on GitHub.
