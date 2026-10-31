@@ -48,3 +48,7 @@ When filing or reviewing tasks for a Go package project, add blockers whenever l
 ### [2026-10-31] Propose a task and wait for approval before filing it
 File a task only when the user asked for that task or approved it. When something seems worth a task, describe the proposed task and ask; the user may want a different fix (for an init/register help gap they wanted the duplicate command dropped, not documented).
 - **Project**: go-cliutil
+
+### [2026-10-31] Report only actionable items and questions the user must answer
+In replies, give only what the user must act on and the questions only they can answer. Leave out background, explanations of what was found or done, and offers of further summaries; the user will ask when something is unclear. Said while preparing the go-pkgs dependencies for release, after long replies made the process far slower than doing it by hand.
+- **Project**: go-cliutil
