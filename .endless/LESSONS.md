@@ -40,3 +40,7 @@ While planning go-doterr's E-2383, Mike said his Q1-Q3 answers apply to all of g
 ### [2026-10-29] Read the user's request as written, and don't cite a plan as a rule binding the user
 Planning go-doterr's E-2383, Mike asked 'Can we not duplicate the effort and have E-2383 also update release.yml?', meaning duplicated effort was acceptable. I read it as him wanting to avoid duplication, argued against the edit, and cited E-2465's plan item forbidding hand-edits to generated workflows as if it bound him. A plan is guidance for the agent working it, not a rule for the user; the user can change it at any time. When a request's phrasing is ambiguous, take the reading that does what was asked, or ask, rather than attributing a goal the user didn't state.
 - **Project**: go-cliutil
+
+### [2026-10-31] Link a Go package's tasks with blockers so their changes ship in one tagged release
+When filing or reviewing tasks for a Go package project, add blockers whenever leaving them out would make the user publish and tag the package more than once in a short span. Several versions in quick succession tell users the project is disorganized, so changes meant for one version should wait on each other and ship together. Changes that never reach a tagged module, such as edits confined to an unversioned examples/ or test/ module, need no such grouping.
+- **Project**: go-cliutil
