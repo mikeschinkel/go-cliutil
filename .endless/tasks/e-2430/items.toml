@@ -31,3 +31,8 @@ statement = "go-cliutil's Test and Release workflows run the test/ module again"
 id = "P6"
 kind = "deliverable"
 statement = "Mike receives a ready notice with, for each module changed since its last tag, a proposed version, the reason for the bump, and a release description in active voice with backticks around code identifiers"
+
+[[item]]
+id = "P7"
+kind = "deliverable"
+statement = "CI's test/ step runs the whole test module (go test -v -race ./...), not only TestFuzzCorpus, so terminal, flag-command and buffered-writer tests run in CI too"
