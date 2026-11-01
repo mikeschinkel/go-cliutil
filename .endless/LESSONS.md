@@ -64,3 +64,7 @@ In go-cliutil E-2469 I reported missing blocked-by links across twelve tasks and
 ### [2026-11-01] Release handoff: notify Mike, propose version and description; never release
 While reviewing go-cliutil E-2430 and the release-prep tasks (E-2510 and siblings), Mike said a session must not do a release itself. When work is ready to tag, notify him that it is ready and give him the proposed version plus a release description he can paste, written in active voice with backticks around code identifiers. Mike tags through the Release workflow.
 - **Project**: go-cliutil
+
+### [2026-11-01] Go 1.27 is settled everywhere; do not raise it again
+During go-cliutil E-2469 I mentioned that gomion's local go.work still said go 1.25.7 and asked about raising it. Mike: everything bumps to Go 1.27, go.work files included, and he does not want to be asked about that again. Treat the go-pkgs baseline's Go 1.27 rule as applying to every Go file that carries a go line, raise it as part of whatever task touches it, and just report that you did.
+- **Project**: go-cliutil
