@@ -1,0 +1,107 @@
+# Verification suite for E-2460 — replace go-cliutil's Makefile with a justfile.
+# DO NOT EDIT unless you ARE E-2460. See .endless/tasks/CLAUDE.md.
+#
+# Proves that the justfile has a recipe for every target the Makefile had, that
+# each recipe does what its target did, that the Makefile is gone and nothing
+# tells anyone to run make, that lint and tidy reach every module with tidy
+# under GOWORK=off, and that the justfile and test.yml pin the same
+# golangci-lint and name each other.
+
+schema = 1
+task   = "E-2460"
+
+# --- Fail fast: the project's own tests, through the recipe that runs them ---
+[[check]]
+name   = "root module tests"
+runner = "gotest"
+paths  = ["./..."]
+
+[[check]]
+name   = "test module tests (unit and fuzz corpus)"
+runner = "gotest"
+dir    = "test"
+paths  = ["./..."]
+
+# --- P1: a recipe for every Makefile target, no GOEXPERIMENT -----------------
+[[check]]
+name   = "the justfile parses and lists its recipes"
+sh     = "just --summary | tr ' ' '\\n' | sort | tr '\\n' ' ' | sed 's/ $//'"
+equals = "build ci clean ensure-valid examples fmt help lint test test-all test-corpus test-unit tidy vet work"
+
+[[check]]
+name   = "GOEXPERIMENT appears nowhere outside .endless"
+sh     = "grep -rl GOEXPERIMENT --exclude-dir=.endless --exclude-dir=.git . || true"
+equals = ""
+
+# --- P2: no Makefile, and nothing says to run make ---------------------------
+[[check]]
+name   = "no Makefile in the repo"
+sh     = "ls Makefile makefile GNUmakefile 2>/dev/null || true"
+equals = ""
+
+[[check]]
+name   = "nothing outside .endless names the Makefile or a make target"
+sh     = "grep -rnE 'Makefile|(^|[^a-zA-Z`])make (help|test|test-unit|test-corpus|test-all|lint|fmt|vet|tidy|build|examples|clean|ci|ensure-valid)\\b' --exclude-dir=.endless --exclude-dir=.git . || true"
+equals = ""
+
+# --- P3, P6: one golangci-lint pin, in step, and named in the other's comment -
+[[check]]
+name   = "justfile and test.yml both pin golangci-lint v2.15.0"
+sh     = "{ grep -o 'golangci-lint@v[0-9.]*' justfile | sed 's/.*@//'; grep -E '^ *version: v' .github/workflows/test.yml | sed 's/.*version: //'; } | sort -u"
+equals = "v2.15.0"
+
+[[check]]
+name   = "the justfile's pin comment points at test.yml"
+sh     = "grep -c 'workflows/test.yml' justfile"
+equals = "1"
+
+[[check]]
+name   = "test.yml's pin comment names the justfile, not the Makefile"
+sh     = "grep -c 'in the justfile' .github/workflows/test.yml"
+equals = "1"
+
+# --- P5: lint and tidy reach every module; tidy runs GOWORK=off --------------
+[[check]]
+name   = "modules is found from go.mod files and names all three modules"
+sh     = "just --evaluate modules | sed 's/ $//'"
+equals = ". ./examples/basic_usage ./test"
+
+[[check]]
+name   = "lint and tidy loop over modules"
+sh     = "just --show lint | grep -c 'for module in' ; just --show tidy | grep -c 'for module in'"
+equals = "1\n1"
+
+[[check]]
+name   = "tidy runs go mod tidy with GOWORK=off"
+sh     = "just --show tidy | grep -c 'GOWORK=off go mod tidy'"
+equals = "1"
+
+[[check]]
+name = "just tidy leaves every go.mod and go.sum unchanged"
+sh   = "just tidy >/dev/null && git diff --exit-code -- go.mod go.sum test/go.mod test/go.sum examples/basic_usage/go.mod examples/basic_usage/go.sum"
+
+# --- P7: each recipe does what its make target did --------------------------
+[[check]]
+name = "just test-unit runs the root and test/ modules and writes ./coverage.txt"
+sh   = "rm -f coverage.txt && just test-unit 2>&1 | grep -cE '^ok  .(github.com/mikeschinkel/go-cliutil|test).' | grep -qx 2 && test -s coverage.txt"
+
+[[check]]
+name   = "just test-corpus runs TestFuzzCorpus in test/"
+sh     = "just test-corpus 2>&1 | grep -c -- '--- PASS: TestFuzzCorpus'"
+equals = "1"
+
+[[check]]
+name = "just vet, build and fmt succeed, and fmt changes nothing"
+sh   = "just vet && just build && just fmt && git diff --exit-code -- '*.go'"
+
+[[check]]
+name = "just examples builds basic_usage to ./bin/"
+sh   = "rm -rf bin && just examples && test -x bin/basic_usage"
+
+[[check]]
+name = "just clean removes ./bin and ./coverage.txt"
+sh   = "mkdir -p bin && touch coverage.txt && just clean && test ! -e bin && test ! -e coverage.txt"
+
+[[check]]
+name = "just lint is clean in every module at v2.15.0"
+sh   = "just lint 2>&1 | grep -c '^0 issues.' | grep -qx 3"
