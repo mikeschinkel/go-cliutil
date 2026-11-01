@@ -60,3 +60,7 @@ While doing E-2469 (adopt gomion's generated workflows in go-cliutil), gomion's 
 ### [2026-10-31] Add missing task relations without asking; do not pose a question the facts already answer
 In go-cliutil E-2469 I reported missing blocked-by links across twelve tasks and asked Mike whether to add them, and I presented moving E-2511 ahead of E-2510 as a decision even though I had already found that go-testutil's go.mod requires only published versions, which answers it. Mike: a missing blocked-by link is trivial and reversible, so add it and report that you did; asking first on matters that small wastes his attention. And when the facts you gathered settle a question, state the conclusion and act on it rather than handing the question back to him.
 - **Project**: go-cliutil
+
+### [2026-11-01] Release handoff: notify Mike, propose version and description; never release
+While reviewing go-cliutil E-2430 and the release-prep tasks (E-2510 and siblings), Mike said a session must not do a release itself. When work is ready to tag, notify him that it is ready and give him the proposed version plus a release description he can paste, written in active voice with backticks around code identifiers. Mike tags through the Release workflow.
+- **Project**: go-cliutil
