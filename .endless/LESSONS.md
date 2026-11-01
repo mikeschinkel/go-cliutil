@@ -52,3 +52,7 @@ File a task only when the user asked for that task or approved it. When somethin
 ### [2026-10-31] Report only actionable items and questions the user must answer
 In replies, give only what the user must act on and the questions only they can answer. Leave out background, explanations of what was found or done, and offers of further summaries; the user will ask when something is unclear. Said while preparing the go-pkgs dependencies for release, after long replies made the process far slower than doing it by hand.
 - **Project**: go-cliutil
+
+### [2026-10-31] Report a blocker instead of working around it
+While doing E-2469 (adopt gomion's generated workflows in go-cliutil), gomion's main checkout would not build: gommod imports go-tealeaves/teautils/teacolor, but the go-tealeaves checkout has teacolor as its own module and teautils v0.1.0 requires an unpublished teacolor v0.0.0. I started building gomion through a scratch go.work with an extra replace. Mike stopped me: a blockage is a blocker, and his #1 focus right now is cleaning up all the blockers, so do not work around one. When a task's prerequisite is broken, stop, report what is broken and why, and let him decide, rather than inventing a local workaround that hides the blocker.
+- **Project**: go-cliutil
