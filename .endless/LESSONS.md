@@ -56,3 +56,7 @@ In replies, give only what the user must act on and the questions only they can 
 ### [2026-10-31] Report a blocker instead of working around it
 While doing E-2469 (adopt gomion's generated workflows in go-cliutil), gomion's main checkout would not build: gommod imports go-tealeaves/teautils/teacolor, but the go-tealeaves checkout has teacolor as its own module and teautils v0.1.0 requires an unpublished teacolor v0.0.0. I started building gomion through a scratch go.work with an extra replace. Mike stopped me: a blockage is a blocker, and his #1 focus right now is cleaning up all the blockers, so do not work around one. When a task's prerequisite is broken, stop, report what is broken and why, and let him decide, rather than inventing a local workaround that hides the blocker.
 - **Project**: go-cliutil
+
+### [2026-10-31] Add missing task relations without asking; do not pose a question the facts already answer
+In go-cliutil E-2469 I reported missing blocked-by links across twelve tasks and asked Mike whether to add them, and I presented moving E-2511 ahead of E-2510 as a decision even though I had already found that go-testutil's go.mod requires only published versions, which answers it. Mike: a missing blocked-by link is trivial and reversible, so add it and report that you did; asking first on matters that small wastes his attention. And when the facts you gathered settle a question, state the conclusion and act on it rather than handing the question back to him.
+- **Project**: go-cliutil
