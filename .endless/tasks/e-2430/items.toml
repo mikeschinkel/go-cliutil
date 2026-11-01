@@ -41,3 +41,8 @@ statement = "CI's test/ step runs the whole test module (go test -v -race ./...)
 id = "P8"
 kind = "deliverable"
 statement = "go-cliutil meets the go-pkgs baseline: every go.mod says go 1.27.0, CI sets up Go 1.27, GOEXPERIMENT=jsonv2 is gone from the Makefile, workflows and infinite-fuzz.sh, and the Release workflow's commit list excludes .endless"
+
+[[item]]
+id = "P9"
+kind = "deliverable"
+statement = "The root and test modules vet and lint clean under Go 1.27 and golangci-lint v2.15.0: the non-constant Printf/Errorf format strings in terminal.go and writer_logger.go and the never-read slices in corpus_test.go are fixed"
