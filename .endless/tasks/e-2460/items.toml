@@ -16,3 +16,8 @@ statement = "go-cliutil has no Makefile, and nothing in the repo tells anyone to
 id = "P3"
 kind = "deliverable"
 statement = "The justfile pins the same golangci-lint version as .github/workflows/test.yml"
+
+[[item]]
+id = "P5"
+kind = "deliverable"
+statement = "The lint and tidy recipes run in every module (root, test/, examples/basic_usage), found as go-dt's modules variable finds them, and tidy runs with GOWORK=off"
