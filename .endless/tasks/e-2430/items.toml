@@ -36,3 +36,8 @@ statement = "Mike receives a ready notice with, for each module changed since it
 id = "P7"
 kind = "deliverable"
 statement = "CI's test/ step runs the whole test module (go test -v -race ./...), not only TestFuzzCorpus, so terminal, flag-command and buffered-writer tests run in CI too"
+
+[[item]]
+id = "P8"
+kind = "deliverable"
+statement = "go-cliutil meets the go-pkgs baseline: every go.mod says go 1.27.0, CI sets up Go 1.27, GOEXPERIMENT=jsonv2 is gone from the Makefile, workflows and infinite-fuzz.sh, and the Release workflow's commit list excludes .endless"
