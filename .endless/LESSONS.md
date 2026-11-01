@@ -76,3 +76,7 @@ In E-2430 (go-cliutil, 2026-11-01) I proposed a release description with backtic
 ### [2026-11-01] Check a module has _test.go files before giving it a gotest verify check
 In go-cliutil the root module has no _test.go files; its tests live in test/. A gotest check on such a module reports 0 tests and the verify runner counts that as a failure, and 'go test -coverprofile' on it prints a coverage line rather than 'ok' or '[no test files]', so a shell check grepping for 'ok' fails too. Run 'ls *_test.go' and the exact command once before writing the check, and point the fail-fast gotest check at the module that actually holds the tests.
 - **Project**: go-cliutil
+
+### [2026-11-01] Record agreed vocabulary as decisions when planning
+While planning E-2522 (renaming the project states to noted, initialized and ignored), I put the agreed terms only into the plan. Mike asked whether the plan or I should define them as decisions, since Endless has no glossary yet. When Mike and I settle user-facing vocabulary during planning, file it with endless decision add --decides <task>, so the definitions outlive the task's plan.
+- **Project**: go-cliutil
