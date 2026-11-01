@@ -10,12 +10,8 @@
 schema = 1
 task   = "E-2460"
 
-# --- Fail fast: the project's own tests, through the recipe that runs them ---
-[[check]]
-name   = "root module tests"
-runner = "gotest"
-paths  = ["./..."]
-
+# --- Fail fast: the project's own tests (they all live in test/; the root ----
+# --- module has no _test.go files) -------------------------------------------
 [[check]]
 name   = "test module tests (unit and fuzz corpus)"
 runner = "gotest"
@@ -83,7 +79,7 @@ sh   = "just tidy >/dev/null && git diff --exit-code -- go.mod go.sum test/go.mo
 # --- P7: each recipe does what its make target did --------------------------
 [[check]]
 name = "just test-unit runs the root and test/ modules and writes ./coverage.txt"
-sh   = "rm -f coverage.txt && just test-unit 2>&1 | grep -cE '^ok  .(github.com/mikeschinkel/go-cliutil|test).' | grep -qx 2 && test -s coverage.txt"
+sh   = "rm -f coverage.txt && out=$(just test-unit 2>&1) && echo \"$out\" | grep -q 'github.com/mikeschinkel/go-cliutil.*coverage:' && echo \"$out\" | grep -qE '^ok  .test.' && test -s coverage.txt"
 
 [[check]]
 name   = "just test-corpus runs TestFuzzCorpus in test/"
