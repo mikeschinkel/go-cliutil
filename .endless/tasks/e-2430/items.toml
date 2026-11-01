@@ -26,3 +26,8 @@ statement = "Does not create or push a tag; Mike does the tagging"
 id = "P5"
 kind = "deliverable"
 statement = "go-cliutil's Test and Release workflows run the test/ module again"
+
+[[item]]
+id = "P6"
+kind = "deliverable"
+statement = "Mike receives a ready notice with, for each module changed since its last tag, a proposed version, the reason for the bump, and a release description in active voice with backticks around code identifiers"
