@@ -1,9 +1,9 @@
 module test
 
-go 1.25.3
+go 1.27.0
 
 require (
-	github.com/mikeschinkel/go-cliutil v0.3.0
+	github.com/mikeschinkel/go-cliutil v0.4.0
 	github.com/mikeschinkel/go-testutil v0.3.0
 )
 
@@ -16,5 +16,3 @@ require (
 )
 
 replace github.com/mikeschinkel/go-cliutil => ..
-
-replace github.com/mikeschinkel/go-testutil => ../../../go-pkgs/go-testutil

@@ -17,9 +17,7 @@ help:
 	@echo "  make clean        - Clean build artifacts"
 	@echo "  make ci           - Run all CI checks (fmt, vet, lint, test-all)"
 
-# Go environment (requires jsonv2 experiment)
-GOEXPERIMENT ?= jsonv2
-GO := GOEXPERIMENT=$(GOEXPERIMENT) go
+GO := go
 
 ensure-valid: tidy test lint vet examples
 

@@ -1,0 +1,101 @@
+# Verification suite for E-2430 — point go-cliutil/test at go-testutil v0.3.0.
+# DO NOT EDIT unless you ARE E-2430. See .endless/tasks/CLAUDE.md.
+#
+# Proves that test/ resolves go-testutil from its published v0.3.0 tag (no
+# cross-repo replace), still tests the go-cliutil beside it, builds and passes
+# with GOWORK=off, that CI runs the test/ module again, and that the repo meets
+# the go-pkgs baseline this task brought it to (Go 1.27, no jsonv2 experiment,
+# golangci-lint v2.15.0 clean, release notes without Endless's commits).
+
+schema = 1
+task   = "E-2430"
+
+# --- Fail fast: the test module's own tests, from published tags (P3) -------
+[[check]]
+name   = "test module tests (unit and fuzz corpus)"
+runner = "gotest"
+dir    = "test"
+paths  = ["./..."]
+
+# --- P1, P2: test/go.mod requires published tags; its only replace is .. ----
+[[check]]
+name   = "test/go.mod requires go-cliutil v0.4.0 and go-testutil v0.3.0"
+sh     = "grep -cE 'github.com/mikeschinkel/(go-cliutil v0\\.4\\.0|go-testutil v0\\.3\\.0)$' test/go.mod"
+equals = "2"
+
+[[check]]
+name   = "test/go.mod's only replace is the in-repo go-cliutil => .."
+sh     = "grep '^replace' test/go.mod"
+equals = "replace github.com/mikeschinkel/go-cliutil => .."
+
+[[check]]
+name   = "no module in the repo replaces another repo's module"
+sh     = "grep -H '^replace' go.mod test/go.mod examples/basic_usage/go.mod | grep -vE '=> \\.\\.(/\\.\\.)?$' || true"
+equals = ""
+
+# --- P3: the test module builds, vets and tests with GOWORK=off --------------
+[[check]]
+name = "test module builds, vets and passes with GOWORK=off"
+sh   = "cd test && GOWORK=off go build ./... && GOWORK=off go vet ./... && GOWORK=off go test -count=1 ./..."
+
+[[check]]
+name = "go mod tidy leaves test/go.mod and test/go.sum unchanged"
+sh   = "cd test && GOWORK=off go mod tidy -diff"
+
+# --- P5: Test and Release workflows run the test/ module again ---------------
+[[check]]
+name   = "no workflow step is disabled with if: false"
+sh     = "grep -l 'if: ${{ false }}' .github/workflows/test.yml .github/workflows/release.yml || true"
+equals = ""
+
+[[check]]
+name   = "test.yml and release.yml each run go test in test/"
+sh     = "grep -lE 'working-directory: test$' .github/workflows/test.yml .github/workflows/release.yml | wc -l | tr -d ' '"
+equals = "2"
+
+[[check]]
+name   = "the test/ step runs the whole module, not only the corpus test"
+sh     = "grep -A2 'working-directory: test$' .github/workflows/test.yml .github/workflows/release.yml | grep -c 'go test -v -race ./\\.\\.\\.$'"
+equals = "2"
+
+# --- Baseline: Go 1.27, no jsonv2 experiment, lint clean, .endless excluded --
+[[check]]
+name   = "every go.mod says go 1.27.0"
+sh     = "grep -h '^go ' go.mod test/go.mod examples/basic_usage/go.mod | sort -u"
+equals = "go 1.27.0"
+
+[[check]]
+name   = "CI workflows set up Go 1.27"
+sh     = "grep -h \"GO_VERSION: '\" .github/workflows/test.yml .github/workflows/release.yml | sort -u | tr -d ' '"
+equals = "GO_VERSION:'1.27'"
+
+[[check]]
+name   = "GOEXPERIMENT appears nowhere outside .endless"
+sh     = "grep -rl GOEXPERIMENT --exclude-dir=.endless --exclude-dir=.git . || true"
+equals = ""
+
+[[check]]
+name   = "release notes exclude Endless's own commits"
+sh     = "grep -c \"':(exclude).endless'\" .github/workflows/release.yml"
+equals = "1"
+
+[[check]]
+name = "root module builds and vets with GOWORK=off (Go 1.27 printf check)"
+sh   = "GOWORK=off go build ./... && GOWORK=off go vet ./..."
+
+[[check]]
+name = "examples/basic_usage builds with GOWORK=off"
+sh   = "cd examples/basic_usage && GOWORK=off go build -o /dev/null . && GOWORK=off go vet ./..."
+
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the root module"
+sh   = "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the test module"
+sh   = "cd test && GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name   = "gofmt reports no unformatted files"
+sh     = "gofmt -l . | grep -v '/\\.endless/' || true"
+equals = ""

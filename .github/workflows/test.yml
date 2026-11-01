@@ -7,8 +7,7 @@ on:
     branches: [ main, dev ]
 
 env:
-  GO_VERSION: '1.25'
-  GOEXPERIMENT: jsonv2
+  GO_VERSION: '1.27'
 
 jobs:
   # Fast tests that run on every commit/PR
@@ -39,14 +38,12 @@ jobs:
         run: go mod download
 
       - name: Run unit tests
-        run: GOEXPERIMENT=${{ env.GOEXPERIMENT }} go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 
-      # Skipped until go-testutil v0.3.0 is published: the test/ module requires it, and
-      # go-testutil v0.3.0 can only be tagged after go-cliutil v0.3.0. E-2430 re-enables it.
-      - name: Run fuzz corpus regression tests
-        if: ${{ false }}
+      # test/ is its own module, so the root `go test ./...` does not reach it.
+      - name: Run test module tests (unit and fuzz corpus)
         working-directory: test
-        run: GOEXPERIMENT=${{ env.GOEXPERIMENT }} go test -v -run=TestFuzzCorpus
+        run: go test -v -race ./...
 
 
   # Note: For extended fuzzing, use the manual workflow or run locally with:
@@ -85,8 +82,8 @@ jobs:
         run: |
           go mod init example || true
           go mod edit -replace github.com/mikeschinkel/go-cliutil=../..
-          GOEXPERIMENT=${{ env.GOEXPERIMENT }} go mod tidy
-          GOEXPERIMENT=${{ env.GOEXPERIMENT }} go build -v .
+          go mod tidy
+          go build -v .
 
   # Lint and static analysis
   lint:

@@ -64,8 +64,6 @@ func testCorpus(t *testing.T, fuzzFuncName string, testFunc func(string) error) 
 	}
 
 	infiniteLoops := []string{}
-	parseErrors := []string{}
-	successes := []string{}
 
 	for _, entry := range entries {
 		if entry.IsDir() {
@@ -125,11 +123,9 @@ func testCorpus(t *testing.T, fuzzFuncName string, testFunc func(string) error) 
 
 		select {
 		case <-done:
-			// Test completed
+			// Test completed. A parse error is not a failure here; only a hang is.
 			if testErr != nil {
-				parseErrors = append(parseErrors, entry.Name())
-			} else {
-				successes = append(successes, entry.Name())
+				t.Logf("%-20s parse error: %v", entry.Name(), testErr)
 			}
 		case <-time.After(10 * time.Second):
 			infiniteLoops = append(infiniteLoops, entry.Name())

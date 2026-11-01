@@ -50,7 +50,7 @@ func (wl WriterLogger) ErrorError(msg string, args ...any) (err error) {
 	var ok bool
 	wl.Error(msg, args...)
 	msg = wl.concatMsgAndArgs("ErrorError", msg, args...)
-	wl.Errorf(msg + "\n")
+	wl.Errorf("%s\n", msg)
 	if len(args) == 0 {
 		err = errors.New(msg)
 		goto end
@@ -71,17 +71,17 @@ end:
 
 func (wl WriterLogger) WarnError(msg string, args ...any) {
 	wl.Warn(msg, args...)
-	wl.Errorf(wl.concatMsgAndArgs("WarnError", msg, args...) + "\n")
+	wl.Errorf("%s\n", wl.concatMsgAndArgs("WarnError", msg, args...))
 }
 
 func (wl WriterLogger) InfoPrint(msg string, args ...any) {
 	wl.Logger.Info(msg, args...)
-	wl.Writer.Printf(wl.concatMsgAndArgs("InfoPrint", msg, args...) + "\n")
+	wl.Writer.Printf("%s\n", wl.concatMsgAndArgs("InfoPrint", msg, args...))
 }
 
 func (wl WriterLogger) InfoLoud(msg string, args ...any) {
 	wl.Logger.Info(msg, args...)
-	wl.Writer.Loud().Printf(wl.concatMsgAndArgs("InfoPrint", msg, args...) + "\n")
+	wl.Writer.Loud().Printf("%s\n", wl.concatMsgAndArgs("InfoPrint", msg, args...))
 }
 
 func (wl WriterLogger) concatMsgAndArgs(caller string, msg string, args ...any) string {

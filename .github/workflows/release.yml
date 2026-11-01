@@ -13,8 +13,7 @@ on:
         type: string
 
 env:
-  GO_VERSION: '1.25'
-  GOEXPERIMENT: jsonv2
+  GO_VERSION: '1.27'
 
 jobs:
   # Re-run all tests to ensure current commit is good
@@ -45,14 +44,12 @@ jobs:
         run: go mod download
 
       - name: Run unit tests
-        run: GOEXPERIMENT=${{ env.GOEXPERIMENT }} go test -v -race ./...
+        run: go test -v -race ./...
 
-      # Skipped until go-testutil v0.3.0 is published: the test/ module requires it, and
-      # go-testutil v0.3.0 can only be tagged after go-cliutil v0.3.0. E-2430 re-enables it.
-      - name: Run fuzz corpus regression tests
-        if: ${{ false }}
+      # test/ is its own module, so the root `go test ./...` does not reach it.
+      - name: Run test module tests (unit and fuzz corpus)
         working-directory: test
-        run: GOEXPERIMENT=${{ env.GOEXPERIMENT }} go test -v -run=TestFuzzCorpus
+        run: go test -v -race ./...
 
       - name: Build examples
         run: |
@@ -60,8 +57,8 @@ jobs:
             cd examples/$example
             go mod init example || true
             go mod edit -replace github.com/mikeschinkel/go-cliutil=../..
-            GOEXPERIMENT=${{ env.GOEXPERIMENT }} go mod tidy
-            GOEXPERIMENT=${{ env.GOEXPERIMENT }} go build -v .
+            go mod tidy
+            go build -v .
             cd ../..
           done
 
@@ -149,7 +146,7 @@ jobs:
          
           echo "### Commits" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          git log ${PREV_TAG}..HEAD --pretty=format:"- [**%h**](${REPO_URL}/commit/%H) - %s (%an, %ar)" >> $GITHUB_OUTPUT
+          git log ${PREV_TAG}..HEAD --pretty=format:"- [**%h**](${REPO_URL}/commit/%H) - %s (%an, %ar)" -- . ':(exclude).endless' >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**Full Changelog**: ${REPO_URL}/compare/${PREV_TAG}...${{ inputs.version }}" >> $GITHUB_OUTPUT

@@ -446,5 +446,5 @@ func EchoKey(keyStr string, writer Writer) {
 	output = fmt.Sprintf("%s\n\n", keyStr)
 
 echo:
-	writer.Printf(output)
+	writer.Printf("%s", output)
 }

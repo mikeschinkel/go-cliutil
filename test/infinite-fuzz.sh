@@ -162,8 +162,7 @@ fuzz_target() {
         run_count=$((run_count + 1))
         echo "[${target}] Starting fuzz run #${run_count} at $(date)"
 
-        # Run go test with GOEXPERIMENT (default to jsonv2 if not set)
-        GOEXPERIMENT="${GOEXPERIMENT:-jsonv2}" go test -run=^$ -fuzz=^${target}$
+        go test -run=^$ -fuzz=^${target}$
         status=$?
 
         echo "[${target}] Fuzz run #${run_count} finished with status ${status} at $(date)"
