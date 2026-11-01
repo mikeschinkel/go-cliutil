@@ -21,3 +21,8 @@ statement = "The justfile pins the same golangci-lint version as .github/workflo
 id = "P5"
 kind = "deliverable"
 statement = "The lint and tidy recipes run in every module (root, test/, examples/basic_usage), found as go-dt's modules variable finds them, and tidy runs with GOWORK=off"
+
+[[item]]
+id = "P6"
+kind = "deliverable"
+statement = "test.yml's golangci-lint pin comment names the justfile, not the Makefile, and both pin v2.15.0"
