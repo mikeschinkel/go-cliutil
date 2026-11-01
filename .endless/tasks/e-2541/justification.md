@@ -1,0 +1,1 @@
+Mike asked for a dedicated brainstorm in gomion E-2534 on 2026-11-01; the help system is a user-facing design and its shape is his call before any code
