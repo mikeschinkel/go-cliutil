@@ -26,3 +26,8 @@ statement = "The lint and tidy recipes run in every module (root, test/, example
 id = "P6"
 kind = "deliverable"
 statement = "test.yml's golangci-lint pin comment names the justfile, not the Makefile, and both pin v2.15.0"
+
+[[item]]
+id = "P7"
+kind = "deliverable"
+statement = "Every recipe ran once locally and produced what its make target produced (test-unit also runs test/, examples builds to ./bin/, clean removes it)"
