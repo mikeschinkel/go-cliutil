@@ -4,9 +4,10 @@ package cliutil
 import (
 	"fmt"
 	"io"
-	"os"
 	"strings"
 	"sync"
+
+	"github.com/mikeschinkel/go-dt"
 )
 
 // Writer defines the interface for user-facing writer
@@ -24,6 +25,7 @@ var _ Writer = (*cliWriter)(nil)
 
 // outputWriter writes to stdout/doterr for normal CLI usage
 type cliWriter struct {
+	io        dt.StdIO
 	writer    io.Writer
 	errWriter io.Writer
 	quiet     bool
@@ -47,8 +49,8 @@ func (w *cliWriter) V2() Writer {
 		goto end
 	}
 	w.v2 = &cliWriter{
-		writer:    os.Stdout,
-		errWriter: os.Stderr,
+		writer:    w.io.Output(),
+		errWriter: w.io.ErrOut(),
 		verbosity: w.verbosity,
 		useLevel:  2,
 	}
@@ -61,8 +63,8 @@ func (w *cliWriter) V3() Writer {
 		goto end
 	}
 	w.v3 = &cliWriter{
-		writer:    os.Stdout,
-		errWriter: os.Stderr,
+		writer:    w.io.Output(),
+		errWriter: w.io.ErrOut(),
 		verbosity: w.verbosity,
 		useLevel:  3,
 	}
@@ -75,8 +77,8 @@ func (w *cliWriter) Loud() Writer {
 		goto end
 	}
 	w.loud = &cliWriter{
-		writer:    os.Stdout,
-		errWriter: os.Stderr,
+		writer:    w.io.Output(),
+		errWriter: w.io.ErrOut(),
 		quiet:     false,
 	}
 end:
@@ -84,6 +86,7 @@ end:
 }
 
 type WriterArgs struct {
+	IO        dt.StdIO
 	Quiet     bool
 	Verbosity Verbosity
 }
@@ -94,6 +97,7 @@ type WriterArgs struct {
 func NewWriter(args *WriterArgs) Writer {
 	if args == nil {
 		args = &WriterArgs{
+			IO:        dt.NewDefaultStdIO(),
 			Verbosity: 1,
 		}
 	}
@@ -101,8 +105,8 @@ func NewWriter(args *WriterArgs) Writer {
 		panic(fmt.Sprintf("Invalid verbosity for cliutil.Writer.SetVerbosity(); must be between 1-3; got %d", args.Verbosity))
 	}
 	return &cliWriter{
-		writer:    os.Stdout,
-		errWriter: os.Stderr,
+		writer:    args.IO.Output(),
+		errWriter: args.IO.ErrOut(),
 		quiet:     args.Quiet,
 		verbosity: args.Verbosity,
 	}
