@@ -1,0 +1,1 @@
+Mike wrote this himself on 2026-11-02 in the go-cliutil main checkout while planning gomion E-2540. It depends on go-dt gaining dt.StdIO, which go-cliutil's go.work reaches through ../go-dt until go-dt tags it. Moved onto this task branch as is.
