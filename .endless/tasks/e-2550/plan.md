@@ -1,0 +1,1 @@
+Mike's edit, moved onto the task branch unchanged: writer.go imports go-dt, adds IO to WriterArgs and cliWriter, and replaces every os.Stdout and os.Stderr with the StdIO streams; NewWriter with nil args uses dt.NewDefaultStdIO.
