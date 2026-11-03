@@ -4,7 +4,7 @@ Mike's edit, moved from the main checkout onto this branch (commit 67b95e5): `wr
 
 Two things on top of the moved edit:
 
-- `NewWriter` with non-nil args and a nil `IO` dereferences nil at `args.IO.Output()`. Every existing caller passes `WriterArgs` without `IO` (go-cfgstore v0.4.0, gomion), so v0.5.1 would panic at startup for them. The fix is to default `args.IO` to `dt.NewDefaultStdIO()` when nil.
+- Two nil dereferences in `writer.go`. `NewWriter` with non-nil args and a nil `IO` dereferences nil at `args.IO.Output()`; every existing caller passes `WriterArgs` without `IO` (go-cfgstore v0.4.0, gomion). And `NewWriter` never sets the new `io` field on `cliWriter`, nor do the `V2()`, `V3()` and `Loud()` literals, while those three methods read `w.io.Output()`; so `V2()` on any writer panics. Fix: in `NewWriter`, default `args.IO` to `dt.NewDefaultStdIO()` when nil and set `io: args.IO` in the literal; in the three derived literals add `io: w.io`.
 - `go.mod` requires go-dt v0.6.1, which has no StdIO; the build only works through go.work's `../go-dt`. Once go-dt v0.7.1 resolves, raise the require to v0.7.1 and update go.sum, so the Release workflow's `GOWORK=off` tests pass and ED-1639's no-replace rule holds.
 
 ## After landing (Mike)
