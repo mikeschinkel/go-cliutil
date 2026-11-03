@@ -84,3 +84,7 @@ While planning E-2522 (renaming the project states to noted, initialized and ign
 ### [2026-11-02] File a decision only for vocabulary, not for what one task does
 While planning E-2522, Mike asked me to record the agreed project-state terms as decisions. I filed ED-1648 (projects are noted, initialized or ignored), which Mike accepted, plus ED-1649 (deinit replaces project unregister and register). Mike said ED-1649 does not rise to the level of an architecture decision because it only documents what the task will do. When recording terms from a plan, file the definitions as a decision and leave the task's command changes in its plan.
 - **Project**: go-cliutil
+
+### [2026-11-02] Keep the user's general ask when filing and planning a task
+While planning E-2486 I treated it as correcting tasks.status only. Mike had asked for a general-purpose capability to change the state of anything the ledger tracks; he said state, and the task I wrote in another session narrowed that to a task's status. The narrowed task text is not Mike's words: when filing a task from what he asked, keep the scope he stated, and when planning, check a task's wording against what he said rather than taking my own earlier text as the requirement.
+- **Project**: go-cliutil
