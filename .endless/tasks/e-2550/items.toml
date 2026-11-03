@@ -9,13 +9,13 @@ statement = "cliutil.WriterArgs takes an IO dt.StdIO and every cliWriter, includ
 verify = "go build ./... and go vet ./... in go-cliutil"
 
 [[item]]
-id = "P2"
+id = "P4"
 kind = "deliverable"
-statement = "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO(), so a caller passing WriterArgs without IO keeps writing to the process streams"
-verify = "a test constructs NewWriter(&WriterArgs{Verbosity: 1}) and Printf does not panic"
+statement = "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO() and sets the cliWriter io field, and the V2, V3 and Loud literals carry io forward, so a caller passing WriterArgs without IO keeps the process streams and no derived writer dereferences nil"
+verify = "a test constructs NewWriter(&WriterArgs{Verbosity: 3}) and calls Printf on it, on V2(), on V3(), on Loud() and on V2().Loud() without a panic"
 
 [[item]]
-id = "P3"
+id = "P5"
 kind = "deliverable"
 statement = "go.mod requires go-dt v0.7.1 and go.sum matches, so GOWORK=off go test ./... passes without go.work"
 verify = "GOWORK=off go test ./... in go-cliutil after go-dt v0.7.1 is published"
