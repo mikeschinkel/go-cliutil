@@ -7,3 +7,15 @@ id = "P1"
 kind = "deliverable"
 statement = "cliutil.WriterArgs takes an IO dt.StdIO and every cliWriter, including V2, V3 and Loud, writes to it instead of os.Stdout and os.Stderr"
 verify = "go build ./... and go vet ./... in go-cliutil"
+
+[[item]]
+id = "P2"
+kind = "deliverable"
+statement = "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO(), so a caller passing WriterArgs without IO keeps writing to the process streams"
+verify = "a test constructs NewWriter(&WriterArgs{Verbosity: 1}) and Printf does not panic"
+
+[[item]]
+id = "P3"
+kind = "deliverable"
+statement = "go.mod requires go-dt v0.7.1 and go.sum matches, so GOWORK=off go test ./... passes without go.work"
+verify = "GOWORK=off go test ./... in go-cliutil after go-dt v0.7.1 is published"
