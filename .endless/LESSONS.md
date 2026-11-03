@@ -80,3 +80,7 @@ In go-cliutil the root module has no _test.go files; its tests live in test/. A 
 ### [2026-11-01] Record agreed vocabulary as decisions when planning
 While planning E-2522 (renaming the project states to noted, initialized and ignored), I put the agreed terms only into the plan. Mike asked whether the plan or I should define them as decisions, since Endless has no glossary yet. When Mike and I settle user-facing vocabulary during planning, file it with endless decision add --decides <task>, so the definitions outlive the task's plan.
 - **Project**: go-cliutil
+
+### [2026-11-02] File a decision only for vocabulary, not for what one task does
+While planning E-2522, Mike asked me to record the agreed project-state terms as decisions. I filed ED-1648 (projects are noted, initialized or ignored), which Mike accepted, plus ED-1649 (deinit replaces project unregister and register). Mike said ED-1649 does not rise to the level of an architecture decision because it only documents what the task will do. When recording terms from a plan, file the definitions as a decision and leave the task's command changes in its plan.
+- **Project**: go-cliutil
