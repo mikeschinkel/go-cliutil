@@ -25,3 +25,8 @@ id = "P6"
 kind = "deliverable"
 statement = "Mike reviews and approves the code in the task worktree before the task leaves unverified; the session does not mark it done on its own"
 verify = "Mike says so in the session"
+
+[[item]]
+id = "P7"
+kind = "deliverable"
+statement = "README's testing section shows capturing output through WriterArgs.IO with dt.NewStdIO over two bytes.Buffers, replacing the example that created a BufferedWriter it never wired to the Writer"
