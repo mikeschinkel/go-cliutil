@@ -12,11 +12,15 @@ schema = 1
 task   = "E-2550"
 
 # --- Fail fast: the test module's own tests, including the new writer tests --
+# A literal command rather than paths: this worktree sits under the main
+# checkout, whose go.work lists main's modules, so a go command here without
+# GOWORK=off resolves against the wrong tree and fails with "directory prefix .
+# does not contain modules listed in go.work".
 [[check]]
-name   = "test module tests (unit, writer and fuzz corpus)"
-runner = "gotest"
-dir    = "test"
-paths  = ["./..."]
+name    = "test module tests (unit, writer and fuzz corpus)"
+runner  = "gotest"
+dir     = "test"
+command = "GOWORK=off go test -json ./..."
 
 # --- P1: every cliWriter writes to the StdIO, not os.Stdout / os.Stderr -----
 [[check]]
