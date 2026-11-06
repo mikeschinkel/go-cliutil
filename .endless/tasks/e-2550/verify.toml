@@ -1,0 +1,100 @@
+# Verification suite for E-2550 — make the cliutil Writer take its streams
+# from a dt.StdIO.
+# DO NOT EDIT unless you ARE E-2550. See .endless/tasks/CLAUDE.md.
+#
+# Proves that cliutil.NewWriter writes to the dt.StdIO given in WriterArgs.IO
+# (including the V2, V3 and Loud writers), that a nil IO keeps the process
+# streams without any derived writer dereferencing nil, that writer.go no
+# longer names os.Stdout or os.Stderr, and that go.mod requires go-dt v0.7.1
+# so every module builds, vets and tests with GOWORK=off.
+
+schema = 1
+task   = "E-2550"
+
+# --- Fail fast: the test module's own tests, including the new writer tests --
+[[check]]
+name   = "test module tests (unit, writer and fuzz corpus)"
+runner = "gotest"
+dir    = "test"
+paths  = ["./..."]
+
+# --- P1: every cliWriter writes to the StdIO, not os.Stdout / os.Stderr -----
+[[check]]
+name   = "writer.go names neither os.Stdout nor os.Stderr"
+sh     = "grep -nE 'os\\.(Stdout|Stderr)' writer.go || true"
+equals = ""
+
+[[check]]
+name   = "WriterArgs has an IO dt.StdIO field"
+sh     = "grep -cE '^\\s+IO\\s+dt\\.StdIO$' writer.go"
+equals = "1"
+
+[[check]]
+name   = "NewWriter and the V2, V3 and Loud literals all read the StdIO's streams"
+sh     = "grep -c 'writer:    .*\\.Output(),' writer.go; grep -c 'errWriter: .*\\.ErrOut(),' writer.go"
+equals = "4\n4"
+
+[[check]]
+name = "root module builds and vets (P1 verify)"
+sh   = "GOWORK=off go build ./... && GOWORK=off go vet ./..."
+
+# --- P4: nil IO defaults to the process streams and io is carried forward ---
+[[check]]
+name   = "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO()"
+sh     = "grep -A1 'if args.IO == nil {' writer.go | grep -c 'args.IO = dt.NewDefaultStdIO()'"
+equals = "1"
+
+[[check]]
+name   = "the root and the V2, V3 and Loud literals each set the io field"
+sh     = "grep -c 'io:        w.io,' writer.go; grep -c 'io:        args.IO,' writer.go"
+equals = "3\n1"
+
+[[check]]
+name = "the writer tests cover NewWriter with a nil IO and with a captured StdIO"
+sh   = "cd test && GOWORK=off go test -count=1 -race -run 'TestNewWriter_(NilIODefaultsToProcessStreams|NilArgsDefaultsToProcessStreams|WritesToStdIO)$' -v ./... 2>&1 | grep -c -- '--- PASS: TestNewWriter_' | grep -qx 3"
+
+# --- P5: go-dt v0.7.1, tidy, and every module passes with GOWORK=off --------
+[[check]]
+name   = "go.mod requires go-dt v0.7.1"
+sh     = "grep -c 'github.com/mikeschinkel/go-dt v0.7.1$' go.mod"
+equals = "1"
+
+[[check]]
+name   = "no module still requires go-dt v0.6.1"
+sh     = "grep -l 'go-dt v0.6.1' go.mod test/go.mod examples/basic_usage/go.mod || true"
+equals = ""
+
+[[check]]
+name   = "no module replaces another repo's module"
+sh     = "grep -H '^replace' go.mod test/go.mod examples/basic_usage/go.mod | grep -vE '=> \\.\\.(/\\.\\.)?$' || true"
+equals = ""
+
+[[check]]
+name = "go mod tidy leaves every go.mod and go.sum unchanged"
+sh   = "GOWORK=off go mod tidy -diff && (cd test && GOWORK=off go mod tidy -diff) && (cd examples/basic_usage && GOWORK=off go mod tidy -diff)"
+
+[[check]]
+name = "root module tests pass with GOWORK=off"
+sh   = "GOWORK=off go test -count=1 -race ./..."
+
+[[check]]
+name = "test module builds, vets and passes with GOWORK=off"
+sh   = "cd test && GOWORK=off go build ./... && GOWORK=off go vet ./... && GOWORK=off go test -count=1 -race ./..."
+
+[[check]]
+name = "examples/basic_usage builds and vets with GOWORK=off"
+sh   = "cd examples/basic_usage && GOWORK=off go build -o /dev/null . && GOWORK=off go vet ./..."
+
+# --- Baseline: lint and gofmt clean -----------------------------------------
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the root module"
+sh   = "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the test module"
+sh   = "cd test && GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name   = "gofmt reports no unformatted files"
+sh     = "gofmt -l . | grep -v '/\\.endless/' || true"
+equals = ""

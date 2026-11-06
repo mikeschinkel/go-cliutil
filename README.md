@@ -1752,14 +1752,23 @@ func TestMyCmd(t *testing.T) {
 }
 ```
 
-### Testing with Buffered Writer
+### Capturing Output
+
+`WriterArgs.IO` takes a `dt.StdIO`, so a test can point the writer (and the
+`V2()`, `V3()` and `Loud()` writers it derives) at buffers instead of the
+process streams. Leave `IO` nil to write to `os.Stdout` and `os.Stderr`.
 
 ```go
-import "github.com/mikeschinkel/go-testutil"
+import (
+    "bytes"
+
+    "github.com/mikeschinkel/go-dt"
+)
 
 func TestOutput(t *testing.T) {
-    buf := testutil.NewBufferedWriter()
+    var out, errOut bytes.Buffer
     writer := cliutil.NewWriter(&cliutil.WriterArgs{
+        IO:        dt.NewStdIO(&out, &errOut),
         Quiet:     false,
         Verbosity: cliutil.LowVerbosity,
     })
@@ -1769,9 +1778,11 @@ func TestOutput(t *testing.T) {
     cmd.Handle()
 
     // Check output
-    output := buf.String()
-    if !strings.Contains(output, "expected text") {
-        t.Errorf("Expected output not found: %s", output)
+    if !strings.Contains(out.String(), "expected text") {
+        t.Errorf("Expected output not found: %s", out.String())
+    }
+    if errOut.Len() != 0 {
+        t.Errorf("Unexpected error output: %s", errOut.String())
     }
 }
 ```

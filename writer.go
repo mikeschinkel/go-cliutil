@@ -49,6 +49,7 @@ func (w *cliWriter) V2() Writer {
 		goto end
 	}
 	w.v2 = &cliWriter{
+		io:        w.io,
 		writer:    w.io.Output(),
 		errWriter: w.io.ErrOut(),
 		verbosity: w.verbosity,
@@ -63,6 +64,7 @@ func (w *cliWriter) V3() Writer {
 		goto end
 	}
 	w.v3 = &cliWriter{
+		io:        w.io,
 		writer:    w.io.Output(),
 		errWriter: w.io.ErrOut(),
 		verbosity: w.verbosity,
@@ -77,6 +79,7 @@ func (w *cliWriter) Loud() Writer {
 		goto end
 	}
 	w.loud = &cliWriter{
+		io:        w.io,
 		writer:    w.io.Output(),
 		errWriter: w.io.ErrOut(),
 		quiet:     false,
@@ -85,7 +88,10 @@ end:
 	return w.loud
 }
 
+// WriterArgs configures the Writer NewWriter returns.
 type WriterArgs struct {
+	// IO supplies the streams the Writer and every Writer it derives (V2, V3,
+	// Loud) write to. Nil means the process streams, dt.NewDefaultStdIO().
 	IO        dt.StdIO
 	Quiet     bool
 	Verbosity Verbosity
@@ -96,15 +102,16 @@ type WriterArgs struct {
 //goland:noinspection GoUnusedExportedFunction
 func NewWriter(args *WriterArgs) Writer {
 	if args == nil {
-		args = &WriterArgs{
-			IO:        dt.NewDefaultStdIO(),
-			Verbosity: 1,
-		}
+		args = &WriterArgs{Verbosity: 1}
+	}
+	if args.IO == nil {
+		args.IO = dt.NewDefaultStdIO()
 	}
 	if args.Verbosity < 1 || 3 < args.Verbosity {
 		panic(fmt.Sprintf("Invalid verbosity for cliutil.Writer.SetVerbosity(); must be between 1-3; got %d", args.Verbosity))
 	}
 	return &cliWriter{
+		io:        args.IO,
 		writer:    args.IO.Output(),
 		errWriter: args.IO.ErrOut(),
 		quiet:     args.Quiet,
