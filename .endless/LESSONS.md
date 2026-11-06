@@ -88,3 +88,7 @@ While planning E-2522, Mike asked me to record the agreed project-state terms as
 ### [2026-11-02] Keep the user's general ask when filing and planning a task
 While planning E-2486 I treated it as correcting tasks.status only. Mike had asked for a general-purpose capability to change the state of anything the ledger tracks; he said state, and the task I wrote in another session narrowed that to a task's status. The narrowed task text is not Mike's words: when filing a task from what he asked, keep the scope he stated, and when planning, check a task's wording against what he said rather than taking my own earlier text as the requirement.
 - **Project**: go-cliutil
+
+### [2026-11-05] Don't offer options that break Endless's invariants
+While discussing a controller for work that spans projects (E-2504), I offered two readings: one task that changes several repos itself, and one task that controls a child task per repo. Mike said the first would violate the invariants of Endless's architecture. Before offering an option for Endless's own design, check it against those invariants, such as each task belonging to one project and changing only that project's repo, and leave out options that break them.
+- **Project**: go-cliutil
