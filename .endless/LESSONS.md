@@ -92,3 +92,7 @@ While planning E-2486 I treated it as correcting tasks.status only. Mike had ask
 ### [2026-11-05] Don't offer options that break Endless's invariants
 While discussing a controller for work that spans projects (E-2504), I offered two readings: one task that changes several repos itself, and one task that controls a child task per repo. Mike said the first would violate the invariants of Endless's architecture. Before offering an option for Endless's own design, check it against those invariants, such as each task belonging to one project and changing only that project's repo, and leave out options that break them.
 - **Project**: go-cliutil
+
+### [2026-11-06] Commands handed to Mike to copy and paste must wrap at 70 columns with backslash continuations
+While handing Mike the gh workflow run command to release go-cliutil v0.5.1 (E-2550), I gave it as one long line with a long single-quoted description. Mike said it breaks when copied and pasted, and asked for lines of at most 70 characters joined with backslash continuations. A long quoted argument cannot be continued inside the quotes, so split it into adjacent quoted pieces, each line ending in a backslash outside the quotes, which the shell concatenates.
+- **Project**: go-cliutil
