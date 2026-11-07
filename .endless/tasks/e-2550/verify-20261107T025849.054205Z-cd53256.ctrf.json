@@ -1,0 +1,1609 @@
+{
+  "reportFormat": "CTRF",
+  "specVersion": "0.2.0",
+  "results": {
+    "tool": {
+      "name": "endless"
+    },
+    "summary": {
+      "tests": 149,
+      "passed": 148,
+      "failed": 0,
+      "skipped": 1,
+      "pending": 0,
+      "other": 0,
+      "start": 1794020314269,
+      "stop": 1794020329052
+    },
+    "tests": [
+      {
+        "name": "TestBufferedWriter_Basic",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_Interface",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_VerbosityLevels",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_QuietMode",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_ErrorFormatting",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_HelperMethods",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_SharedBuffers",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_ConcurrentAccess",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFuzzCorpus",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommandScenario",
+        "status": "skipped",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands/builtin-conflict",
+        "status": "passed",
+        "duration": 10,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands/two-commands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands/option-then-command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands/command-then-option",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands/help-and-routing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestFlagCommands",
+        "status": "passed",
+        "duration": 30,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC[11~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC[12~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC[13~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC[14~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_-_ESC[15~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F6_-_ESC[17~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F7_-_ESC[18~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F8_-_ESC[19~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F9_-_ESC[20~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F10_-_ESC[21~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F11_-_ESC[23~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F12_-_ESC[24~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC[1~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC[2~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC[3~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC[4~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_-_ESC[5~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC_O_P",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC_O_Q",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC_O_R",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC_O_S",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/Too_short_-_2_bytes",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/Too_short_-_1_byte",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/Empty_buffer",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/Not_ESC_sequence",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_without_tilde",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_wrong_terminator",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_invalid_number",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_16~_(gap_before_F6)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_22~_(gap_before_F11)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_25~_(beyond_F12)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_10~_(not_defined)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_O_invalid_letter",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_O_too_short",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_with_wrong_second_byte",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_ESC_O_P_with_trailing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[6~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[7~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[8~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[9~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F11",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F5",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F7",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F10",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F6",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F8",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/ESC[16~_is_not_F6",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/ESC[22~_is_not_F11",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/F6_uses_ESC[17~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/F11_uses_ESC[23~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F1_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F1_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F2_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F2_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F3_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F3_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F4_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F4_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Digit_0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Digit_9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Letter_a",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Letter_z",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Ctrl+C",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Ctrl+D",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Empty_KeyPress",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F-key_takes_priority_over_rune",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_String",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/F1_matches_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Digit_0_matches",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Ctrl+C_matches",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/F3_not_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Digit_5_not_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Empty_acceptable_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Empty_KeyPress",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Digit_0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Digit_9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Ctrl+C",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Ctrl+D",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Letter_a",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey/Letter_z",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestEchoKey",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestNewWriter_WritesToStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestNewWriter_VerbosityAgainstStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestNewWriter_QuietAgainstStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestNewWriter_NilIODefaultsToProcessStreams",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "TestNewWriter_NilArgsDefaultsToProcessStreams",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#5",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module tests (unit, writer and fuzz corpus)"
+        }
+      },
+      {
+        "name": "writer.go names neither os.Stdout nor os.Stderr",
+        "status": "passed",
+        "duration": 7,
+        "labels": {
+          "check": "writer.go names neither os.Stdout nor os.Stderr"
+        }
+      },
+      {
+        "name": "WriterArgs has an IO dt.StdIO field",
+        "status": "passed",
+        "duration": 5,
+        "labels": {
+          "check": "WriterArgs has an IO dt.StdIO field"
+        }
+      },
+      {
+        "name": "NewWriter and the V2, V3 and Loud literals all read the StdIO's streams",
+        "status": "passed",
+        "duration": 7,
+        "labels": {
+          "check": "NewWriter and the V2, V3 and Loud literals all read the StdIO's streams"
+        }
+      },
+      {
+        "name": "root module builds and vets (P1 verify)",
+        "status": "passed",
+        "duration": 211,
+        "labels": {
+          "check": "root module builds and vets (P1 verify)"
+        }
+      },
+      {
+        "name": "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO()",
+        "status": "passed",
+        "duration": 5,
+        "labels": {
+          "check": "NewWriter defaults a nil args.IO to dt.NewDefaultStdIO()"
+        }
+      },
+      {
+        "name": "the root and the V2, V3 and Loud literals each set the io field",
+        "status": "passed",
+        "duration": 6,
+        "labels": {
+          "check": "the root and the V2, V3 and Loud literals each set the io field"
+        }
+      },
+      {
+        "name": "the writer tests cover NewWriter with a nil IO and with a captured StdIO",
+        "status": "passed",
+        "duration": 2249,
+        "labels": {
+          "check": "the writer tests cover NewWriter with a nil IO and with a captured StdIO"
+        }
+      },
+      {
+        "name": "go.mod requires go-dt v0.7.1",
+        "status": "passed",
+        "duration": 6,
+        "labels": {
+          "check": "go.mod requires go-dt v0.7.1"
+        }
+      },
+      {
+        "name": "no module still requires go-dt v0.6.1",
+        "status": "passed",
+        "duration": 6,
+        "labels": {
+          "check": "no module still requires go-dt v0.6.1"
+        }
+      },
+      {
+        "name": "no module replaces another repo's module",
+        "status": "passed",
+        "duration": 6,
+        "labels": {
+          "check": "no module replaces another repo's module"
+        }
+      },
+      {
+        "name": "go mod tidy leaves every go.mod and go.sum unchanged",
+        "status": "passed",
+        "duration": 74,
+        "labels": {
+          "check": "go mod tidy leaves every go.mod and go.sum unchanged"
+        }
+      },
+      {
+        "name": "root module tests pass with GOWORK=off",
+        "status": "passed",
+        "duration": 106,
+        "labels": {
+          "check": "root module tests pass with GOWORK=off"
+        }
+      },
+      {
+        "name": "test module builds, vets and passes with GOWORK=off",
+        "status": "passed",
+        "duration": 6728,
+        "labels": {
+          "check": "test module builds, vets and passes with GOWORK=off"
+        }
+      },
+      {
+        "name": "examples/basic_usage builds and vets with GOWORK=off",
+        "status": "passed",
+        "duration": 770,
+        "labels": {
+          "check": "examples/basic_usage builds and vets with GOWORK=off"
+        }
+      },
+      {
+        "name": "golangci-lint v2.15.0 is clean in the root module",
+        "status": "passed",
+        "duration": 2615,
+        "labels": {
+          "check": "golangci-lint v2.15.0 is clean in the root module"
+        }
+      },
+      {
+        "name": "golangci-lint v2.15.0 is clean in the test module",
+        "status": "passed",
+        "duration": 1933,
+        "labels": {
+          "check": "golangci-lint v2.15.0 is clean in the test module"
+        }
+      },
+      {
+        "name": "gofmt reports no unformatted files",
+        "status": "passed",
+        "duration": 27,
+        "labels": {
+          "check": "gofmt reports no unformatted files"
+        }
+      }
+    ]
+  }
+}
