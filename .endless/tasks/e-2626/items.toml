@@ -22,7 +22,7 @@ verify = "test/ module: an error holding <home>/a/b prints as ~/a/b after Initia
 [[item]]
 id = "P4"
 kind = "deliverable"
-statement = "A path that merely starts with the home directory's text, such as <home>schinkel/x, is not shortened"
+statement = "A path in a sibling directory whose name begins with the home directory's name (home <tmp>/a, path <tmp>/ab/x) is not shortened"
 verify = "test/ module case"
 
 [[item]]
