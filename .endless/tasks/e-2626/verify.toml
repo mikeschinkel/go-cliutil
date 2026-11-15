@@ -26,7 +26,7 @@ equals = "4"
 # --- P5: before Initialize, in a binary that never calls EnsureUserHomeDir ---
 [[check]]
 name   = "preinit test passes and its package never calls Initialize or EnsureUserHomeDir"
-sh     = "grep -cE 'Initialize\\(|EnsureUserHomeDir\\(' test/preinit/preinit_test.go || true; cd test && GOWORK=off go test -count=1 -race -v ./preinit 2>&1 | grep -c -- '--- PASS: TestErrorf_BeforeInitializePrintsFullPath'"
+sh     = "grep -vE '^\\s*//' test/preinit/preinit_test.go | grep -cE 'Initialize\\(|EnsureUserHomeDir\\(' || true; cd test && GOWORK=off go test -count=1 -race -v ./preinit 2>&1 | grep -c -- '--- PASS: TestErrorf_BeforeInitializePrintsFullPath'"
 equals = "0\n1"
 
 # --- P8: Stderr, Stderrf and Stdio unchanged ----------------------------------
