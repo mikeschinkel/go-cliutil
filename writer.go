@@ -140,9 +140,37 @@ func (w *cliWriter) Errorf(format string, args ...any) {
 			continue
 		}
 		// Replace newlines in errors with semicolons
-		args[i] = strings.ReplaceAll(err.Error(), "\n", "; ")
+		args[i] = shortenHomeDir(strings.ReplaceAll(err.Error(), "\n", "; "))
 	}
 	_, _ = fmt.Fprintf(w.errWriter, format, args...)
+}
+
+// homeDir is the user's home directory as Initialize found it. Errorf reads
+// this copy rather than dt.GetUserHomeDir(), which panics before
+// dt.EnsureUserHomeDir() runs, so printing an error can never panic. Before
+// Initialize runs it is empty and Errorf prints paths in full.
+var (
+	homeDir   dt.DirPath
+	homeDirMu sync.RWMutex
+)
+
+func setHomeDir(dir dt.DirPath) {
+	homeDirMu.Lock()
+	defer homeDirMu.Unlock()
+	homeDir = dir
+}
+
+// shortenHomeDir replaces every "<home>/" in s with "~/". Matching the
+// trailing slash keeps a sibling such as "/home/ab" from being shortened when
+// the home directory is "/home/a".
+func shortenHomeDir(s string) string {
+	homeDirMu.RLock()
+	dir := homeDir
+	homeDirMu.RUnlock()
+	if dir != "" {
+		s = strings.ReplaceAll(s, string(dir)+"/", "~/")
+	}
+	return s
 }
 
 // Package-level output variables and synchronization

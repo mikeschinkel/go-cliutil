@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/mikeschinkel/go-dt"
 )
 
 // Final resolved command maps (built during BuildCommandTree)
@@ -44,6 +46,12 @@ type CommandHandler interface {
 }
 
 func Initialize(w Writer) (err error) {
+	err = dt.EnsureUserHomeDir()
+	if err != nil {
+		goto end
+	}
+	setHomeDir(dt.GetUserHomeDir())
+
 	SetWriter(w)
 
 	err = RegisterFlagCommands()

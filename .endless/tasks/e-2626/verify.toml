@@ -1,0 +1,62 @@
+# Verification suite for E-2626 — shorten home-directory paths to ~ in the
+# errors cliWriter.Errorf prints.
+# DO NOT EDIT unless you ARE E-2626. See .endless/tasks/CLAUDE.md.
+#
+# Proves that Initialize() calls dt.EnsureUserHomeDir() and records the home
+# directory, that Errorf rewrites "<home>/" to "~/" (but not a sibling such as
+# "<home>b/"), still turns newlines into "; ", and prints full paths without
+# panicking before Initialize() runs; and that every module lints clean.
+
+schema = 1
+task   = "E-2626"
+
+# --- Fail fast: the test module, including test/homedir and test/preinit ----
+[[check]]
+name    = "test module tests (unit, homedir, preinit, fuzz corpus)"
+runner  = "gotest"
+dir     = "test"
+command = "GOWORK=off go test -json ./..."
+
+# --- P1-P4, P6: each homedir case passes in its own binary -------------------
+[[check]]
+name   = "homedir tests: EnsureUserHomeDir, shorten, sibling, multi-line"
+sh     = "cd test && GOWORK=off go test -count=1 -race -v ./homedir 2>&1 | grep -c -- '--- PASS: Test'"
+equals = "4"
+
+# --- P5: before Initialize, in a binary that never calls EnsureUserHomeDir ---
+[[check]]
+name   = "preinit test passes and its package never calls Initialize or EnsureUserHomeDir"
+sh     = "grep -cE 'Initialize\\(|EnsureUserHomeDir\\(' test/preinit/preinit_test.go || true; cd test && GOWORK=off go test -count=1 -race -v ./preinit 2>&1 | grep -c -- '--- PASS: TestErrorf_BeforeInitializePrintsFullPath'"
+equals = "0\n1"
+
+# --- P8: Stderr, Stderrf and Stdio unchanged ----------------------------------
+[[check]]
+name   = "only commands.go, writer.go and new tests differ from main outside .endless"
+sh     = "git diff --name-only main -- . ':(exclude).endless' | sort | tr '\\n' ' '"
+equals = "commands.go test/homedir/homedir_test.go test/preinit/preinit_test.go writer.go "
+
+# --- Build, tidy, lint, fmt --------------------------------------------------
+[[check]]
+name = "root module builds, vets and tests with GOWORK=off"
+sh   = "GOWORK=off go build ./... && GOWORK=off go vet ./... && GOWORK=off go test -count=1 -race ./..."
+
+[[check]]
+name = "examples/basic_usage builds and vets with GOWORK=off"
+sh   = "cd examples/basic_usage && GOWORK=off go build -o /dev/null . && GOWORK=off go vet ./..."
+
+[[check]]
+name = "go mod tidy leaves every go.mod and go.sum unchanged"
+sh   = "GOWORK=off go mod tidy -diff && (cd test && GOWORK=off go mod tidy -diff)"
+
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the root module"
+sh   = "GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name = "golangci-lint v2.15.0 is clean in the test module"
+sh   = "cd test && GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m"
+
+[[check]]
+name   = "gofmt reports no unformatted files"
+sh     = "gofmt -l . | grep -v '/\\.endless/' || true"
+equals = ""
