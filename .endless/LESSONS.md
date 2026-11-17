@@ -112,3 +112,7 @@ In go-cliutil E-2544, I described a registry redesign (constructors registered f
 ### [2026-11-16] Name a constructor type CommandFunc, not a factory
 In go-cliutil E-2544, I proposed registering a constructor type named CommandFactory with a Registry field 'factory'. Mike said not to call it a factory because the term is Java-esque, and to call it CommandFunc. In Mike's Go code, name constructor function types <Thing>Func rather than using 'factory'.
 - **Project**: go-cliutil
+
+### [2026-11-17] Record new ADRs as Endless decisions, not adrs/ files
+In go-cliutil E-2648's planning I proposed writing a new ADR file in adrs/ for the HandleArgs design. Mike said new ADRs are handled in the Endless database through endless decision commands. Record architecture decisions with endless decision add, not as new markdown files in a repo's adrs/ directory.
+- **Project**: go-cliutil
