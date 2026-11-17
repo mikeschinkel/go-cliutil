@@ -100,3 +100,7 @@ While handing Mike the gh workflow run command to release go-cliutil v0.5.1 (E-2
 ### [2026-11-16] Read the spawning session's transcript and linked decisions before opening a brainstorm
 In go-cliutil E-2544 (filed by gomion session ES-1409 during E-2534), I opened the brainstorm with questions built from the task's plan alone, and several had already been answered by Mike in ES-1409 or by accepted decision ED-1647 (one positional per command, scalar or variadic). Mike said this meant rehashing what was already discussed and decided. Before opening a brainstorm that another session filed, read that session's history (endless session history <ES-id> --no-limit, or its JSONL for Mike's full words) and every decision linked to the task, and open with what they already settle.
 - **Project**: go-cliutil
+
+### [2026-11-16] Don't cite what Mike ruled out in earlier sessions as an argument
+In go-cliutil E-2544, while weighing his proposed GetRegistry/SetRegistry option, I argued against it by saying it was the pattern he had ruled out for gomion E-2540's seam test. Mike asked me to stop telling him what he ruled out in the past, because the earlier call may rest on a misunderstanding, new information may have arrived, or the scenario may differ. Argue an option on its own costs in the current scenario; don't use his past choices as the argument.
+- **Project**: go-cliutil
