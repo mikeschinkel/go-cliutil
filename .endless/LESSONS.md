@@ -116,3 +116,7 @@ In go-cliutil E-2544, I proposed registering a constructor type named CommandFac
 ### [2026-11-17] Record new ADRs as Endless decisions, not adrs/ files
 In go-cliutil E-2648's planning I proposed writing a new ADR file in adrs/ for the HandleArgs design. Mike said new ADRs are handled in the Endless database through endless decision commands. Record architecture decisions with endless decision add, not as new markdown files in a repo's adrs/ directory.
 - **Project**: go-cliutil
+
+### [2026-11-17] Don't cite gru as a reason or consumer
+In go-cliutil E-2648's planning I kept FlagsOnlyMode because the gru project uses it. Mike said gru should be hidden or forgotten. Don't treat gru (go-cli/gru) as a consumer whose needs justify a go-cliutil feature, or cite it as a use case, as with xmlui.
+- **Project**: go-cliutil
