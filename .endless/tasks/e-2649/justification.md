@@ -1,0 +1,1 @@
+Mike wants as much app bootstrap boilerplate as possible implemented within go-cliutil; E-2544 settled only the config and options hooks (ConfigFunc, OptionsFunc), not the rest of the sequence
