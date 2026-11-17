@@ -96,3 +96,7 @@ While discussing a controller for work that spans projects (E-2504), I offered t
 ### [2026-11-06] Commands handed to Mike to copy and paste must wrap at 70 columns with backslash continuations
 While handing Mike the gh workflow run command to release go-cliutil v0.5.1 (E-2550), I gave it as one long line with a long single-quoted description. Mike said it breaks when copied and pasted, and asked for lines of at most 70 characters joined with backslash continuations. A long quoted argument cannot be continued inside the quotes, so split it into adjacent quoted pieces, each line ending in a backslash outside the quotes, which the shell concatenates.
 - **Project**: go-cliutil
+
+### [2026-11-16] Read the spawning session's transcript and linked decisions before opening a brainstorm
+In go-cliutil E-2544 (filed by gomion session ES-1409 during E-2534), I opened the brainstorm with questions built from the task's plan alone, and several had already been answered by Mike in ES-1409 or by accepted decision ED-1647 (one positional per command, scalar or variadic). Mike said this meant rehashing what was already discussed and decided. Before opening a brainstorm that another session filed, read that session's history (endless session history <ES-id> --no-limit, or its JSONL for Mike's full words) and every decision linked to the task, and open with what they already settle.
+- **Project**: go-cliutil
