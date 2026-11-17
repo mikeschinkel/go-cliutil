@@ -108,3 +108,7 @@ In go-cliutil E-2544, while weighing his proposed GetRegistry/SetRegistry option
 ### [2026-11-16] Show code, don't explain code, when proposing a design
 In go-cliutil E-2544, I described a registry redesign (constructors registered from init, fresh command values per run, targets as struct fields) in prose. Mike said: show me code, don't explain code to me. When proposing an API or code design to Mike, show the Go code itself (types, signatures, a call site) rather than a prose description of it.
 - **Project**: go-cliutil
+
+### [2026-11-16] Name a constructor type CommandFunc, not a factory
+In go-cliutil E-2544, I proposed registering a constructor type named CommandFactory with a Registry field 'factory'. Mike said not to call it a factory because the term is Java-esque, and to call it CommandFunc. In Mike's Go code, name constructor function types <Thing>Func rather than using 'factory'.
+- **Project**: go-cliutil
