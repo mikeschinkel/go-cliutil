@@ -1,0 +1,1 @@
+E-2544's outcome holds the design and code shapes Mike settled; decisions ED-1647 and ED-1666 to ED-1672 bind it. It also fixes three defects found there: a boolean flag swallows the next word, ArgDef.Default is never applied, and an extra positional is silently dropped. Backward compatibility is not a concern.
