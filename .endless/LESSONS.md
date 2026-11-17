@@ -104,3 +104,7 @@ In go-cliutil E-2544 (filed by gomion session ES-1409 during E-2534), I opened t
 ### [2026-11-16] Don't cite what Mike ruled out in earlier sessions as an argument
 In go-cliutil E-2544, while weighing his proposed GetRegistry/SetRegistry option, I argued against it by saying it was the pattern he had ruled out for gomion E-2540's seam test. Mike asked me to stop telling him what he ruled out in the past, because the earlier call may rest on a misunderstanding, new information may have arrived, or the scenario may differ. Argue an option on its own costs in the current scenario; don't use his past choices as the argument.
 - **Project**: go-cliutil
+
+### [2026-11-16] Show code, don't explain code, when proposing a design
+In go-cliutil E-2544, I described a registry redesign (constructors registered from init, fresh command values per run, targets as struct fields) in prose. Mike said: show me code, don't explain code to me. When proposing an API or code design to Mike, show the Go code itself (types, signatures, a call site) rather than a prose description of it.
+- **Project**: go-cliutil
