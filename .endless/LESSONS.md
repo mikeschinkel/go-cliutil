@@ -120,3 +120,7 @@ In go-cliutil E-2648's planning I proposed writing a new ADR file in adrs/ for t
 ### [2026-11-17] Don't cite gru as a reason or consumer
 In go-cliutil E-2648's planning I kept FlagsOnlyMode because the gru project uses it. Mike said gru should be hidden or forgotten. Don't treat gru (go-cli/gru) as a consumer whose needs justify a go-cliutil feature, or cite it as a use case, as with xmlui.
 - **Project**: go-cliutil
+
+### [2026-11-18] Name who runs a release workflow
+While planning go-cliutil E-2648's v0.6.0 release, I wrote a plan item saying the repo's Release workflow tags the version. Mike corrected it: a workflow is not an actor, so only he or the session can run it. For this release he prefers that the session give him the gh command that checks test.yml succeeded, then the gh command that runs release.yml, with backticks around code in the release description.
+- **Project**: go-cliutil
