@@ -252,3 +252,8 @@ statement = "cliutil.ConfigAs[T](Config) returns the config as T and panics nami
 id = "P48"
 kind = "deliverable"
 statement = "Flag.Source reports config for a flag whose value ApplyConfig changed from its default or that FlagValuer supplied, and command line for a typed flag"
+
+[[item]]
+id = "P49"
+kind = "deliverable"
+statement = "examples/comprehensive gives its config typed methods and uses ApplyConfig on its Options and on one command, with a cliutiltest case where a typed flag beats the config value"
