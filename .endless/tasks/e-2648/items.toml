@@ -262,7 +262,7 @@ statement = "examples/comprehensive gives its config typed methods and uses Appl
 [[item]]
 id = "P50"
 kind = "deliverable"
-statement = "CI and .squire config build the renamed examples, and CI runs examples/comprehensive's tests"
+statement = "CI builds the renamed examples and runs examples/comprehensive's tests"
 
 [[item]]
 id = "P51"
