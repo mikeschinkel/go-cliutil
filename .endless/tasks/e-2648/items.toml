@@ -236,3 +236,9 @@ statement = "Does not move writer, logger, config-file location or RunCLI constr
 id = "P45"
 kind = "exclusion"
 statement = "Does not change any consumer repository, add the go-cfgstore adapter, or tag a release"
+
+[[item]]
+id = "P46"
+kind = "deliverable"
+statement = "go-cliutil defines ConfigApplier with ApplyConfig(Config) error and, each run after typed defaults and before the command line, calls it on the Options value and then on the matched command when they implement it"
+verify = "test/ table: config value applied, then overridden by a typed flag"
