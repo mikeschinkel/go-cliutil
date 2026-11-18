@@ -1,3 +1,5 @@
+Raised by Mike in gomion E-2534 on 2026-11-01 while discussing go-cliutil's handler inputs: the help system today is very inadequate and probably needs a full brainstorm of its own. Related facts from that discussion: the help command is the only consumer that needs the raw command line, and CmdRunner.RunCmd special-cases it by stripping its own name from the slice. go-cliutil ROADMAP item 3 (flag-specific help functions) is in scope.
+
 Mike stated these starting requirements on 2026-11-18 while planning the go-cliutil handler rebuild. They are input to the discussion, not settled decisions.
 
 - go-cliutil includes a fully fleshed-out default help, driven by the information registered about each command.
