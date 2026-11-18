@@ -137,3 +137,23 @@ func TestInvalidVerbosityFlag(t *testing.T) {
 		t.Errorf("got %v", result.Err)
 	}
 }
+
+func TestCommandHelpShowsTypedDefaults(t *testing.T) {
+	t.Parallel()
+	r := cliutil.NewRegistry()
+	r.Register(newSetupCmd)
+	r.Register(func() cliutil.Command {
+		return newCmd[tagHelp](cliutil.CmdArgs{Name: "help"}, func(args cliutil.HandleArgs) error {
+			return cliutil.ShowCmdHelp([]string{"setup"}, args.UsageArgs())
+		})
+	})
+	result := cliutiltest.Run(t, cliutiltest.Args{Registry: r, CommandLine: []string{"help"}})
+	if result.Err != nil {
+		t.Fatal(result.Err)
+	}
+	for _, want := range []string{"(default=default-dir)", "[default=text]", "[default=7]", "[default=9]", "[default=anon]"} {
+		if !strings.Contains(result.Stdout, want) {
+			t.Errorf("help lacks %q:\n%s", want, result.Stdout)
+		}
+	}
+}

@@ -1,0 +1,72 @@
+# Verification suite for E-2648: rebuild go-cliutil handler input, parsing and registry.
+# DO NOT EDIT unless you ARE E-2648. See .endless/tasks/CLAUDE.md.
+
+schema = 1
+task   = "E-2648"
+
+# --- Fail fast: every module's native tests ---------------------------------
+[[check]]
+name   = "test module: parser, registry, options, config, isolation, corpus"
+runner = "gotest"
+dir    = "test"
+paths  = ["./..."]
+
+[[check]]
+name   = "examples/comprehensive cliutiltest table"
+runner = "gotest"
+dir    = "examples/comprehensive"
+paths  = ["./..."]
+
+# --- Every module builds and vets as a consumer sees it ----------------------
+[[check]]
+name = "every module builds and vets with GOWORK=off"
+sh   = "for m in . test examples/basic examples/comprehensive; do (cd $m && GOWORK=off go build ./... && GOWORK=off go vet ./...) || exit 1; done"
+
+[[check]]
+name = "parallel runs stay isolated under the race detector"
+sh   = "cd test && GOWORK=off go test -race -count=1 -run 'TestRunsShareNothing|TestParser' ."
+
+[[check]]
+name = "every module lints clean with golangci-lint v2.15.0"
+sh   = "for m in . test examples/basic examples/comprehensive; do (cd $m && GOWORK=off go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0 run ./... --timeout=5m) || exit 1; done"
+
+# --- Things no native test covers --------------------------------------------
+[[check]]
+name   = "no package-level command maps, writer or removed API remain"
+sh     = "grep -nE 'commandsPathMap|commandsTypeMap|flagCommandMap|^var commands|func SetRegistry|func SetWriter|func GetWriter|ArgsParser|AddCLIFlag|AddCLIOption|ParseOptions|ParseGlobalFlags|GlobalFlagsArgs|type GlobalFlags' *.go || true"
+equals = ""
+
+[[check]]
+name   = "go-cliutil requires no config library"
+sh     = "grep -ciE 'cfgstore|viper|koanf' go.mod || true"
+equals = "0"
+
+[[check]]
+name     = "examples/basic runs a command"
+sh       = "cd examples/basic && GOWORK=off go run . greet Ann --shout"
+contains = "HELLO, ANN!"
+
+[[check]]
+name     = "examples/basic runs a second command"
+sh       = "cd examples/basic && GOWORK=off go run . add 2 3"
+equals   = "5"
+
+[[check]]
+name     = "the request-scoped ADR says ED-1666 supersedes it"
+sh       = "grep -c 'Superseded by Endless decision ED-1666' adrs/adr-2025-11-07-request-scoped-commands-with-injected-context.md"
+equals   = "1"
+
+[[check]]
+name   = "ROADMAP no longer lists variadic positionals or repeated flags"
+sh     = "grep -ciE 'variadic|repeated flag' ROADMAP.md || true"
+equals = "0"
+
+[[check]]
+name   = "README describes the new API"
+sh     = "grep -c 'HandleArgs' README.md | awk '$1 > 0 { print \"ok\" }'"
+equals = "ok"
+
+[[check]]
+name   = "BEST-PRACTICES describes the new API"
+sh     = "grep -c 'HandleArgs' docs/BEST-PRACTICES.md | awk '$1 > 0 { print \"ok\" }'"
+equals = "ok"

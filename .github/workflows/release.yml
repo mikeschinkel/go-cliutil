@@ -53,7 +53,7 @@ jobs:
 
       - name: Build examples
         run: |
-          for example in basic_usage; do
+          for example in basic comprehensive; do
             cd examples/$example
             go mod init example || true
             go mod edit -replace github.com/mikeschinkel/go-cliutil=../..

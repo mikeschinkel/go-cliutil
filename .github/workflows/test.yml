@@ -56,7 +56,7 @@ jobs:
 
     strategy:
       matrix:
-        example: [basic_usage]
+        example: [basic, comprehensive]
 
     steps:
       - name: Checkout code
@@ -84,6 +84,7 @@ jobs:
           go mod edit -replace github.com/mikeschinkel/go-cliutil=../..
           go mod tidy
           go build -v .
+          go test -race ./...
 
   # Lint and static analysis
   lint:
