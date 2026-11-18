@@ -257,3 +257,8 @@ statement = "Flag.Source reports config for a flag whose value ApplyConfig chang
 id = "P49"
 kind = "deliverable"
 statement = "examples/comprehensive gives its config typed methods and uses ApplyConfig on its Options and on one command, with a cliutiltest case where a typed flag beats the config value"
+
+[[item]]
+id = "P50"
+kind = "deliverable"
+statement = "CI and .squire config build the renamed examples, and CI runs examples/comprehensive's tests"
