@@ -1,0 +1,3299 @@
+{
+  "reportFormat": "CTRF",
+  "specVersion": "0.2.0",
+  "results": {
+    "tool": {
+      "name": "endless"
+    },
+    "summary": {
+      "tests": 301,
+      "passed": 301,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0,
+      "start": 1795044023953,
+      "stop": 1795044123539
+    },
+    "tests": [
+      {
+        "name": "TestBufferedWriter_Basic",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_Interface",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_VerbosityLevels",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_QuietMode",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_ErrorFormatting",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_HelperMethods",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_SharedBuffers",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestBufferedWriter_ConcurrentAccess",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFuzzCorpus",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC[11~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC[12~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC[13~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC[14~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_-_ESC[15~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F6_-_ESC[17~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F7_-_ESC[18~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F8_-_ESC[19~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F9_-_ESC[20~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F10_-_ESC[21~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F11_-_ESC[23~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F12_-_ESC[24~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC[1~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC[2~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC[3~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC[4~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_-_ESC[5~_(rare)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F1_-_ESC_O_P",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F2_-_ESC_O_Q",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F3_-_ESC_O_R",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F4_-_ESC_O_S",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/Too_short_-_2_bytes",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/Too_short_-_1_byte",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/Empty_buffer",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/Not_ESC_sequence",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_without_tilde",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_wrong_terminator",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_invalid_number",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_16~_(gap_before_F6)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_22~_(gap_before_F11)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_25~_(beyond_F12)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_[_10~_(not_defined)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_O_invalid_letter",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_O_too_short",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC_with_wrong_second_byte",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/F5_ESC_O_P_with_trailing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[6~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[7~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[8~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey/ESC[9~_(not_a_function_key)",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F5",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F6",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F7",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F8",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F10",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F11",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_AllValidKeys",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/ESC[16~_is_not_F6",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/ESC[22~_is_not_F11",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/F6_uses_ESC[17~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation/F11_uses_ESC[23~",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_GapValidation",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F1_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F1_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F2_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F2_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F3_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F3_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F4_ESC[_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats/F4_ESC_O_format",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParseFKey_BothFormats",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Digit_0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Digit_9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Letter_a",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Letter_z",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Ctrl+C",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Ctrl+D",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/Empty_KeyPress",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String/F-key_takes_priority_over_rune",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_String",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/F1_matches_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Digit_0_matches",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Ctrl+C_matches",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/F3_not_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Digit_5_not_in_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Empty_acceptable_list",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny/Empty_KeyPress",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestKeyPress_MatchesAny",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/F1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/F2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/F12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Digit_0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Digit_9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Ctrl+C",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Ctrl+D",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Letter_a",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey/Letter_z",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestEchoKey",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestNewWriter_WritesToStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestNewWriter_VerbosityAgainstStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestNewWriter_QuietAgainstStdIO",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestNewWriter_NilIODefaultsToProcessStreams",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestNewWriter_NilArgsDefaultsToProcessStreams",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestValidRegistryValidates",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestAppOptions",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigAs",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestOmittedFlag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestOverrideDefault",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigFuncReceivesParsedFlags",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagValuerList",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestHandlerErrorExitCode",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagAccessorPanics/undefined_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestTypedOperandBeatsApplyConfig/config_beats_operand_default",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestTypedOperandBeatsApplyConfig/typed_operand_wins",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigErrors/load_fails",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagAccessorPanics/wrong_type",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagNameConflicts/conflicts_with_built-in",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/default_without_config",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/FlagValuer_string",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/FlagValuer_equal_to_default",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/FlagValuer_float_to_int",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRunsShareNothing/with_then_without",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/typed_beats_ApplyConfig_on_command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParametersAndOperandPositions",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestOmittedFlagNotInHelp",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagsOnlyMode",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInvalidVerbosityFlag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestExtraOperandShowsCommandUsage",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/untouched_flag_stays_default",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestTypedOperandBeatsApplyConfig",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestCommandHelpShowsTypedDefaults",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigErrors/apply_fails",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInvalidGlobalOptionsArgs/omit_unknown",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigErrors/value_cannot_convert",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigErrors",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRunsShareNothing/without_then_with",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagNameConflicts/conflicts_with_app_global",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagNameConflicts/two_commands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagNameConflicts",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRequiredFlag/missing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInvalidGlobalOptionsArgs/override_target",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRequiredFlag/typed",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRequiredFlag/from_config",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/ApplyConfig_on_options",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagAccessorPanics/wrong_options_type",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/typed_beats_ApplyConfig_on_options",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/typed_beats_FlagValuer",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInvalidGlobalOptionsArgs/override_unknown",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRequiredFlag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInvalidGlobalOptionsArgs",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/second_ArgDef",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/subcommand_with_FlagName",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/same_path_twice",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestFlagAccessorPanics",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/invalid_flag_name",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence/ApplyConfig_on_command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/shortcut_used_by_global",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/invalid_shortcut",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/duplicate_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/flag_default_mismatch",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/split_without_Strings",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/flag_with_two_targets",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/flag_without_target",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/ArgDef_default_mismatch",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/ArgDef_without_target",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/passthrough_with_flags",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/max_below_min",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/count_on_single_value",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/same_type_twice",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/missing_parent",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/passthrough_with_operand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/nil_command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestConfigPrecedence",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/flag_named_like_global",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation/duplicate_shortcut",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRegistryValidation",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRunsShareNothing/parallel",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestRunsShareNothing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/double_dash",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/long",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/variadic_below_minimum",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/split",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/global_before",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/global_before_passthrough",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/unknown_command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/flag_between_commands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/passthrough_keeps_help",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/operand_on_command_without_ArgDef",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/flags_before_operand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/last_scalar_wins",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/required_operand_missing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/double_dash_keeps_later_flags",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/no_split_without_Split",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/global_after",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/bool_bad_value",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/long_equals",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/no_words_shows_help",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/bool_keeps_next_word",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/bundled_shortcuts_refused",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/extra_operand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/flag_before_all_commands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/invalid_int",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/missing_value",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/multi-letter_after_one_dash",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/value_may_start_with_a_dash",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/passthrough",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/short_bool",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/shortcut_with_two_dashes",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/help_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/flag_routed",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/default_subcommand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/help_flag_first",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/flags_after_operand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/help_flag_keeps_unknown_topic",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/help_command_topic",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/unknown_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/only_global_flags_shows_help",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/global_bool_between",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/escaped_comma",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/repeat",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/global_between",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/variadic_above_maximum",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/short",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/variadic_in_range",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/short_equals",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/bool_false",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/value-taking_flag_before_commands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser/typed_defaults",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestParser",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity/seed#5",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzParseVerbosity",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions/seed#2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzNewGlobalOptions",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#0",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#1",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#2",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#3",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#4",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#5",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#6",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#7",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#8",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#9",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#10",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#11",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#12",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#13",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine/seed#14",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "FuzzCommandLine",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestErrorf_BeforeInitializePrintsFullPath",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test/preinit"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestInitialize_EnsuresUserHomeDir",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test/homedir"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestErrorf_ShortensHomeDir",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test/homedir"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestErrorf_LeavesSiblingOfHomeDir",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test/homedir"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestErrorf_MultiLineErrorWithHomeDir",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "test/homedir"
+        ],
+        "labels": {
+          "check": "test module: parser, registry, options, config, isolation, corpus"
+        }
+      },
+      {
+        "name": "TestCommands/default_subcommand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/hidden_command_runs",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/config_beats_default",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/count_too_low",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/extra_operand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/count_too_high",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/flag_routing",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/omitted_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/runner",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/command_help",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/operand_default",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/global_flag_before_command",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/double_dash",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/typed_flag_beats_config",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/main_help",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/passthrough",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestHelpHidesHiddenCommand",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/split_flag",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands/nested_with_count",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "TestCommands",
+        "status": "passed",
+        "duration": 0,
+        "suite": [
+          "comprehensive"
+        ],
+        "labels": {
+          "check": "examples/comprehensive cliutiltest table"
+        }
+      },
+      {
+        "name": "every module builds and vets with GOWORK=off",
+        "status": "passed",
+        "duration": 3135,
+        "labels": {
+          "check": "every module builds and vets with GOWORK=off"
+        }
+      },
+      {
+        "name": "parallel runs stay isolated under the race detector",
+        "status": "passed",
+        "duration": 2792,
+        "labels": {
+          "check": "parallel runs stay isolated under the race detector"
+        }
+      },
+      {
+        "name": "every module lints clean with golangci-lint v2.15.0",
+        "status": "passed",
+        "duration": 65918,
+        "labels": {
+          "check": "every module lints clean with golangci-lint v2.15.0"
+        }
+      },
+      {
+        "name": "no package-level command maps, writer or removed API remain",
+        "status": "passed",
+        "duration": 171,
+        "labels": {
+          "check": "no package-level command maps, writer or removed API remain"
+        }
+      },
+      {
+        "name": "go-cliutil requires no config library",
+        "status": "passed",
+        "duration": 45,
+        "labels": {
+          "check": "go-cliutil requires no config library"
+        }
+      },
+      {
+        "name": "examples/basic runs a command",
+        "status": "passed",
+        "duration": 12864,
+        "labels": {
+          "check": "examples/basic runs a command"
+        }
+      },
+      {
+        "name": "examples/basic runs a second command",
+        "status": "passed",
+        "duration": 11925,
+        "labels": {
+          "check": "examples/basic runs a second command"
+        }
+      },
+      {
+        "name": "the request-scoped ADR says ED-1666 supersedes it",
+        "status": "passed",
+        "duration": 660,
+        "labels": {
+          "check": "the request-scoped ADR says ED-1666 supersedes it"
+        }
+      },
+      {
+        "name": "ROADMAP no longer lists variadic positionals or repeated flags",
+        "status": "passed",
+        "duration": 33,
+        "labels": {
+          "check": "ROADMAP no longer lists variadic positionals or repeated flags"
+        }
+      },
+      {
+        "name": "README describes the new API",
+        "status": "passed",
+        "duration": 57,
+        "labels": {
+          "check": "README describes the new API"
+        }
+      },
+      {
+        "name": "BEST-PRACTICES describes the new API",
+        "status": "passed",
+        "duration": 13,
+        "labels": {
+          "check": "BEST-PRACTICES describes the new API"
+        }
+      }
+    ]
+  }
+}
