@@ -1,0 +1,1 @@
+Mike asked for this survey on 2026-11-18 as input to the go-cliutil help system discussion.
