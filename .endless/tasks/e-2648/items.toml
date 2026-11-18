@@ -242,3 +242,8 @@ id = "P46"
 kind = "deliverable"
 statement = "go-cliutil defines ConfigApplier with ApplyConfig(Config) error and, each run after typed defaults and before the command line, calls it on the Options value and then on the matched command when they implement it"
 verify = "test/ table: config value applied, then overridden by a typed flag"
+
+[[item]]
+id = "P47"
+kind = "deliverable"
+statement = "cliutil.ConfigAs[T](Config) returns the config as T and panics naming both types when it is not a T"
