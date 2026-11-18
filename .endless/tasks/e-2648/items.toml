@@ -126,7 +126,7 @@ statement = "FlagDef gains a Strings target filled by repeating the flag; with S
 [[item]]
 id = "P24"
 kind = "deliverable"
-statement = "Each flag's value comes from the command line, else from a Config implementing FlagValuer, else from its typed default; a Required flag is satisfied by either of the first two"
+statement = "Each flag's value comes from the command line, else from config (an ApplyConfig hook, or a Config implementing FlagValuer), else from its typed default; a Required flag is satisfied by either of the first two"
 
 [[item]]
 id = "P25"
