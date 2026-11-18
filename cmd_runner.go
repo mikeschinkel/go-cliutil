@@ -200,6 +200,7 @@ func (cr *CmdRunner) resolveFlags(opts Options, line *parsedLine, globalDefs []F
 	for _, typed := range line.typed {
 		typed.def.assign(typed.value)
 	}
+	writeTypedOperands(line.cmd, line.operands)
 
 	for i, fd := range defs {
 		flag := Flag{Name: fd.Name, Global: i < globalCount, Def: fd, Value: fd.current()}

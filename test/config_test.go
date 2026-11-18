@@ -266,6 +266,55 @@ func TestConfigAs(t *testing.T) {
 	}
 }
 
+// operandConfigCmd writes config into its operand's target.
+type operandConfigCmd struct {
+	*cliutil.CmdBase
+	dir string
+}
+
+func (c *operandConfigCmd) ApplyConfig(cliutil.Config) error {
+	c.dir = "config-dir"
+	return nil
+}
+
+func (c *operandConfigCmd) Handle(args cliutil.HandleArgs) error {
+	args.Writer.Printf("dir=%s\n", c.dir)
+	return nil
+}
+
+func TestTypedOperandBeatsApplyConfig(t *testing.T) {
+	t.Parallel()
+	r := cliutil.NewRegistry()
+	r.Register(func() cliutil.Command {
+		c := &operandConfigCmd{}
+		c.CmdBase = cliutil.NewCmdBase(cliutil.CmdArgs{
+			Name:    "bare",
+			ArgDefs: []*cliutil.ArgDef{{Name: "dir", DefaultString: "default-dir", String: &c.dir}},
+		})
+		return c
+	})
+	tests := []struct{ name, line, want string }{
+		{"typed operand wins", "bare typed-dir", "dir=typed-dir"},
+		{"config beats operand default", "bare", "dir=config-dir"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := cliutiltest.Run(t, cliutiltest.Args{
+				Registry:    r,
+				Config:      staticConfig(&typedConfig{}),
+				CommandLine: strings.Fields(tt.line),
+			})
+			if result.Err != nil {
+				t.Fatal(result.Err)
+			}
+			if !strings.Contains(result.Stdout, tt.want) {
+				t.Errorf("want %q in %q", tt.want, result.Stdout)
+			}
+		})
+	}
+}
+
 func TestHandlerErrorExitCode(t *testing.T) {
 	t.Parallel()
 	boom := errors.New("boom")

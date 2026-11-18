@@ -117,6 +117,10 @@ func (p *lineParser) parse(words []string) (line *parsedLine, err error) {
 		scan = p.scanCommand(rest)
 		if !isPassthroughBefore(scan, helpAt) {
 			topic := append([]string{helpCommandName}, scan.typedWords...)
+			if scan.cmd == nil && scan.stoppedAt < len(rest) && !isFlagWord(rest[scan.stoppedAt]) && rest[scan.stoppedAt] != "--" {
+				// Pass an unmatched word on so help can report the unknown command.
+				topic = append(topic, rest[scan.stoppedAt])
+			}
 			words = append(topic, scan.globalWords...)
 		}
 	}
@@ -137,7 +141,7 @@ func (p *lineParser) parse(words []string) (line *parsedLine, err error) {
 func (p *lineParser) parseFlagsOnly(words []string) (*parsedLine, error) {
 	commands := p.set.All()
 	if len(commands) != 1 {
-		return nil, NewErr(ErrInvalidRegistration, "command_count", len(commands),
+		return nil, NewErr(ErrCommandRegistrationFailed, ErrInvalidRegistration, "command_count", len(commands),
 			fmt.Errorf("FlagsOnlyMode requires exactly one registered command; found %d", len(commands)))
 	}
 	return p.sortWords(words, commandScan{cmd: commands[0], path: commands[0].Name()})
@@ -337,7 +341,7 @@ func (l *parsedLine) addOperand(value string, position int, def *ArgDef) {
 // whose words come later on the line.
 func (p *lineParser) unknownFlagErr(words []string, at int, scan commandScan, fw flagWord) error {
 	path := scan.path
-	for _, word := range words[at+1:] {
+	for i, word := range words[at+1:] {
 		if isFlagWord(word) {
 			continue
 		}
@@ -346,6 +350,10 @@ func (p *lineParser) unknownFlagErr(words []string, at int, scan commandScan, fw
 			next = path + "." + word
 		}
 		cmd := p.set.GetExactCommand(next)
+		if cmd == nil && i == 0 && !fw.hasValue {
+			// The word right after the flag may be the flag's own value.
+			continue
+		}
 		if cmd == nil {
 			break
 		}
@@ -357,6 +365,20 @@ func (p *lineParser) unknownFlagErr(words []string, at int, scan commandScan, fw
 		}
 	}
 	return NewErr(ErrUnknownFlag, "flag", words[at], fmt.Errorf("unknown flag: %s", words[at]))
+}
+
+// writeTypedOperands writes the typed operands to the target again, so a word the
+// user typed beats anything ApplyConfig wrote there.
+func writeTypedOperands(cmd Command, operands Operands) {
+	defs := cmd.ArgDefs()
+	if cmd.Passthrough() || len(defs) == 0 || len(operands) == 0 {
+		return
+	}
+	if defs[0].isVariadic() {
+		*defs[0].Strings = operands.Strings()
+		return
+	}
+	*defs[0].String = operands[0].Value
 }
 
 // assignOperands checks the operand count and writes operands to the target.

@@ -44,6 +44,7 @@ func TestParser(t *testing.T) {
 		{name: "flags after operand", line: "task show E-1 --all-fields -p", want: []string{"id=E-1 all=true pretty=true"}},
 		{name: "flags before operand", line: "task show --all-fields -p E-1", want: []string{"id=E-1 all=true pretty=true"}},
 		{name: "flag before all commands", line: "--all-fields task show E-1", wantErr: cliutil.ErrFlagBeforeCommand, errText: "--all-fields"},
+		{name: "value-taking flag before commands", line: "--format json repo setup", wantErr: cliutil.ErrFlagBeforeCommand, errText: "--format"},
 		{name: "flag between commands", line: "task --all-fields show E-1", wantErr: cliutil.ErrFlagBeforeCommand, errText: "--all-fields"},
 
 		// Booleans
@@ -82,6 +83,7 @@ func TestParser(t *testing.T) {
 		{name: "only global flags shows help", line: "-q", want: nil},
 		{name: "help flag", line: "repo setup --help", want: []string{`topic=["repo" "setup"]`, `path=["help"]`}},
 		{name: "help flag first", line: "--help repo setup", want: []string{`topic=["repo" "setup"]`}},
+		{name: "help flag keeps unknown topic", line: "nosuch --help", want: []string{`topic=["nosuch"]`}},
 		{name: "help command topic", line: "help repo setup", want: []string{`topic=["repo" "setup"]`}},
 		{name: "flag routed", line: "--route-me", want: []string{"ran=routed"}},
 		{name: "default subcommand", line: "group", want: []string{"ran=group.member"}},
@@ -277,5 +279,8 @@ func TestFlagsOnlyMode(t *testing.T) {
 	result = cliutiltest.Run(t, cliutiltest.Args{Registry: newRegistry(), Mode: cliutil.FlagsOnlyMode})
 	if !errors.Is(result.Err, cliutil.ErrInvalidRegistration) {
 		t.Errorf("several commands: got %v", result.Err)
+	}
+	if result.ExitCode != cliutil.ExitInitializationError {
+		t.Errorf("several commands: exit code %d", result.ExitCode)
 	}
 }
