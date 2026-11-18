@@ -20,7 +20,7 @@ paths  = ["./..."]
 # --- Every module builds and vets as a consumer sees it ----------------------
 [[check]]
 name = "every module builds and vets with GOWORK=off"
-sh   = "for m in . test examples/basic examples/comprehensive; do (cd $m && GOWORK=off go build ./... && GOWORK=off go vet ./...) || exit 1; done"
+sh   = "for m in . test examples/basic examples/comprehensive; do (cd $m && GOWORK=off go build -o /dev/null ./... && GOWORK=off go vet ./...) || exit 1; done"
 
 [[check]]
 name = "parallel runs stay isolated under the race detector"
