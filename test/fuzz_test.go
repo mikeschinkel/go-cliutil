@@ -1,9 +1,11 @@
 package test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/mikeschinkel/go-cliutil"
+	"github.com/mikeschinkel/go-cliutil/cliutiltest"
 )
 
 // FuzzParseVerbosity tests ParseVerbosity with random inputs to ensure it doesn't panic
@@ -28,37 +30,58 @@ func FuzzParseVerbosity(f *testing.F) {
 	})
 }
 
-// FuzzNewGlobalOptions tests NewGlobalOptions with random inputs
+// FuzzNewGlobalOptions tests NewGlobalOptions and validation with random inputs
 func FuzzNewGlobalOptions(f *testing.F) {
-	// Seed corpus with various option combinations
-	type seed struct {
-		quiet     bool
-		verbosity int
-		timeout   int
-		dryRun    bool
-		force     bool
-	}
+	f.Add("quiet", "timeout", 30, byte('T'), "usage")
+	f.Add("", "", 0, byte(0), "")
+	f.Add("nope", "nope", -1, byte('-'), "x")
 
-	seeds := []seed{
-		{false, 0, 0, false, false},
-		{true, 1, 30, false, false},
-		{false, 2, 60, true, false},
-		{false, 3, 120, false, true},
-		{true, -1, -1, true, true},
-	}
-
-	for _, s := range seeds {
-		f.Add(s.quiet, s.verbosity, s.timeout, s.dryRun, s.force)
-	}
-
-	f.Fuzz(func(t *testing.T, quiet bool, verbosity, timeout int, dryRun, force bool) {
-		// Just ensure it doesn't panic
-		_ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
-			Quiet:     &quiet,
-			Verbosity: &verbosity,
-			Timeout:   &timeout,
-			DryRun:    &dryRun,
-			Force:     &force,
+	f.Fuzz(func(t *testing.T, omit, override string, def int, shortcut byte, usage string) {
+		opts := cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
+			Omit: []string{omit},
+			Overrides: []cliutil.FlagDef{
+				{Name: override, DefaultInt: def, Shortcut: shortcut, Usage: usage},
+			},
 		})
+		// Just ensure neither panics
+		_ = opts.FlagDefs()
+		_ = cliutil.NewRegistry().Validate(opts)
+	})
+}
+
+// runCommandLine parses newline-separated words against the test registry.
+func runCommandLine(t *testing.T, input string) {
+	t.Helper()
+	var line []string
+	if input != "" {
+		line = strings.Split(input, "\n")
+	}
+	cliutiltest.Run(t, cliutiltest.Args{Registry: newRegistry(), CommandLine: line})
+}
+
+// FuzzCommandLine ensures no command line panics the parser.
+func FuzzCommandLine(f *testing.F) {
+	seeds := []string{
+		"",
+		"--",
+		"-",
+		"--=",
+		"-=",
+		"--help",
+		"repo\nsetup\n--check\n.",
+		"repo\n--timeout\n9\nsetup\n--tag\na\\,b,c",
+		"task\n--all-fields\nshow\nE-1",
+		"raw\n--help\n--\nx",
+		"--route-me\nextra",
+		"group\nmember\n--",
+		"list\n-\n--\n-x",
+		"repo\nsetup\n--format",
+		"--timeout",
+	}
+	for _, seed := range seeds {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, input string) {
+		runCommandLine(t, input)
 	})
 }

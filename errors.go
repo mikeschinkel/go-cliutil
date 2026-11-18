@@ -13,6 +13,16 @@ var (
 	ErrFlagsParsingFailed  = errors.New("flags parsing failed")
 	ErrAssigningArgsFailed = errors.New("assigning args failed")
 
+	ErrUnknownFlag         = errors.New("unknown flag")
+	ErrFlagBeforeCommand   = errors.New("flag must follow its command")
+	ErrFlagValueMissing    = errors.New("flag needs a value")
+	ErrInvalidFlagValue    = errors.New("invalid flag value")
+	ErrTooManyOperands     = errors.New("too many arguments")
+	ErrTooFewOperands      = errors.New("too few arguments")
+	ErrConfigLoadFailed    = errors.New("loading config failed")
+	ErrConfigApplyFailed   = errors.New("applying config failed")
+	ErrInvalidRegistration = errors.New("invalid command registration")
+
 	// ErrOmitUserNotify signals that the error has already been displayed to the user
 	// in a user-friendly format, and the technical error message should be omitted
 	// from user output (but can still be logged).

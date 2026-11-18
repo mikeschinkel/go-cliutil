@@ -5,7 +5,6 @@ go 1.27.0
 require (
 	github.com/mikeschinkel/go-dt v0.7.1
 	github.com/mikeschinkel/go-dt/appinfo v0.3.0
-	github.com/mikeschinkel/go-dt/dtx v0.2.2
 	golang.org/x/term v0.40.0
 )
 

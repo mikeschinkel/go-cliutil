@@ -2,334 +2,319 @@ package cliutil
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
-	"strconv"
-	"strings"
+	"slices"
 	"time"
-
-	"github.com/mikeschinkel/go-dt"
 )
 
-//goland:noinspection GoUnusedExportedFunction
-func GetGlobalOptions() *GlobalOptions {
-	return options
-}
-
-var _ Options = (*GlobalOptions)(nil)
-
-type GlobalOptions struct {
-	timeout       *int
-	quiet         *bool
-	verbosity     *int
-	dryRun        *bool
-	force         *bool
-	originalFlags []string // Flags from original command line for validation
-	//Strings   stringSliceFlag
-}
-
-func (o *GlobalOptions) Parse(flags Flags) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (o *GlobalOptions) Options() {}
-
-type GlobalOptionsArgs struct {
-	Quiet     *bool
-	Verbosity *int
-	Timeout   *int
-	DryRun    *bool
-	Force     *bool
-}
-
-// NewGlobalOptions creates a new GlobalOptions instance from raw values. This is
-// useful when loading options from configuration files or other sources. Any nil
-// values will use the corresponding defaults.
-//
-// TODO: Global options in their raw form are being used inside app options
-//
-//	INSTEAD OF being converted to their parsed forms. NEED TO FIX THIS
-func NewGlobalOptions(args GlobalOptionsArgs) *GlobalOptions {
-	verbosity := valueOrDefault(args.Verbosity, DefaultVerbosity)
-	return &GlobalOptions{
-		quiet:     ptr(valueOrDefault(args.Quiet, DefaultQuiet)),
-		verbosity: ptr(verbosity),
-		timeout:   ptr(valueOrDefault(args.Timeout, DefaultTimeout)),
-		dryRun:    ptr(valueOrDefault(args.DryRun, DefaultDryRun)),
-		force:     ptr(valueOrDefault(args.Force, DefaultForce)),
-	}
-}
-
-func (o *GlobalOptions) Timeout() time.Duration {
-	return time.Duration(*o.timeout) * time.Second
-}
-func (o *GlobalOptions) Quiet() bool {
-	return *o.quiet
-}
-func (o *GlobalOptions) Verbosity() Verbosity {
-	return Verbosity(*o.verbosity)
-}
-func (o *GlobalOptions) DryRun() bool {
-	return *o.dryRun
-}
-func (o *GlobalOptions) Force() bool {
-	return *o.force
-}
-
-//goland:noinspection GoUnusedExportedFunction
-func GetGlobalFlagSet() *FlagSet {
-	return flagSet
-}
+// Names of the global flags GlobalOptions declares.
+const (
+	VerbosityFlagName = "verbosity"
+	QuietFlagName     = "quiet"
+	TimeoutFlagName   = "timeout"
+	DryRunFlagName    = "dry-run"
+	ForceFlagName     = "force"
+)
 
 var (
-	flagNameRegex = regexp.MustCompile(`^[a-z0-9-]+$`)
+	flagNameRegex = regexp.MustCompile(`^[a-z0-9]+(-[a-z0-9]+)*$`)
+
+	// ErrFlagTypeNotDiscoverable means a FlagDef does not set exactly one target.
+	ErrFlagTypeNotDiscoverable = errors.New("flag type is not discoverable")
 )
 
-var flagSet = &FlagSet{
-	Name: "global",
-	FlagDefs: []FlagDef{
-		{
-			Name:     "verbosity",
-			Shortcut: 'v',
-			Default:  DefaultVerbosity,
-			Usage:    "Verbosity of most command line output (1 to 3, default 1)",
-			Int:      options.verbosity,
-		},
-		{
-			Name:     "quiet",
-			Shortcut: 'q',
-			Default:  DefaultQuiet,
-			Usage:    "Disable display of most command line output",
-			Bool:     options.quiet,
-		},
-		{
-			Name:     "timeout",
-			Shortcut: 't',
-			Default:  DefaultTimeout,
-			Usage:    "timeout(in seconds) (TODO explain what this controls)",
-			Int:      options.timeout,
-		},
-		{
-			Name:    "dry-run",
-			Default: DefaultDryRun,
-			Usage:   "Show what command results will be if command is run",
-			Bool:    options.dryRun,
-		},
-		{
-			Name:     "force",
-			Shortcut: 'f',
-			Default:  DefaultForce,
-			Usage:    "Force the action even if warnings",
-			Bool:     options.force,
-		},
-	},
+var _ DefaultOptions = (*GlobalOptions)(nil)
+
+// GlobalOptions holds the global flags go-cliutil supplies. Embed it in an app's
+// Options type; each run fills a fresh value.
+type GlobalOptions struct {
+	timeout   int
+	quiet     bool
+	verbosity int
+	dryRun    bool
+	force     bool
+	omit      []string
+	overrides []FlagDef
 }
 
-func AddCLIOption(flagDef FlagDef) (err error) {
-	var errs []error
-	var types []string
-	var existing FlagDef
+// GlobalOptionsArgs configures NewGlobalOptions.
+type GlobalOptionsArgs struct {
+	// Omit names built-in flags to drop. An omitted flag is not parsed or shown
+	// in help, and calling its GlobalOptions method panics.
+	Omit []string
 
-	// Validate Name: lowercase alphanumeric + dashes only
-	if flagDef.Name == "" {
-		errs = append(errs, NewErr(dt.ErrEmpty, "empty_property", "Name"))
-	} else if !flagNameRegex.MatchString(flagDef.Name) {
-		errs = append(errs, NewErr(dt.ErrInvalidFlagName, "rule", "may contain only lowercase letters, numbers, and dashes"))
+	// Overrides changes built-in flags, matched by Name. A field left at its zero
+	// value keeps the built-in setting, and a target may not be set.
+	Overrides []FlagDef
+}
+
+// NewGlobalOptions creates a GlobalOptions holding the flags' defaults. Invalid
+// Omit or Overrides entries are reported when the registry is validated.
+func NewGlobalOptions(args GlobalOptionsArgs) *GlobalOptions {
+	o := &GlobalOptions{
+		omit:      slices.Clone(args.Omit),
+		overrides: slices.Clone(args.Overrides),
 	}
+	for _, fd := range o.FlagDefs() {
+		fd.assign(fd.defaultValue())
+	}
+	return o
+}
 
-	// Validate no duplicate flag names
-	for _, existing = range flagSet.FlagDefs {
-		if existing.Name == flagDef.Name {
-			errs = append(errs, NewErr(dt.ErrInvalidDuplicateFlag, "where", "global flags"))
-			break
+// Options marks GlobalOptions as an Options value.
+func (o *GlobalOptions) Options() {}
+
+// globalOptions gives go-cliutil the GlobalOptions embedded in an app's type.
+func (o *GlobalOptions) globalOptions() *GlobalOptions {
+	return o
+}
+
+// Timeout returns the --timeout value. It panics when the flag is omitted.
+func (o *GlobalOptions) Timeout() time.Duration {
+	o.mustHave(TimeoutFlagName)
+	return time.Duration(o.timeout) * time.Second
+}
+
+// Quiet returns the --quiet value. It panics when the flag is omitted.
+func (o *GlobalOptions) Quiet() bool {
+	o.mustHave(QuietFlagName)
+	return o.quiet
+}
+
+// Verbosity returns the --verbosity value. It panics when the flag is omitted.
+func (o *GlobalOptions) Verbosity() Verbosity {
+	o.mustHave(VerbosityFlagName)
+	return Verbosity(o.verbosity)
+}
+
+// DryRun returns the --dry-run value. It panics when the flag is omitted.
+func (o *GlobalOptions) DryRun() bool {
+	o.mustHave(DryRunFlagName)
+	return o.dryRun
+}
+
+// Force returns the --force value. It panics when the flag is omitted.
+func (o *GlobalOptions) Force() bool {
+	o.mustHave(ForceFlagName)
+	return o.force
+}
+
+// SetTimeout sets the timeout in seconds, typically from ApplyConfig.
+func (o *GlobalOptions) SetTimeout(seconds int) {
+	o.mustHave(TimeoutFlagName)
+	o.timeout = seconds
+}
+
+// SetQuiet sets the quiet value, typically from ApplyConfig.
+func (o *GlobalOptions) SetQuiet(quiet bool) {
+	o.mustHave(QuietFlagName)
+	o.quiet = quiet
+}
+
+// SetVerbosity sets the verbosity level, typically from ApplyConfig.
+func (o *GlobalOptions) SetVerbosity(verbosity int) {
+	o.mustHave(VerbosityFlagName)
+	o.verbosity = verbosity
+}
+
+// SetDryRun sets the dry-run value, typically from ApplyConfig.
+func (o *GlobalOptions) SetDryRun(dryRun bool) {
+	o.mustHave(DryRunFlagName)
+	o.dryRun = dryRun
+}
+
+// SetForce sets the force value, typically from ApplyConfig.
+func (o *GlobalOptions) SetForce(force bool) {
+	o.mustHave(ForceFlagName)
+	o.force = force
+}
+
+// mustHave panics when the named flag is omitted, a programming error.
+func (o *GlobalOptions) mustHave(name string) {
+	if o.isOmitted(name) {
+		panic(fmt.Sprintf("cliutil.GlobalOptions: the %q flag is omitted, so its method cannot be called", name))
+	}
+}
+
+func (o *GlobalOptions) isOmitted(name string) bool {
+	return slices.Contains(o.omit, name)
+}
+
+// FlagDefs returns the built-in flags, without omitted flags and with Overrides
+// applied. Targets are built on each call so they always point at this value.
+func (o *GlobalOptions) FlagDefs() (defs []FlagDef) {
+	for _, fd := range o.builtinDefs() {
+		if o.isOmitted(fd.Name) {
+			continue
+		}
+		for _, override := range o.overrides {
+			if override.Name == fd.Name {
+				fd = mergeOverride(fd, override)
+			}
+		}
+		defs = append(defs, fd)
+	}
+	return defs
+}
+
+func (o *GlobalOptions) builtinDefs() []FlagDef {
+	return []FlagDef{
+		{
+			Name:           VerbosityFlagName,
+			Shortcut:       'v',
+			DefaultInt:     DefaultVerbosity,
+			Usage:          "Verbosity of most command line output (1 to 3, default 1)",
+			Int:            &o.verbosity,
+			ValidationFunc: validateVerbosity,
+		},
+		{
+			Name:     QuietFlagName,
+			Shortcut: 'q',
+			Usage:    "Disable display of most command line output",
+			Bool:     &o.quiet,
+		},
+		{
+			Name:       TimeoutFlagName,
+			Shortcut:   't',
+			DefaultInt: DefaultTimeout,
+			Usage:      "timeout(in seconds) (TODO explain what this controls)",
+			Int:        &o.timeout,
+		},
+		{
+			Name:  DryRunFlagName,
+			Usage: "Show what command results will be if command is run",
+			Bool:  &o.dryRun,
+		},
+		{
+			Name:     ForceFlagName,
+			Shortcut: 'f',
+			Usage:    "Force the action even if warnings",
+			Bool:     &o.force,
+		},
+	}
+}
+
+// validateArgs reports Omit and Overrides entries that name no built-in flag or
+// that set a target.
+func (o *GlobalOptions) validateArgs() error {
+	var errs []error
+	builtins := o.builtinDefs()
+	isBuiltin := func(name string) bool {
+		return slices.ContainsFunc(builtins, func(fd FlagDef) bool { return fd.Name == name })
+	}
+	for _, name := range o.omit {
+		if !isBuiltin(name) {
+			errs = append(errs, fmt.Errorf("GlobalOptionsArgs.Omit: no built-in flag named '%s'", name))
 		}
 	}
+	for _, override := range o.overrides {
+		if !isBuiltin(override.Name) {
+			errs = append(errs, fmt.Errorf("GlobalOptionsArgs.Overrides: no built-in flag named '%s'", override.Name))
+		}
+		if override.Type() != UnknownFlagType {
+			errs = append(errs, fmt.Errorf("GlobalOptionsArgs.Overrides: flag '%s' may not set a target", override.Name))
+		}
+	}
+	return CombineErrs(errs)
+}
 
-	// Validate exactly one type is set
-	if flagDef.String != nil {
-		types = append(types, "string")
+// mergeOverride returns fd with override's non-zero fields applied.
+func mergeOverride(fd, override FlagDef) FlagDef {
+	if override.Shortcut != 0 {
+		fd.Shortcut = override.Shortcut
 	}
-	if flagDef.Bool != nil {
-		types = append(types, "bool")
+	if override.Usage != "" {
+		fd.Usage = override.Usage
 	}
-	if flagDef.Int != nil {
-		types = append(types, "int")
+	if override.Required {
+		fd.Required = true
 	}
-	if flagDef.Int64 != nil {
-		types = append(types, "int64")
+	if override.Regex != nil {
+		fd.Regex = override.Regex
 	}
-	rule := "exactly one property of .String, .Bool, .Int, or .Int64 must be non-nil"
-	switch len(types) {
-	case 0:
-		errs = append(errs,
-			NewErr(ErrFlagTypeNotDiscoverable, "rule", rule),
-		)
-	case 1:
-		// Success - exactly one type is set
-	default:
-		errs = append(errs,
-			NewErr(ErrFlagTypeNotDiscoverable, "rule", rule, "duplicates", strings.Join(types, ", ")),
-		)
+	if override.ValidationFunc != nil {
+		fd.ValidationFunc = override.ValidationFunc
 	}
+	if override.Example != "" {
+		fd.Example = override.Example
+	}
+	if override.DefaultBool {
+		fd.DefaultBool = true
+	}
+	if override.DefaultInt != 0 {
+		fd.DefaultInt = override.DefaultInt
+	}
+	return fd
+}
 
-	// Validate Usage is not empty
-	if strings.TrimSpace(flagDef.Usage) == "" {
-		errs = append(errs, NewErr(dt.ErrEmpty, "empty_property", "Usage"))
+func validateVerbosity(value any) error {
+	verbosity, ok := value.(int)
+	if !ok {
+		return ErrInvalidateVerbosity
 	}
-
-	err = CombineErrs(errs)
-	if err != nil {
-		goto end
-	}
-	flagSet.FlagDefs = append(flagSet.FlagDefs, flagDef)
-end:
-	if err != nil {
-		err = WithErr(err, dt.ErrFlagValidationFailed, "flag_name", flagDef.Name)
-	}
+	_, err := ParseVerbosity(verbosity)
 	return err
 }
 
-var ErrFlagTypeNotDiscoverable = errors.New("flag type is not discoverable")
+// globalOptionsHolder finds the GlobalOptions an app's type embeds.
+type globalOptionsHolder interface {
+	globalOptions() *GlobalOptions
+}
 
-// ParseGlobalOptions converts raw options into GlobalOptions.
-//
-// Expects os.Args as input. Strips program name and defaults to ["help"] if no args.
-func ParseGlobalOptions(osArgs []string) (_ *GlobalOptions, _ []string, err error) {
+// globalFlagDefs returns every global flag an Options value declares: the
+// embedded GlobalOptions' flags, then the app's own.
+func globalFlagDefs(opts Options) (defs []FlagDef, err error) {
 	var errs []error
-	var timeout time.Duration
-	var verbosity Verbosity
-	var args []string
-	var helpRequested bool
 
-	// Strip program name from os.Args
-	if len(osArgs) > 0 {
-		args = osArgs[1:]
-	}
-
-	// Transform flag commands (e.g., --test-hidden -> test-hidden) BEFORE flag parsing
-	args = transformFlagCommands(args)
-
-	// Check for --help and handle it first
-	helpRequested, args = containsHelpFlag(args)
-	if helpRequested {
-		args = append([]string{"help"}, args...)
-	}
-
-	// Extract and save original flags for later validation (after --help is removed)
-	options.originalFlags = extractFlags(args)
-
-	// Default to help command if no args provided
-	if len(args) == 0 {
-		args = []string{"help"}
-	}
-
-	args, err = flagSet.Parse(args)
-	if err != nil {
-		goto end
-	}
-
-	timeout, err = dt.ParseTimeDurationEx(strconv.Itoa(*options.timeout))
-	errs = AppendErr(errs, err)
-	if err == nil {
-		*options.timeout = int(timeout.Seconds())
-	}
-
-	verbosity, err = ParseVerbosity(*options.verbosity)
-	errs = AppendErr(errs, err)
-	if err == nil {
-		*options.verbosity = int(verbosity)
-	}
-
-	err = CombineErrs(errs)
-end:
-	return options, args, err
-}
-
-// extractFlags returns all args that start with '-' (flags only, not values)
-func extractFlags(args []string) (flags []string) {
-	var arg string
-
-	for _, arg = range args {
-		if strings.HasPrefix(arg, "-") {
-			flags = append(flags, arg)
-		}
-	}
-
-	return flags
-}
-
-// transformFlagCommands checks if first arg is a flag command (e.g., --test-hidden)
-// and transforms it to a command name (e.g., test-hidden) BEFORE flagSet.Parse() consumes it
-func transformFlagCommands(args []string) (transformed []string) {
-	var firstArg string
-	var flagName string
-	var cmd Command
-	var globalFS *FlagSet
-	var fd FlagDef
-	var found bool
-
-	transformed = args
-	if len(args) == 0 {
-		goto end
-	}
-
-	firstArg = args[0]
-	if !strings.HasPrefix(firstArg, "--") {
-		goto end
-	}
-
-	// Extract flag name (remove -- prefix)
-	flagName = strings.TrimPrefix(firstArg, "--")
-
-	// Check if any registered command has this FlagName
-	for _, cmd = range RegisteredCommands() {
-		if cmd.FlagName() != flagName {
-			continue
-		}
-
-		// Verify this flag exists in global flagSet
-		globalFS = GetGlobalFlagSet()
-		if globalFS == nil {
+	holder, hasGlobals := opts.(globalOptionsHolder)
+	if hasGlobals {
+		global := holder.globalOptions()
+		if global == nil {
+			err = errors.New("the Options value embeds a nil *GlobalOptions; use cliutil.NewGlobalOptions")
 			goto end
 		}
+		errs = AppendErr(errs, global.validateArgs())
+		defs = global.FlagDefs()
+	}
 
-		found = false
-		for _, fd = range globalFS.FlagDefs {
-			if fd.Name == flagName {
-				found = true
-				break
+	if definer, ok := opts.(FlagDefiner); ok {
+		builtins := len(defs)
+		for _, fd := range definer.FlagDefs() {
+			// An app that does not declare FlagDefs gets GlobalOptions' promoted
+			// method, which returns the built-ins already collected.
+			if slices.ContainsFunc(defs[:builtins], func(b FlagDef) bool { return b.sharesTarget(&fd) }) {
+				continue
 			}
+			defs = append(defs, fd)
 		}
-
-		if !found {
-			// Flag command registered but flag not found - error will be caught later
-			goto end
-		}
-
-		// Transform: replace --flagname with command name
-		transformed = append([]string{cmd.Name()}, args[1:]...)
-		goto end
 	}
+	err = CombineErrs(errs)
 
 end:
-	return transformed
+	return defs, err
 }
 
-// containsHelpFlag checks if --help is in args and removes it
-func containsHelpFlag(args []string) (helpRequested bool, filteredArgs []string) {
-	var i int
-	var arg string
+// runQuiet reports the run's quiet setting, or false when the app has none.
+func runQuiet(opts Options) bool {
+	return readDefaultOption(opts, QuietFlagName, DefaultQuiet, DefaultOptions.Quiet)
+}
 
-	filteredArgs = args
+// runVerbosity reports the run's verbosity, or the default when the app has none.
+func runVerbosity(opts Options) Verbosity {
+	return readDefaultOption(opts, VerbosityFlagName, LowVerbosity, DefaultOptions.Verbosity)
+}
 
-	for i, arg = range args {
-		if strings.HasPrefix(arg, "--help") {
-			filteredArgs = append(args[:i], args[i+1:]...)
-			helpRequested = true
-			goto end
-		}
+// readDefaultOption reads a DefaultOptions value, returning fallback when the
+// app's Options does not implement it or omits the flag.
+func readDefaultOption[T any](opts Options, name string, fallback T, read func(DefaultOptions) T) T {
+	defaults, ok := opts.(DefaultOptions)
+	if !ok {
+		return fallback
 	}
-
-end:
-	return helpRequested, filteredArgs
+	holder, ok := opts.(globalOptionsHolder)
+	if ok && holder.globalOptions().isOmitted(name) {
+		return fallback
+	}
+	return read(defaults)
 }

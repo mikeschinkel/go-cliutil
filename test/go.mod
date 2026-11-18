@@ -10,7 +10,6 @@ require (
 
 require (
 	github.com/mikeschinkel/go-dt/appinfo v0.3.0 // indirect
-	github.com/mikeschinkel/go-dt/dtx v0.2.2 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 	golang.org/x/term v0.40.0 // indirect
 )

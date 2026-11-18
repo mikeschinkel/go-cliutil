@@ -25,32 +25,9 @@ func TestFuzzCorpus(t *testing.T) {
 		return nil
 	})
 
-	// Test NewGlobalOptions corpus
-	testCorpus(t, "FuzzNewGlobalOptions", func(input string) error {
-		parts := strings.Split(input, "\n")
-		if len(parts) < 5 {
-			return fmt.Errorf("invalid input format")
-		}
-
-		quiet := parts[0] == "true"
-		verbosity, err := strconv.Atoi(parts[1])
-		if err != nil {
-			return fmt.Errorf("invalid verbosity: %w", err)
-		}
-		timeout, err := strconv.Atoi(parts[2])
-		if err != nil {
-			return fmt.Errorf("invalid timeout: %w", err)
-		}
-		dryRun := parts[3] == "true"
-		force := parts[4] == "true"
-
-		_ = cliutil.NewGlobalOptions(cliutil.GlobalOptionsArgs{
-			Quiet:     &quiet,
-			Verbosity: &verbosity,
-			Timeout:   &timeout,
-			DryRun:    &dryRun,
-			Force:     &force,
-		})
+	// Test command line corpus
+	testCorpus(t, "FuzzCommandLine", func(input string) error {
+		runCommandLine(t, input)
 		return nil
 	})
 }

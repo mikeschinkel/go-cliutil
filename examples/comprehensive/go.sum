@@ -1,0 +1,8 @@
+github.com/mikeschinkel/go-dt v0.7.1 h1:u5wfbp4OcCCynpaAtNZaMNElD6bKgJZvZKGp/F8yO64=
+github.com/mikeschinkel/go-dt v0.7.1/go.mod h1:qyJVqkNO1uNSXs7S7X+ZaG8ErT5Hp33iuN0K8/rwjcU=
+github.com/mikeschinkel/go-dt/appinfo v0.3.0 h1:5o1ZdfyXXw1yYbErwnYsoU8Y8t/OzSTGdHiLZVbEsHM=
+github.com/mikeschinkel/go-dt/appinfo v0.3.0/go.mod h1:MZ+j6CI5nLxsX7noZADpBkcZWUzKvqnKIn/fPB/TLh0=
+golang.org/x/sys v0.41.0 h1:Ivj+2Cp/ylzLiEU89QhWblYnOE9zerudt9Ftecq2C6k=
+golang.org/x/sys v0.41.0/go.mod h1:OgkHotnGiDImocRcuBABYBEXf8A9a87e/uXjp9XT3ks=
+golang.org/x/term v0.40.0 h1:36e4zGLqU4yhjlmxEaagx2KuYbJq3EwY8K943ZsHcvg=
+golang.org/x/term v0.40.0/go.mod h1:w2P8uVp06p2iyKKuvXIm7N/y0UCRt3UfJTfZ7oOpglM=

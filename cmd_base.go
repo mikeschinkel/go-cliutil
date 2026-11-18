@@ -1,8 +1,6 @@
 package cliutil
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -17,6 +15,7 @@ const (
 	BoolFlag
 	IntFlag
 	Int64Flag
+	StringsFlag
 )
 
 var _ Command = (*CmdBase)(nil)
@@ -28,9 +27,8 @@ type CmdBase struct {
 	name         string
 	usage        string
 	description  string
-	flagsDefs    []FlagDef  // Legacy flag definitions (will be deprecated)
-	flagSets     []*FlagSet // New FlagSet-based approach
-	argDefs      []*ArgDef  // Positional argument definitions
+	flagSets     []*FlagSet // Flags the command accepts
+	argDefs      []*ArgDef  // Positional argument definition; at most one
 	delegateTo   Command
 	parentTypes  []reflect.Type
 	subCommands  []Command
@@ -40,7 +38,8 @@ type CmdBase struct {
 	order        int       // Display order in help (0=last, 1+=ordered)
 	flagName     string    // Flag name that triggers this command (e.g., "setup" for --setup)
 	hide         bool      // Hide from help output
-	CmdRunnerArgs
+	passthrough  bool      // Receive every word after the command words unparsed
+	fullNames    []string  // Dot-separated paths, set when a run builds its commands
 }
 
 type CmdArgs struct {
@@ -48,15 +47,19 @@ type CmdArgs struct {
 	Usage        string
 	Description  string
 	DelegateTo   Command
-	FlagDefs     []FlagDef  // Legacy flag definitions (will be deprecated)
-	FlagSets     []*FlagSet // New FlagSet-based approach
-	ArgDefs      []*ArgDef  // Positional argument definitions
+	FlagSets     []*FlagSet // Flags the command accepts
+	ArgDefs      []*ArgDef  // Positional argument definition; at most one
 	Examples     []Example  // Custom examples
 	NoExamples   bool       // Do not display any examples
 	AutoExamples bool       // Display auto-generated examples even if custom are provided
 	Order        int        // Display order in help (0=last, 1+=ordered)
 	FlagName     string     // Flag name that triggers this command (e.g., "setup" for --setup)
 	Hide         bool       // Hide from help output
+
+	// Passthrough puts every word after the command words into
+	// HandleArgs.Parameters unparsed, global flags included. Global flags for such
+	// a command must come before its command words.
+	Passthrough bool
 }
 
 // NewCmdBase creates a new command base
@@ -66,9 +69,8 @@ func NewCmdBase(args CmdArgs) *CmdBase {
 		name:         args.Name,
 		usage:        args.Usage,
 		description:  args.Description,
-		flagsDefs:    args.FlagDefs,
-		flagSets:     args.FlagSets, // Static FlagSets (legacy)
-		argDefs:      args.ArgDefs,  // Positional argument definitions
+		flagSets:     args.FlagSets,
+		argDefs:      args.ArgDefs,
 		delegateTo:   args.DelegateTo,
 		examples:     args.Examples,
 		noExamples:   args.NoExamples,
@@ -76,6 +78,7 @@ func NewCmdBase(args CmdArgs) *CmdBase {
 		order:        args.Order,
 		flagName:     args.FlagName,
 		hide:         args.Hide,
+		passthrough:  args.Passthrough,
 		parentTypes:  make([]reflect.Type, 0),
 		subCommands:  make([]Command, 0),
 	}
@@ -91,19 +94,18 @@ func (c *CmdBase) CLIName() string {
 	return c.cliName
 }
 
-// FullNames returns the command names prefixed with any parent names
-func (c *CmdBase) FullNames() (names []string) {
-	names = make([]string, len(c.parentTypes))
-	for i, t := range c.parentTypes {
-		parent := commandsTypeMap[t]
-		for _, pn := range parent.FullNames() {
-			names[i] = fmt.Sprintf("%s.%s", pn, c.name)
-		}
+// FullNames returns the command's dot-separated paths, one per parent path. A
+// run sets them when it builds its commands; before that it returns the name.
+func (c *CmdBase) FullNames() []string {
+	if len(c.fullNames) == 0 {
+		return []string{c.name}
 	}
-	if len(names) == 0 {
-		names = []string{c.name}
-	}
-	return names
+	return c.fullNames
+}
+
+// SetFullNames records the command's dot-separated paths for this run.
+func (c *CmdBase) SetFullNames(names []string) {
+	c.fullNames = names
 }
 
 // Usage returns the command usage string
@@ -131,95 +133,6 @@ func (c *CmdBase) DelegateTo() Command {
 // SetDelegateTo sets the command to delegate to
 func (c *CmdBase) SetDelegateTo(cmd Command) {
 	c.delegateTo = cmd
-}
-
-// ParseFlagSets parses flags using the new FlagSet-based approach
-func (c *CmdBase) ParseFlagSets(args []string) (remainingArgs []string, err error) {
-	var errs []error
-	nonFSArgs := args
-
-	// Parse each FlagSet in sequence
-	for _, flagSet := range c.flagSets {
-		nonFSArgs, err = flagSet.Parse(nonFSArgs)
-		errs = append(errs, err)
-	}
-
-	err = errors.Join(errs...)
-	return nonFSArgs, err
-}
-
-//// validateFlags ensures all required flags are provided
-//func (c *CmdBase) validateFlags(values map[string]any) (err error) {
-//	var errs []error
-//	for _, fd := range c.flagsDefs {
-//		if !fd.Required {
-//			continue
-//		}
-//		value := values[fd.Name]
-//		switch fd.Type() {
-//		case BoolFlag:
-//			// Nothing to do
-//		case StringFlag:
-//			if value.(string) == "" {
-//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
-//				goto end
-//			}
-//		case IntFlag:
-//			if value.(int) == 0 && fd.Default == nil {
-//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
-//				goto end
-//			}
-//		case Int64Flag:
-//			if value.(int64) == 0 && fd.Default == nil {
-//				errs = AppendErr(errs, fmt.Errorf("%s is required (use --%s flag)", fd.Usage, fd.Name))
-//				goto end
-//			}
-//		case UnknownFlagType:
-//			errs = AppendErr(errs, fmt.Errorf("flag type not set for '%s'", fd.Name))
-//		}
-//	}
-//
-//end:
-//	return CombineErrs(errs)
-//}
-
-// AssignArgs assigns positional arguments to their defined config fields
-func (c *CmdBase) AssignArgs(args []string) (err error) {
-	var errs []error
-
-	// Check if we have enough arguments for required ones
-	requiredCount := 0
-	for _, argDef := range c.argDefs {
-		if argDef.Required {
-			requiredCount++
-		}
-	}
-
-	if len(args) < requiredCount {
-		err = fmt.Errorf("expected at least %d arguments, got %d", requiredCount, len(args))
-		goto end
-	}
-
-	// Assign available arguments
-	for i, argDef := range c.argDefs {
-		if i >= len(args) {
-			if argDef.Required {
-				errs = append(errs, fmt.Errorf("required argument '%s' missing", argDef.Name))
-			}
-			continue
-		}
-
-		if argDef.String != nil {
-			*argDef.String = args[i]
-		}
-	}
-
-	if len(errs) > 0 {
-		err = errors.Join(errs...)
-	}
-
-end:
-	return err
 }
 
 func (c *CmdBase) Examples() []Example {
@@ -254,21 +167,15 @@ func (c *CmdBase) AddParent(r reflect.Type) {
 	c.parentTypes = append(c.parentTypes, r)
 }
 
-//	func (c *CmdBase) Logger() *slog.Logger {
-//		return c.logger
-//	}
-//
-//	func (c *CmdBase) Writer() Writer {
-//		return c.Writer
-//	}
-func (c *CmdBase) SetCommandRunnerArgs(args CmdRunnerArgs) {
-	c.CmdRunnerArgs = args
-}
-
 func (c *CmdBase) FlagName() string {
 	return c.flagName
 }
 
 func (c *CmdBase) IsHidden() bool {
 	return c.hide
+}
+
+// Passthrough reports whether the command receives its words unparsed.
+func (c *CmdBase) Passthrough() bool {
+	return c.passthrough
 }

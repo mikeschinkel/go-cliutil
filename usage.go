@@ -24,7 +24,8 @@ type Usage struct {
 }
 type UsageArgs struct {
 	appinfo.AppInfo
-	Writer Writer
+	Writer   Writer
+	Commands *CommandSet // The run's commands; see HandleArgs.UsageArgs.
 }
 
 // BuildUsage Build the data for the template (auto + optional custom examples)
@@ -34,18 +35,16 @@ func BuildUsage(args UsageArgs) Usage {
 	var sub []Command
 	var display string
 	var globalFlags []FlagRow
-	var globalFS *FlagSet
-	var fd FlagDef
 	var shortcut string
 
 	// COMMANDS rows
-	for _, cmd = range GetTopLevelCmds() {
+	for _, cmd = range args.Commands.GetTopLevelCmds() {
 		// Skip hidden commands
 		if cmd.IsHidden() {
 			continue
 		}
 
-		sub = GetSubCmds(cmd.Name())
+		sub = args.Commands.GetSubCmds(cmd.Name())
 		display = cmd.Name()
 		if len(sub) > 0 {
 			display += " [" + sub[0].Name() + "]"
@@ -76,27 +75,31 @@ func BuildUsage(args UsageArgs) Usage {
 	})
 
 	// GLOBAL FLAGS rows
-	globalFS = GetGlobalFlagSet()
-	if globalFS != nil {
-		for _, fd = range globalFS.FlagDefs {
-			shortcut = ""
-			if fd.Shortcut != 0 {
-				shortcut = string(fd.Shortcut)
-			}
-
-			globalFlags = append(globalFlags, FlagRow{
-				Name:     fd.Name,
-				Shortcut: shortcut,
-				Descr:    fd.Usage,
-				Usage:    fd.Usage,
-				Default:  fmt.Sprintf("%v", fd.Default),
-				Required: fd.Required,
-			})
+	for _, fd := range args.Commands.globalDefs {
+		shortcut = ""
+		if fd.Shortcut != 0 {
+			shortcut = string(fd.Shortcut)
 		}
+
+		globalFlags = append(globalFlags, FlagRow{
+			Name:     fd.Name,
+			Shortcut: shortcut,
+			Descr:    fd.Usage,
+			Usage:    fd.Usage,
+			Default:  fd.defaultText(),
+			Required: fd.Required,
+		})
+	}
+	for _, cmd = range args.Commands.GetTopLevelCmds() {
+		if cmd.FlagName() == "" {
+			continue
+		}
+		usage := fmt.Sprintf("Run %s command", cmd.Name())
+		globalFlags = append(globalFlags, FlagRow{Name: cmd.FlagName(), Descr: usage, Usage: usage})
 	}
 
 	// EXAMPLES rows
-	examples := collectExamples(args.ExeName())
+	examples := collectExamples(args.ExeName(), args.Commands)
 
 	return Usage{
 		AppInfo: appinfo.New(appinfo.Args{
@@ -115,7 +118,7 @@ func BuildUsage(args UsageArgs) Usage {
 
 // --- Example generation ----
 
-func collectExamples(exe dt.Filename) []Example {
+func collectExamples(exe dt.Filename, set *CommandSet) []Example {
 	// Start with universal help patterns:
 	all := []Example{
 		{Descr: "Show help for a specific command", Cmd: fmt.Sprintf("%s help <command>", exe)},
@@ -126,7 +129,7 @@ func collectExamples(exe dt.Filename) []Example {
 	// If a command implements ExampleProvider, use its Examples()
 	// (and append autos depending on IncludeAutoExamples()).
 	// Otherwise, auto-generate for that command.
-	for _, cmd := range GetTopLevelCmds() {
+	for _, cmd := range set.GetTopLevelCmds() {
 		// Skip hidden commands
 		if cmd.IsHidden() {
 			continue
@@ -138,11 +141,11 @@ func collectExamples(exe dt.Filename) []Example {
 		switch {
 		case len(custom) == 0:
 			// No custom examples returned => fall back to autos
-			all = append(all, autoExamplesForCommand(exe, cmd)...)
+			all = append(all, autoExamplesForCommand(exe, cmd, set)...)
 		case cmd.AutoExamples():
 			// Use auto-generated examples AND there are custom examples
 			all = append(all, custom...)
-			all = append(all, autoExamplesForCommand(exe, cmd)...)
+			all = append(all, autoExamplesForCommand(exe, cmd, set)...)
 		default:
 			// Only use custom examples
 			all = append(all, custom...)
@@ -154,7 +157,7 @@ func collectExamples(exe dt.Filename) []Example {
 	return all
 }
 
-func autoExamplesForCommand(exe dt.Filename, cmd Command) []Example {
+func autoExamplesForCommand(exe dt.Filename, cmd Command, set *CommandSet) []Example {
 	var out []Example
 
 	// 1) A canonical "help" example for the command itself
@@ -164,7 +167,7 @@ func autoExamplesForCommand(exe dt.Filename, cmd Command) []Example {
 	})
 
 	// 2) If it has subcommands, show help for the first subcommand
-	sub := GetSubCmds(cmd.Name())
+	sub := set.GetSubCmds(cmd.Name())
 	if len(sub) > 0 {
 		out = append(out, Example{
 			Descr: fmt.Sprintf("Help for %s %s", cmd.Name(), sub[0].Name()),
@@ -208,8 +211,8 @@ func sampleFlags(cmd Command) []string {
 	for _, fs := range cmd.FlagSets() {
 		for _, fd := range fs.FlagDefs {
 			val := fd.Example
-			if val == "" && fd.Default != nil {
-				val = fmt.Sprintf("%v", fd.Default)
+			if val == "" {
+				val = fd.defaultText()
 			}
 			// Only include flags when we have a decent sample; skip booleans set to false, etc.
 			if val != "" {
@@ -226,8 +229,8 @@ func sampleArgs(cmd Command) (parts []string) {
 	// If ArgDefs are only embedded in your CmdBase, expose them via an optional interface:
 	for _, ad := range cmd.ArgDefs() {
 		val := ad.Example
-		if val == "" && ad.Default != nil {
-			val = fmt.Sprintf("%v", ad.Default)
+		if val == "" {
+			val = ad.defaultText()
 		}
 		// For required args with no example/default, put a placeholder to signal requiredness.
 		if val == "" && ad.Required {
@@ -306,7 +309,7 @@ type CmdUsage struct {
 }
 
 // BuildCmdUsage builds the data structure for command-specific help
-func BuildCmdUsage(cmd Command) CmdUsage {
+func BuildCmdUsage(cmd Command, set *CommandSet) CmdUsage {
 	var args, usage strings.Builder
 	var argRows []ArgRow
 	var flagRows []FlagRow
@@ -319,6 +322,9 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 	// Collect arguments
 	for i, ad := range argDefs {
 		arg := fmt.Sprintf("<%s>", ad.Name)
+		if ad.isVariadic() {
+			arg += "..."
+		}
 		if !ad.Required {
 			hasOptArgs = true
 			args.WriteString("[")
@@ -329,8 +335,7 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 		}
 
 		descr := ad.Usage
-		if ad.Default != nil {
-			def := fmt.Sprintf("%v", ad.Default)
+		if def := ad.defaultText(); def != "" {
 			descr = fmt.Sprintf("%s (default=%s)", descr, def)
 		}
 		if ad.Required {
@@ -342,7 +347,7 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 			Name:     ad.Name,
 			Usage:    ad.Usage,
 			Required: ad.Required,
-			Default:  fmt.Sprintf("%v", ad.Default),
+			Default:  ad.defaultText(),
 			Example:  ad.Example,
 		}
 		argRows = append(argRows, argRow)
@@ -361,8 +366,7 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 				flag = fmt.Sprintf("-%c, %s", fd.Shortcut, flag)
 			}
 			descr := fd.Usage
-			if fd.Default != nil {
-				def := fmt.Sprintf("%v", fd.Default)
+			if def := fd.defaultText(); def != "" {
 				descr = fmt.Sprintf("%s [default=%s]", descr, def)
 			}
 			if fd.Required {
@@ -374,7 +378,7 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 				Name:     fd.Name,
 				Shortcut: string(fd.Shortcut),
 				Usage:    fd.Usage,
-				Default:  fmt.Sprintf("%v", fd.Default),
+				Default:  fd.defaultText(),
 				Required: fd.Required,
 			})
 			maxSize = max(len(flag)+2, maxSize)
@@ -382,7 +386,7 @@ func BuildCmdUsage(cmd Command) CmdUsage {
 	}
 
 	// Collect subcommands
-	for _, subCmd = range GetSubCmds(cmd.Name()) {
+	for _, subCmd = range set.GetSubCmds(cmd.FullNames()[0]) {
 		if subCmd.IsHidden() {
 			continue
 		}

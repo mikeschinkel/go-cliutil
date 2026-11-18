@@ -1,7 +1,7 @@
 # Request-Scoped Command Pattern with Injected Context
 
 **Date:** 2025-11-07
-**Status:** Accepted
+**Status:** Superseded by Endless decision ED-1666
 **Authors:** Mike Schinkel
 
 ## Context
