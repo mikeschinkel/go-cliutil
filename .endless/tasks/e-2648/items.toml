@@ -263,3 +263,9 @@ statement = "examples/comprehensive gives its config typed methods and uses Appl
 id = "P50"
 kind = "deliverable"
 statement = "CI and .squire config build the renamed examples, and CI runs examples/comprehensive's tests"
+
+[[item]]
+id = "P51"
+kind = "deliverable"
+statement = "After Mike approves the v0.6.0 proposal, the session gives him the gh command that checks test.yml succeeded and then the gh command that runs release.yml with the approved version and description"
+post_land = true
