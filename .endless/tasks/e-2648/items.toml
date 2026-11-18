@@ -236,7 +236,7 @@ statement = "Does not move writer, logger, config-file location or RunCLI constr
 [[item]]
 id = "P45"
 kind = "exclusion"
-statement = "Does not change any consumer repository, add the go-cfgstore adapter, or tag a release"
+statement = "Does not change any consumer repository or add the go-cfgstore adapter"
 
 [[item]]
 id = "P46"
