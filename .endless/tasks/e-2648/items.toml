@@ -220,7 +220,7 @@ statement = "Mike reviews the code and both examples in the task worktree and ap
 [[item]]
 id = "P42"
 kind = "deliverable"
-statement = "After Mike approves, the task proposes v0.6.0 with an active-voice release description"
+statement = "After Mike approves the work, the session proposes v0.6.0 with an active-voice release description that puts code in backticks"
 post_land = true
 
 [[item]]
